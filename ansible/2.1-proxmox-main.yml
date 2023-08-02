@@ -45,9 +45,18 @@
   #   - Restart
 
 #   #repositories
-  - name: Disable Enterprise Repository
+  - name: Disable Enterprise Proxmox Repository
     replace:
       path: /etc/apt/sources.list.d/pve-enterprise.list
+      regexp: '^deb'
+      replace: '#deb'
+    notify:
+    - Update and Upgrade
+    - Restart
+
+  - name: Disable Enterprise Ceph Repository
+    replace:
+      path: /etc/apt/sources.list.d/ceph.list
       regexp: '^deb'
       replace: '#deb'
     notify:
