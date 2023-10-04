@@ -1,3 +1,7 @@
+https://github.com/VincentSaelzler/hyper-homelab/blob/main/docs/ansible-host.md
+
+
+
 enx (USB)
 pve.vnet
 192.168.27.10 / 24
