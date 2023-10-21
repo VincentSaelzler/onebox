@@ -24,3 +24,11 @@ Enable IOMMU and Virtualization. Disable Legacy Boot.
 - IOMMU = Enable (Advanced > AMD CBS)
 - SVM Mode = Enable (Advanced > CPU Configuration)
 - Launch CSM = Disable (Advanced > Boot > CSM)
+
+craft computing's instructions:
+https://drive.google.com/file/d/1rPTKi_b7EFqKTMylH64b3Dg9W0N_XIhO/view
+
+
+
+# machine type matches host type
+# non-balooning
