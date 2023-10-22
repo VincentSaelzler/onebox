@@ -1,6 +1,6 @@
 ---
 - name: Bootstrap Proxmox Nodes
-  hosts: proxmox_nodes
+  hosts: hypervisors
   handlers:
     - import_tasks: handlers/main.yml
   roles:
@@ -11,19 +11,17 @@
   - name: Check Whether LAN Bridge Configuration Exists
     lineinfile:
       path: /etc/network/interfaces
-      line: "iface {{ netenv.lan.vbridge }} inet manual"
+      line: "iface {{ lan_vbridge }} inet manual"
       state: present
     check_mode: yes # do not add the line - just check whether it WOULD be added
     register: lan_presence
 
   - name: Create LAN Bridge
     command:
-      cmd: "pvesh create /nodes/{{ inventory_hostname }}/network --iface {{ netenv.lan.vbridge }} --type bridge --autostart true --bridge_ports {{ lan_iface }} --comments LAN"
-    when:
-    - lan_presence.changed # this will NOT run an update - only adds the bridge config if it does not exist.
+      cmd: "pvesh create /nodes/{{ inventory_hostname }}/network --iface {{ lan_vbridge }} --type bridge --autostart true --bridge_ports {{ lan_iface }} --comments LAN"
+    when: lan_presence.changed # this will NOT run an update - only adds the bridge config if it does not exist.
     changed_when: true
-    notify:
-    - Restart
+    notify: Restart
 
   # repositories
   - name: Disable Enterprise Proxmox Repository
@@ -63,11 +61,12 @@
       line: amd_iommu=on
       state: present
       create: true
-    notify:
-    - Restart
+    register: kernel_parms
+    notify: Restart
 
   - name: Apply Kernel Parameters
     command: proxmox-boot-tool refresh
+    when: kernel_parms.changed
 
   - name: Load Kernel Modules
     lineinfile:
@@ -78,8 +77,8 @@
       - 'vfio_iommu_type1'
       - 'vfio_pci'
       - 'vfio_virqfd'
-    notify:
-    - Restart
+    register: vfio_modules
+    notify: Restart
 
   - name: Blacklist Drivers
     lineinfile:
@@ -89,9 +88,10 @@
     with_items:
       - 'blacklist amdgpu'
       - 'blacklist radeon'
-    notify:
-    - Restart
+    register: graphics_modules
+    notify: Restart
 
   - name: Update InitramFS with Modules
     command: update-initramfs -u -k all
-    notify:
+    when: vfio_modules.changed or graphics_modules.changed
+    notify: Restart

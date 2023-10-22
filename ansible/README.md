@@ -18,7 +18,15 @@ ans ansible/2.1-proxmox-main.yml
 
 
 
-
+```yml
+  - debug:
+      var: "{{ item }}"
+    with_items:
+      - hostvars.pve.lan_vbridge
+      - hostvars.pve.lan_presence
+      - hostvars.pve.lan_iface
+    when: vfio_modules.changed or graphics_modules.changed
+```
 
 
 
