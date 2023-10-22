@@ -1,0 +1,10 @@
+
+- name: Bootstrap Host, Including GUI and IDE
+  hosts: router
+  gather_facts: no
+  tasks:
+    - debug:
+        var: "{{ item }}"
+      with_items:
+        - hostvars.pve.lan_iface
+        - hostvars.pve.lan_iface

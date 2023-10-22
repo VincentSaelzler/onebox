@@ -54,7 +54,9 @@
 
   - name: Install python packages
     pip:
-      name: proxmoxer
+      name:
+      - proxmoxer
+      - requests
 
   - name: Install Public/Private Keypair
     import_role:
