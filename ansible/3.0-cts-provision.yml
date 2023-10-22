@@ -1,0 +1,27 @@
+---
+- name: Download Container Templates from Proxmox Repository
+  hosts: proxmox_cts # using this instead of pve in case we want to download different templates per container.
+  gather_facts: no # fact gathering will fail if the containers don't exist yet
+  serial: 1
+  tasks:
+  - name: Check for Latest Debian OS Template
+    shell:
+      cmd: "pveam available --section system | grep -o debian.* | sort -r | sed 1q"
+    register: latest_debian_template
+    delegate_to: pve
+    changed_when: false
+
+  - name: Use Latest Debian Template
+    set_fact:
+      template_name: "{{ latest_debian_template.stdout }}"
+
+  - name: Download Latest OS Template
+    command:
+      cmd: "pveam download local {{ template_name }}"
+    delegate_to: pve
+    register: template_dl
+    changed_when: template_dl.stdout_lines | last() != 'calculating checksum of existing file...OK, got correct file already, no need to download'
+
+  - name: print stuff
+    debug:
+      var: template_dl
