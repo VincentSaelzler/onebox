@@ -1,11 +1,15 @@
 ---
-- name: Download Container Templates from Proxmox Repository
-  hosts: pve
+- name: Download Template, Create Container
+  hosts: containers
+  gather_facts: no # fact gathering will fail if the containers don't exist yet
+  vars:
+    virt_host_ip: "{{ hostvars['pve']['ansible_host'] }}"
   tasks:
   - name: Check for Latest Debian OS Template
     shell:
       cmd: "pveam available --section system | grep -o debian.* | sort -r | sed 1q"
     register: latest_debian_template
+    delegate_to: pve
     changed_when: false
 
   - name: Get Name of Latest Debian Template
@@ -16,35 +20,27 @@
     command:
       cmd: "pveam download local {{ template_name }}"
     register: template_dl
+    delegate_to: pve
     changed_when: template_dl.stdout_lines | last() != 'calculating checksum of existing file...OK, got correct file already, no need to download'
 
   - name: print stuff
     debug:
       var: template_name
 
-- name: Create and Start Containers
-  hosts: proxmox_cts
-  gather_facts: no # fact gathering will fail if the containers don't exist yet
-  serial: 1
-  vars:
-    virt_host_ip: "{{ hostvars['pve']['ansible_host'] }}"
-  tasks:
-
-  - name: print stuff
-    debug:
-      # var: api_user
-      # var: root_pw
-      # var: virt_host_ip
-      # var: disk_size
-      # var: tgt_storage
-      # var: ram
-      # var: vcpus
-      # var: ansible_host
-      # msg: "name=eth0,ip={{ ansible_host }}/{{ netenv.lan.mask }},bridge={{ netenv.lan.vbridge }}"
-      # msg: "name=eth1,ip={{ secondary_ip }}/{{ netenv.wan.mask }},bridge={{ netenv.wan.vbridge }},gw={{ netenv.wan.gw }}"
-      var: netconf
-      var: dns_srvr
-      var: inventory_hostname
+  # - name: print stuff
+  #   debug:
+  #     # var: api_user
+  #     # var: root_pw
+  #     # var: virt_host_ip
+  #     # var: disk_size
+  #     # var: tgt_storage
+  #     # var: ram
+  #     # var: vcpus
+  #     # var: ansible_host
+  #     # msg: '{"net0":"name=eth0,gw={{ netenv.gw }},ip={{ ansible_host }}/{{ netenv.mask }},bridge={{ netenv.vbridge }}"}'
+  #     # var: netconf
+  #     # var: netenv.dns
+  #     var: inventory_hostname
 
   - name: Create New Container
     proxmox:
@@ -54,20 +50,18 @@
       api_host: "{{ virt_host_ip }}"
       node: pve
       # hardware
-      ostemplate: "local:vztmpl/debian-12-standard_12.2-1_amd64.tar.zst"
-      # ostemplate: "local:vztmpl/{{ template_name }}"
+      ostemplate: "local:vztmpl/{{ template_name }}"
       disk: "{{ disk_size }}"
       storage: "{{ tgt_storage }}"
       memory: "{{ ram }}"
       swap: 0
       cores: "{{ vcpus }}"
       netif: "{{ netconf }}"
-      nameserver: "{{ dns_srvr }}"
+      nameserver: "{{ netenv.dns }}"
       hostname: "{{ inventory_hostname }}"
       # options
       pubkey: "{{ pub_key }}"
-      proxmox_default_behavior: no_defaults
       unprivileged: yes
       onboot: yes
-      #state: started #apparently cannot create and start containers in one step
+      # state: started # cannot create and start containers in one step
     delegate_to: localhost
