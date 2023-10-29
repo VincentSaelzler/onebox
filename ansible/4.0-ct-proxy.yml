@@ -1,0 +1,28 @@
+---
+- name: Bootstrap Host and Install HAProxy
+  hosts: proxy
+  handlers:
+  - import_tasks: handlers/main.yml
+  roles:
+  - full-upgrade
+  tasks:
+  - name: Install apt packages
+    apt:
+      state: present
+      pkg:
+      - haproxy
+  
+  - name: Copy the Main Config File
+    template:
+      src: haproxy.cfg
+      dest: "/etc/haproxy/haproxy.cfg"
+
+  - name: Restart haproxy service
+    systemd:
+      name: haproxy
+      state: restarted
+      enabled: yes
+    register: systemctl
+    retries: 10
+    delay: 3
+    until: not systemctl.failed # The certbot role (sometimes) prevents haproxy from restarting for a few seconds.
