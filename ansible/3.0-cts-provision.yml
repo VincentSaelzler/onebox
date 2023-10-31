@@ -86,3 +86,10 @@
     retries: 10
     delay: 1
     until: not proxmoxer.failed # sometimes it takes a few seconds to recognize container by name
+
+- name: Bootstrap Host
+  hosts: containers
+  handlers:
+  - import_tasks: handlers/main.yml
+  roles:
+  - full-upgrade

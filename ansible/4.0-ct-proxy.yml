@@ -1,10 +1,6 @@
 ---
 - name: Bootstrap Host and Install HAProxy
   hosts: proxy
-  handlers:
-  - import_tasks: handlers/main.yml
-  roles:
-  - full-upgrade
   tasks:
   - name: Install apt packages
     apt:
