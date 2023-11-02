@@ -12,8 +12,13 @@ pub_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCdu/Dolq85/sScWhdmnFNpxYuCQtq6lP
 ansible_user: root
 api_user: root@pam
 
+# the unprivileged user
+usr_name: pleb
+full_name: Plebian
+
 # credentials
 # if the PWs here are not stored externally, and the ansible vault PW is lost,
 # THERE IS NO WAY TO RECOVER!!
 root_pw:  "{{ vault_root_pw }}"
 pw_salt: "{{ vault_pw_salt }}"
+usr_pw:  "{{ vault_usr_pw }}"

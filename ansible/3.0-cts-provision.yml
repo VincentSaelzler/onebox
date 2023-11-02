@@ -2,6 +2,7 @@
 - name: Download Template, Create Container
   hosts: containers
   gather_facts: no # fact gathering will fail if the containers don't exist yet
+  serial: 1
   vars:
     virt_host_ip: "{{ hostvars['pve']['ansible_host'] }}"
   tasks:
@@ -87,9 +88,10 @@
     delay: 1
     until: not proxmoxer.failed # sometimes it takes a few seconds to recognize container by name
 
-- name: Bootstrap Host
+- name: Bootstrap Hosts
   hosts: containers
   handlers:
   - import_tasks: handlers/main.yml
   roles:
   - full-upgrade
+  - pleb-user
