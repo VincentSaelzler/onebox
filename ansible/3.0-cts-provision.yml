@@ -94,4 +94,4 @@
   - import_tasks: handlers/main.yml
   roles:
   - full-upgrade
-  - pleb-user
+  - privileged-user

@@ -1,6 +1,8 @@
 ---
-- name: Install System Packages
+- name: Install System Stuff (as Root)
   hosts: cookbook
+  roles:
+  - pleb-user
   tasks:
   - name: Install apt packages
     apt:
@@ -14,20 +16,11 @@
       # dependencies to shrink photos using the photo-shrink.py script
       - imagemagick
       - python3
-  - debug:
-      var: ansible_user
 
-  # - name: Install Bundler Gem
-  #   command:
-  #     cmd: "gem install --user-install bundler"
-
-- name: Install Packages
+- name: Install Jekyll Stuff (as Pleb)
   hosts: cookbook
   vars:
-    ansible_user: pleb
-  # environment:
-  #   GEM_HOME: "{{ ansible_facts.env.HOME }}/gems"
-
+    ansible_user: "{{ usr_name }}"
   tasks:
   - name: Clone if Not Exists, Otherwise Leave Container's Repo Untouched
     git:
@@ -35,11 +28,20 @@
       dest: ~/cookbook
       update: no
 
+  # had zero luck with the ansible gem module, so running command directly
   - name: Install Bundler Gem
     command:
       cmd: "gem install bundler"
-    environment:
+    environment: # must be set at the task level (not play) otherwise ansible_facts refer to host
       GEM_HOME: "{{ ansible_facts.env.HOME }}/gems"
+
+  - name: Install Jekyll Site Gems (Using Bundler)
+    bundler:
+      state: latest
+      chdir: ~/cookbook
+    environment: # must be set at the task level (not play) otherwise ansible_facts refer to host
+      GEM_HOME: "{{ ansible_facts.env.HOME }}/gems"
+      PATH: "{{ ansible_facts.env.HOME }}/gems/bin:{{ ansible_facts.env.PATH }}"
 
   # ansible ignores ~/.bashrc stuff - this is for using the container interactively  
   - name: Specify Where to Save Gems
@@ -51,22 +53,3 @@
     lineinfile:
       dest: ~/.bashrc
       line: 'export PATH="$HOME/gems/bin:$PATH"'
-
-  - name: Install Jekyll Site Gems (Using Bundler)
-    bundler:
-      state: latest
-      chdir: ~/cookbook
-    environment:
-      GEM_HOME: "{{ ansible_facts.env.HOME }}/gems"
-      PATH: "{{ ansible_facts.env.HOME }}/gems/bin:{{ ansible_facts.env.PATH }}"
-
-  # - debug:
-  #     var: ansible_facts.env.PATH
-  # - command:
-  #     cmd: echo $PATH
-  #   environment:
-  #     GEM_HOME: "{{ ansible_facts.env.HOME }}/gems"
-  #     PATH: "{{ ansible_facts.env.HOME }}/gems/bin:{{ ansible_facts.env.PATH }}"
-
-#https://stackoverflow.com/questions/22115936/install-bundler-gem-using-ansible
-#It's all about the paths.
