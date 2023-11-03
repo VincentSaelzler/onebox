@@ -16,6 +16,10 @@
       # dependencies to shrink photos using the photo-shrink.py script
       - imagemagick
       - python3
+  - name:  Create Jekyll Service File
+    copy:
+      src: jekyll.service
+      dest: "/etc/systemd/system/jekyll.service"
 
 - name: Install Jekyll Stuff (as Pleb)
   hosts: cookbook
@@ -53,3 +57,12 @@
     lineinfile:
       dest: ~/.bashrc
       line: 'export PATH="$HOME/gems/bin:$PATH"'
+
+- name: Restart and Enable Jekyll System Service (as Root)
+  hosts: cookbook
+  tasks:
+  - name: Restart Jekyll Service
+    systemd:
+      name: jekyll
+      state: restarted
+      enabled: yes
