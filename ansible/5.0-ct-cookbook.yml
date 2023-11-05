@@ -13,9 +13,7 @@
       - ruby-full
       - build-essential
       - zlib1g-dev
-      # dependencies to shrink photos using the photo-shrink.py script
-      - imagemagick
-      - python3
+
   - name:  Create Jekyll Service File
     copy:
       src: jekyll.service
@@ -26,11 +24,10 @@
   vars:
     ansible_user: "{{ usr_name }}"
   tasks:
-  - name: Clone if Not Exists, Otherwise Leave Container's Repo Untouched
+  - name: clone repo, overwriting any local changes
     git:
       repo: 'https://github.com/VincentSaelzler/cookbook'
       dest: ~/cookbook
-      update: no
 
   # had zero luck with the ansible gem module, so running command directly
   - name: Install Bundler Gem
@@ -46,17 +43,6 @@
     environment: # must be set at the task level (not play) otherwise ansible_facts refer to host
       GEM_HOME: "{{ ansible_facts.env.HOME }}/gems"
       PATH: "{{ ansible_facts.env.HOME }}/gems/bin:{{ ansible_facts.env.PATH }}"
-
-  # ansible ignores ~/.bashrc stuff - this is for using the container interactively  
-  - name: Specify Where to Save Gems
-    lineinfile:
-      dest: ~/.bashrc
-      line: 'export GEM_HOME="$HOME/gems"'
-
-  - name: Make Gems Executable
-    lineinfile:
-      dest: ~/.bashrc
-      line: 'export PATH="$HOME/gems/bin:$PATH"'
 
 - name: Restart and Enable Jekyll System Service (as Root)
   hosts: cookbook
