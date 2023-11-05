@@ -1,4 +1,8 @@
 ---
+# these items will need to change if you're not vincent saelzler
+git_email: vincent.saelzler@gmail.com
+git_name: Vincent Saelzler
+
 netenv:
   # this is based on the isp's default router configuration
   mask: 24
