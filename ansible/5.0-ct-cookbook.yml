@@ -9,15 +9,19 @@
       state: present
       pkg:
       - git
+      - nginx
       # jekyll
       - ruby-full
       - build-essential
       - zlib1g-dev
 
-  - name:  Create Jekyll Service File
-    copy:
-      src: jekyll.service
-      dest: "/etc/systemd/system/jekyll.service"
+  - name: change ownership of the default site folder
+    file:
+      path: /var/www/html/
+      state: directory
+      recurse: yes
+      owner: "{{ usr_name }}"
+      group: "{{ usr_name }}"
 
 - name: Install Jekyll Stuff (as Pleb)
   hosts: cookbook
@@ -43,12 +47,21 @@
     environment: # must be set at the task level (not play) otherwise ansible_facts refer to host
       GEM_HOME: "{{ ansible_facts.env.HOME }}/gems"
       PATH: "{{ ansible_facts.env.HOME }}/gems/bin:{{ ansible_facts.env.PATH }}"
+  
+  - name: build the production site
+    command:
+      cmd: "bundle exec jekyll build --destination /var/www/html/"
+      chdir: ~/cookbook
+    environment: # must be set at the task level (not play) otherwise ansible_facts refer to host
+      GEM_HOME: "{{ ansible_facts.env.HOME }}/gems"
+      PATH: "{{ ansible_facts.env.HOME }}/gems/bin:{{ ansible_facts.env.PATH }}"
+      JEKYLL_ENV: production
 
-- name: Restart and Enable Jekyll System Service (as Root)
+- name: restart nginx (as root)
   hosts: cookbook
   tasks:
-  - name: Restart Jekyll Service
+  - name: restart nginx
     systemd:
-      name: jekyll
+      name: nginx
       state: restarted
       enabled: yes
