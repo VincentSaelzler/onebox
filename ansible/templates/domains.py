@@ -6,10 +6,9 @@ import subprocess
 # hard coded assumptions
 DOMAINS = ["hearty.cooking"]
 BASE_URL = "https://api.godaddy.com/v1"
-API_KEY = "dKst8pghnmJ4_Wh8njbkCKACzqVScuyUDvE"  # CHANGE
-API_SECRET = "UUjLvyCJU8tdp84sV4kMNf"  # CHANGE
 headers = {
-    "Authorization": f"sso-key {API_KEY}:{API_SECRET}",
+    # secret is injected by ansible
+    "Authorization": "sso-key {{ godaddy_key_and_secret }}",
     "Content-Type": "application/json",
 }
 

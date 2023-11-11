@@ -24,9 +24,13 @@ alias glog # git log with graph format
 ```
 
 
-## GoDaddy DNS Configuration
+## GoDaddy DNS Configuration via API
+I don't have a static IP with my ISP, and want to keep things as simple as possible.
 
-[Create keys](https://developer.godaddy.com/keys)
-name: ansible
-environment: operational testing environment (ote)
+A container is configured to directly update GoDaddy DNS records in case my public IP changes, instead of using an external dynamic DNS service.
 
+Manually log in to GoDaddy and [Create Keys](https://developer.godaddy.com/keys). 
+- name: ansible
+- environment: production
+
+Save in vault as `vault_godaddy_key_and_secret` in the format `key:secret`
