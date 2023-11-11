@@ -1,15 +1,23 @@
 ---
-- name: set up the pleb user
+- name: set up pleb user
   hosts: dns
   roles:
   - pleb-user
 
-- name: configure python script
+- name: copy python script
   hosts: dns
   vars:
     ansible_user: "{{ usr_name }}"
   tasks:
-  - name: copy the python script
+  - name: copy python script
     template:
       src: domains.py
       dest: ~/domains.py
+
+- name: configure python script to run every minute
+  hosts: dns
+  tasks:
+  - name: add line to system-wide crontab
+    lineinfile:
+      path: /etc/crontab
+      line: "* * * * * {{ usr_name }} python3 /home/{{ usr_name }}/domains.py"
