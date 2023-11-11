@@ -2,6 +2,7 @@ import requests
 import json
 
 import subprocess
+from datetime import datetime, timezone
 
 # hard coded assumptions
 DOMAINS = ["hearty.cooking"]
@@ -49,10 +50,14 @@ for domain in DOMAINS:
 
     public_ip = get_public_ip()
     root_host_record = get_root_host_record(root_host_record_endpoint)
+    current_ip = root_host_record["data"]
 
-    if root_host_record["data"] != public_ip:
+    if current_ip != public_ip:
         root_host_record["data"] = public_ip
         put_root_host_record(root_host_record_endpoint, root_host_record)
 
+output = str.join(',',[datetime.now(timezone.utc).isoformat(), domain, current_ip, public_ip])
 
-print("made it!")
+with open("log.csv", "a") as log_file:
+    log_file.write(output)
+    log_file.write("\n")
