@@ -1,0 +1,87 @@
+{
+    "authCode": "/NW55$3I8::34^F9",
+    "contactAdmin": {
+        "addressMailing": {
+            "address1": "3975 Barnes Avenue",
+            "address2": "",
+            "city": "Montgomery",
+            "country": "US",
+            "postalCode": "45406",
+            "state": "Ohio"
+        },
+        "email": "carl.linnaeus@quercusphellos.online",
+        "fax": "",
+        "nameFirst": "Carl",
+        "nameLast": "Linnaeus",
+        "organization": "Uppsala University",
+        "phone": "+1.5136498143"
+    },
+    "contactBilling": {
+        "addressMailing": {
+            "address1": "3975 Barnes Avenue",
+            "address2": "",
+            "city": "Montgomery",
+            "country": "US",
+            "postalCode": "45406",
+            "state": "Ohio"
+        },
+        "email": "carl.linnaeus@quercusphellos.online",
+        "fax": "",
+        "nameFirst": "Carl",
+        "nameLast": "Linnaeus",
+        "organization": "Uppsala University",
+        "phone": "+1.5136498143"
+    },
+    "contactRegistrant": {
+        "addressMailing": {
+            "address1": "3975 Barnes Avenue",
+            "address2": "",
+            "city": "Montgomery",
+            "country": "US",
+            "postalCode": "45406",
+            "state": "Ohio"
+        },
+        "email": "carl.linnaeus@quercusphellos.online",
+        "fax": "",
+        "nameFirst": "Carl",
+        "nameLast": "Linnaeus",
+        "organization": "Uppsala University",
+        "phone": "+1.5136498143"
+    },
+    "contactTech": {
+        "addressMailing": {
+            "address1": "3975 Barnes Avenue",
+            "address2": "",
+            "city": "Montgomery",
+            "country": "US",
+            "postalCode": "45406",
+            "state": "Ohio"
+        },
+        "email": "carl.linnaeus@quercusphellos.online",
+        "fax": "",
+        "nameFirst": "Carl",
+        "nameLast": "Linnaeus",
+        "organization": "Uppsala University",
+        "phone": "+1.5136498143"
+    },
+    "createdAt": "2001-02-28T11:48:51.000Z",
+    "domain": "saelzler.com",
+    "domainId": 295939633,
+    "expirationProtected": false,
+    "expires": "2024-02-28T11:48:51.000Z",
+    "exposeWhois": false,
+    "holdRegistrar": false,
+    "locked": true,
+    "nameServers": [
+        "ns53.domaincontrol.com",
+        "ns54.domaincontrol.com"
+    ],
+    "privacy": true,
+    "registrarCreatedAt": "2019-06-27T11:32:55.627Z",
+    "renewAuto": true,
+    "renewDeadline": "2024-04-13T11:48:51.000Z",
+    "renewable": true,
+    "redeemable": false,
+    "status": "ACTIVE",
+    "transferProtected": false
+}

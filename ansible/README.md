@@ -22,3 +22,11 @@ Two noteworthy aliases are installed with the `aliases` role.
 alias ans # run an ansible playbook
 alias glog # git log with graph format
 ```
+
+
+## GoDaddy DNS Configuration
+
+[Create keys](https://developer.godaddy.com/keys)
+name: ansible
+environment: operational testing environment (ote)
+
