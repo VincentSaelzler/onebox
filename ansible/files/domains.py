@@ -1,4 +1,5 @@
 import requests
+import json
 
 BASE_URL = "https://api.godaddy.com"
 
@@ -13,8 +14,16 @@ headers = {
     'Content-Type': 'application/json'
 }
 
-r = requests.get(f'{BASE_URL}{endpoint}/saelzler.com',headers=headers)
+r = requests.get(f'{BASE_URL}{endpoint}/hearty.cooking/records',headers=headers)
 
-print('we made it!')
+records = json.loads(r.text)
+root_host_records = [record for record in records if record['type'] == 'A' and record['name'] == '@']
+
+if len(root_host_records) != 1:
+    raise IndexError('expecting exactly one host record for the domain root')
+
+root_host_record = root_host_records[0]
+
+print(json.dumps(o, indent=2))
 
 
