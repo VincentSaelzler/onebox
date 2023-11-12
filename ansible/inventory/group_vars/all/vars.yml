@@ -2,6 +2,7 @@
 # these items will need to change if you're not vincent saelzler
 git_email: vincent.saelzler@gmail.com
 git_name: Vincent Saelzler
+usr_email: vincent.saelzler@gmail.com # for certbot
 
 netenv:
   # this is based on the isp's default router configuration
@@ -19,6 +20,19 @@ api_user: root@pam
 # the unprivileged user
 usr_name: pleb
 full_name: Plebian
+
+# web applications
+domains: 
+  - hearty.cooking
+
+# the certbot role expects a list of ~certificates~
+# each certificate could have one or more domains
+# CANNOT USE MULTIPLE DOMAINS ON ONE CERT FOR NOW
+# TASK [Create symbolic links for intermediate certificate chains]
+# fails
+certs:
+  - domains:
+    - hearty.cooking
 
 # credentials
 # if the PWs here are not stored externally, and the ansible vault PW is lost,

@@ -67,3 +67,8 @@
   #   import_role:
   #     name: vs-code-ext
   #   when: on_linux == "y" or on_linux == "Y"
+
+  - name: Install Certbot Role from Ansible Galaxy
+    community.general.ansible_galaxy_install:
+      type: role
+      name: geerlingguy.certbot
