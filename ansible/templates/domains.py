@@ -5,7 +5,7 @@ import subprocess
 from datetime import datetime, timezone
 
 # hard coded assumptions
-DOMAINS = ["hearty.cooking"]
+DOMAINS = ["hearty.cooking", "saelzler.org"] # this could possibly be dynamic in the future
 BASE_URL = "https://api.godaddy.com/v1"
 headers = {
     # secret is injected by ansible

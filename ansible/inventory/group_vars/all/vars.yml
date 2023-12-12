@@ -24,6 +24,7 @@ full_name: Plebian
 # web applications
 domains: 
   - hearty.cooking
+  - saelzler.org
 
 # the certbot role expects a list of ~certificates~
 # each certificate could have one or more domains
@@ -33,6 +34,9 @@ domains:
 certs:
   - domains:
     - hearty.cooking
+certs:
+  - domains:
+    - saelzler.org
 
 # credentials
 # if the PWs here are not stored externally, and the ansible vault PW is lost,
