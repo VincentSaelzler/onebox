@@ -1,0 +1,34 @@
+---
+- name: create users and perform system-wide configuration
+  hosts: cransible # cron + ansible
+  roles:
+  - pleb-user
+  - ssh-conf
+  tasks:
+  - name: apt packages
+    apt:
+      state: present
+      pkg:
+      - git
+      - ansible
+
+- name: python packages and playbook files
+  hosts: cransible # cron + ansible
+  vars:
+    ansible_user: "{{ usr_name }}"
+  roles:
+  - vault-pw
+  - private-key
+  tasks:
+  - name: clone repo, overwriting any local changes
+    git:
+      repo: 'https://github.com/VincentSaelzler/onebox'
+      dest: ~/onebox
+
+# - name: configure python script to run every minute
+#   hosts: dns
+#   tasks:
+#   - name: add line to system-wide crontab
+#     lineinfile:
+#       path: /etc/crontab
+#       line: "* * * * * {{ usr_name }} python3 /home/{{ usr_name }}/domains.py"
