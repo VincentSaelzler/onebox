@@ -25,10 +25,14 @@
       repo: 'https://github.com/VincentSaelzler/onebox'
       dest: ~/onebox
 
-# - name: configure python script to run every minute
-#   hosts: dns
-#   tasks:
-#   - name: add line to system-wide crontab
-#     lineinfile:
-#       path: /etc/crontab
-#       line: "* * * * * {{ usr_name }} python3 /home/{{ usr_name }}/domains.py"
+  # - name: run the x playbook
+  #   command:
+  #     cmd: "ansible-playbook -i ~/onebox/ansible/inventory/hosts.yml --vault-password-file ~/.ansible/vault_pw.txt ~/onebox/ansible/x.yml"
+
+- name: configure ansible playbook to run every minute
+  hosts: cransible
+  tasks:
+  - name: add line to system-wide crontab
+    lineinfile:
+      path: /etc/crontab
+      line: "* * * * * {{ usr_name }} ansible-playbook -i ~/onebox/ansible/inventory/hosts.yml --vault-password-file ~/.ansible/vault_pw.txt ~/onebox/ansible/x.yml"
