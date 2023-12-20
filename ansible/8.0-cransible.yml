@@ -30,6 +30,12 @@
   #   command:
   #     cmd: "ansible-playbook -i ~/onebox/ansible/inventory/hosts.yml --vault-password-file ~/.ansible/vault_pw.txt ~/onebox/ansible/x.yml"
 
+
+# TODO: handle any failures.
+# It seems that the ansible command completes successfully,
+# even if the tasks within the playbook fail.
+# this prevents cron from displaying any kind of warnings.
+
 - name: configure ansible playbooks to run with cron
   hosts: cransible
   tasks:
