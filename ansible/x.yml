@@ -1,0 +1,8 @@
+- name: python packages and playbook files
+  hosts: cransible # cron + ansible
+  vars:
+    ansible_user: "{{ usr_name }}"
+  tasks:
+  - name: write the current time to a file
+    debug:
+      var: ansible_date_time
