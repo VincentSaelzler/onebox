@@ -5,4 +5,4 @@
   tasks:
   - name: write the current time to a file
     debug:
-      var: ansible_date_time
+      var: ansible_date_time.iso8601_micro
