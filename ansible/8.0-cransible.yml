@@ -24,15 +24,21 @@
     git:
       repo: 'https://github.com/VincentSaelzler/onebox'
       dest: ~/onebox
+      force: true
 
   # - name: run the x playbook
   #   command:
   #     cmd: "ansible-playbook -i ~/onebox/ansible/inventory/hosts.yml --vault-password-file ~/.ansible/vault_pw.txt ~/onebox/ansible/x.yml"
 
-- name: configure ansible playbook to run every minute
+- name: configure ansible playbooks to run with cron
   hosts: cransible
   tasks:
-  - name: add line to system-wide crontab
+  - name: poll for cooking website updates each minute
     lineinfile:
       path: /etc/crontab
-      line: "* * * * * {{ usr_name }} ansible-playbook -i ~/onebox/ansible/inventory/hosts.yml --vault-password-file ~/.ansible/vault_pw.txt ~/onebox/ansible/x.yml"
+      line: "* * * * * {{ usr_name }} ansible-playbook -i ~/onebox/ansible/inventory/hosts.yml --vault-password-file ~/.ansible/vault_pw.txt ~/onebox/ansible/6.0-ct-cookbook.yml"
+
+  - name: poll for wedding website updates each minute
+    lineinfile:
+      path: /etc/crontab
+      line: "* * * * * {{ usr_name }} ansible-playbook -i ~/onebox/ansible/inventory/hosts.yml --vault-password-file ~/.ansible/vault_pw.txt ~/onebox/ansible/7.0-ct-wedding.yml"

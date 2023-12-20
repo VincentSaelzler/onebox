@@ -32,6 +32,7 @@
     git:
       repo: 'https://github.com/VincentSaelzler/cookbook'
       dest: ~/cookbook
+      force: true
 
   # had zero luck with the ansible gem module, so running command directly
   - name: Install Bundler Gem

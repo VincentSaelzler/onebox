@@ -32,6 +32,7 @@
     git:
       repo: 'https://github.com/VincentSaelzler/wedding'
       dest: ~/wedding
+      force: true
 
   # had zero luck with the ansible gem module, so running command directly
   - name: Install Bundler Gem
