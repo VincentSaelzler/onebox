@@ -30,7 +30,7 @@
   tasks:
   - name: clone repo, overwriting any local changes
     git:
-      repo: 'https://github.com/VincentSaelzler/wedding'
+      repo: 'https://github.com/VincentSaelzler/our-journey'
       dest: ~/wedding
       force: true
 
@@ -52,7 +52,7 @@
   - name: build the production site
     command:
       cmd: "bundle exec jekyll build --destination /var/www/html/"
-      chdir: ~/wedding/website
+      chdir: ~/wedding/
     environment: # must be set at the task level (not play) otherwise ansible_facts refer to host
       GEM_HOME: "{{ ansible_facts.env.HOME }}/gems"
       PATH: "{{ ansible_facts.env.HOME }}/gems/bin:{{ ansible_facts.env.PATH }}"
