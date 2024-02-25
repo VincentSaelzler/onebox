@@ -5,7 +5,7 @@ import subprocess
 from datetime import datetime, timezone
 
 # hard coded assumptions
-DOMAINS = ["hearty.cooking", "saelzler.org"] # this could possibly be dynamic in the future
+DOMAINS = ["hearty.cooking", "saelzler.org", "vincentsaelzler.com"] # this could possibly be dynamic in the future
 BASE_URL = "https://api.godaddy.com/v1"
 headers = {
     # secret is injected by ansible
@@ -56,8 +56,8 @@ for domain in DOMAINS:
         root_host_record["data"] = public_ip
         put_root_host_record(root_host_record_endpoint, root_host_record)
 
-output = str.join(',',[datetime.now(timezone.utc).isoformat(), domain, current_ip, public_ip])
+    output = str.join(',',[datetime.now(timezone.utc).isoformat(), domain, current_ip, public_ip])
 
-with open("log.csv", "a") as log_file:
-    log_file.write(output)
-    log_file.write("\n")
+    with open("log.csv", "a") as log_file:
+        log_file.write(output)
+        log_file.write("\n")
