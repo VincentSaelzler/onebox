@@ -1,6 +1,6 @@
 ---
 - name: blob storage to ansible host
-  hosts: cookbook
+  hosts: jekyllsites
   vars:
     # this is the critical integration handoff point
     # the inventory_hostname must match the name of the file on azure
@@ -18,6 +18,11 @@
       container: deployment
       blob: "{{ remote_blob }}"
       dest: "{{ local_archive }}"
+
+  - name: install nginx
+    apt:
+      state: present
+      pkg: nginx
 
   - name: wipe nginx site folder
     file:
