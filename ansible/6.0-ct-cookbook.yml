@@ -1,66 +1,39 @@
 ---
-- name: Install System Stuff (as Root)
-  hosts: cookbook
-  roles:
-  - pleb-user
-  tasks:
-  - name: Install apt packages
-    apt:
-      state: present
-      pkg:
-      - git
-      - nginx
-      # jekyll
-      - ruby-full
-      - build-essential
-      - zlib1g-dev
-
-  - name: change ownership of the default site folder
-    file:
-      path: /var/www/html/
-      state: directory
-      recurse: yes
-      owner: "{{ usr_name }}"
-      group: "{{ usr_name }}"
-
-- name: Install Jekyll Stuff (as Pleb)
+- name: blob storage to ansible host
   hosts: cookbook
   vars:
-    ansible_user: "{{ usr_name }}"
+    # this is the critical integration handoff point
+    # the inventory_hostname must match the name of the file on azure
+    remote_blob: "{{ inventory_hostname }}-site.tar.gz"
+    local_archive: "/tmp/{{ remote_blob }}"
   tasks:
-  - name: clone repo, overwriting any local changes
-    git:
-      repo: 'https://github.com/VincentSaelzler/cookbook'
-      dest: ~/cookbook
-      force: true
+  # delegate to local ansible host to keep azure
+  # permissions and dependencies off public webserver
+  # manually run `az login` before running this play
+  - name: download website contents
+    delegate_to: localhost
+    azure_rm_storageblob:
+      resource_group: Websites
+      storage_account_name: saelzlerwebsites
+      container: deployment
+      blob: "{{ remote_blob }}"
+      dest: "{{ local_archive }}"
 
-  # had zero luck with the ansible gem module, so running command directly
-  - name: Install Bundler Gem
-    command:
-      cmd: "gem install bundler"
-    environment: # must be set at the task level (not play) otherwise ansible_facts refer to host
-      GEM_HOME: "{{ ansible_facts.env.HOME }}/gems"
+  - name: wipe nginx site folder
+    file:
+      state: absent
+      path: /var/www/html/
 
-  - name: Install Jekyll Site Gems (Using Bundler)
-    bundler:
-      state: latest
-      chdir: ~/cookbook
-    environment: # must be set at the task level (not play) otherwise ansible_facts refer to host
-      GEM_HOME: "{{ ansible_facts.env.HOME }}/gems"
-      PATH: "{{ ansible_facts.env.HOME }}/gems/bin:{{ ansible_facts.env.PATH }}"
-  
-  - name: build the production site
-    command:
-      cmd: "bundle exec jekyll build --destination /var/www/html/"
-      chdir: ~/cookbook
-    environment: # must be set at the task level (not play) otherwise ansible_facts refer to host
-      GEM_HOME: "{{ ansible_facts.env.HOME }}/gems"
-      PATH: "{{ ansible_facts.env.HOME }}/gems/bin:{{ ansible_facts.env.PATH }}"
-      JEKYLL_ENV: production
+  - name: recreate (empty) nginx site folder
+    file:
+      state: directory
+      path: /var/www/html/
 
-- name: restart nginx (as root)
-  hosts: cookbook
-  tasks:
+  - name: ansible host archive to nginx site folder
+    unarchive:
+      src: "{{ local_archive }}"
+      dest: /var/www/html
+
   - name: restart nginx
     systemd:
       name: nginx
