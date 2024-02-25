@@ -1,3 +1,11 @@
+## Quick Start
+```sh
+ansible-playbook ./ansible/1.0-ansible-host.yml --inventory ./ansible/inventory/hosts.yml --ask-vault-pass
+# open new bash terminal
+cd ansible
+ans [playbook].yml
+```
+
 ## Ansible Vault
 ```sh
 ansible-vault encrypt inventory/group_vars/all/vault.yml --vault-password-file ~/.ansible/vault_pw.txt
