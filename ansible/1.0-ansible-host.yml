@@ -25,6 +25,19 @@
       pkg:
         - python3-pip
         - sshpass # required to bootstrap bare-metal nodes
+        - curl # used to bootstrap azure cli install
+
+  - name: install azure-related python dependencies
+    pip:
+      # locate requirements file in folder where collection is installed
+      # ansible-galaxy collection list -vvv | grep azure.azcollection
+      requirements: /usr/local/lib/python3.10/dist-packages/ansible_collections/azure/azcollection/requirements-azure.txt
+
+  # - name: install azure cli
+  #   command:
+  #     # for some permissions-based reason, this doesn't work when executing via ansible
+  #     # just run it manually
+  #     cmd: "curl -sL https://aka.ms/InstallAzureCLIDeb | bash"  
 
   - name: Install SPICE Client
     apt:
