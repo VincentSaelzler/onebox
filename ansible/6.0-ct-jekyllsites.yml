@@ -18,6 +18,7 @@
       container: deployment
       blob: "{{ remote_blob }}"
       dest: "{{ local_archive }}"
+      force: true # reports "changed" regardless of whether file is any different
 
   - name: install nginx
     apt:
