@@ -1,9 +1,13 @@
 # Windows Host
-Docker for Windows
+Manually install:
+- Docker for Windows
+- VSCode
+- Dev Containers Extension
 
-VSCode
+# Clone Repo
+"Cloine in a unique volume" option seems broken. Error when trying to reach github.com.
 
-Dev Containers Extension
+Clone to Windows first, then reopen in container.
 
 # Ansible Container
 Bootstrap
