@@ -12,13 +12,21 @@ Clone to Windows first, then reopen in container.
 # Ansible Container
 Bootstrap
 ```sh
+# on your mark
+apt install git python3-pip
+python3 -m pip install ansible
+
+# get ready
 cd ansible
-ansible-playbook 1.0-ansible-host.yml --inventory ./inventory/hosts.yml --ask-vault-pass
-# login to azure
+apt install language-pack-en # fixes runtime bug in vs code dev containers
+ansible-playbook ansible-host.yml -i inventory/hosts.yml --ask-vault-pass
+
+# get set
+source ~/.bashrc
 az login
-# quit shell session and start a new one (to apply .bashrc)
-cd ansible
-ans [other playbooks]
+
+# go
+ans [playbook.yml]
 ```
 
 
