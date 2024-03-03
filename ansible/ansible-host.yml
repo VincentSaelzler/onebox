@@ -9,9 +9,16 @@
   - name: apt packages
     apt:
       pkg:
-        - python3-pip
+        - python3-pip # azcollection and proxmoxer
         - sshpass # bootstrap bare-metal proxmox nodes
         - curl # download azure cli install script
+        - ruby-full # jekyll
+        - build-essential # jekyll
+        - zlib1g-dev # jekyll
+        - imagemagick # photoshrink.py
+  - name: bundler # jekyll dependency management
+    shell:
+      cmd: "gem install bundler"       
   - name: azure cli
     shell:
       cmd: "curl -sL https://aka.ms/InstallAzureCLIDeb | bash"  
