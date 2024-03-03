@@ -10,3 +10,7 @@ RUN apt install -y language-pack-en
 
 # RUN python3 -m pip install --user ansible
 RUN python3 -m pip install ansible
+
+# upload files to blob storage via azure cli
+RUN apt-get install -y curl
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash

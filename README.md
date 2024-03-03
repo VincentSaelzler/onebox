@@ -1,9 +1,21 @@
-# Ansible Host
+# Windows Host
 Docker for Windows
+
 VSCode
+
 Dev Containers Extension
 
-ansible-playbook ./ansible/1.0-ansible-host.yml --ask-vault-pass
+# Ansible Container
+Bootstrap
+```sh
+cd ansible
+ansible-playbook 1.0-ansible-host.yml --inventory ./inventory/hosts.yml --ask-vault-pass
+# login to azure
+az login
+# quit shell session and start a new one (to apply .bashrc)
+cd ansible
+ans [other playbooks]
+```
 
 
 # BIOS Configuration
