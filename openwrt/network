@@ -36,18 +36,18 @@ config bridge-vlan
 	option device 'br-lan'
 	option vlan '27'
 	list ports 'lan1'
-	list ports 'lan4:t'
-
-config bridge-vlan
-	option device 'br-lan'
-	option vlan '28'
 	list ports 'lan2'
 	list ports 'lan4:t'
 
 config bridge-vlan
 	option device 'br-lan'
-	option vlan '29'
+	option vlan '28'
 	list ports 'lan3'
+	list ports 'lan4:t'
+
+config bridge-vlan
+	option device 'br-lan'
+	option vlan '29'
 	list ports 'lan4:t'
 
 config bridge-vlan
