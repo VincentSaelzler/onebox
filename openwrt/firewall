@@ -134,6 +134,7 @@ config zone
 	option input 'REJECT'
 	option output 'ACCEPT'
 	option forward 'REJECT'
+	list network 'dmz'
 
 config forwarding
 	option src 'dmz'

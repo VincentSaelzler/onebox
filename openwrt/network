@@ -56,3 +56,9 @@ config bridge-vlan
 	option local '0'
 	list ports 'lan4:u*'
 
+config interface 'dmz'
+	option proto 'static'
+	option device 'br-lan.29'
+	option ipaddr '192.168.29.1'
+	option netmask '255.255.255.0'
+
