@@ -9,7 +9,7 @@
   # networking
   - name: Network Configuration (Including VLANs)
     copy:
-      src: interfaces
+      src: interfaces # WARN: physical host-specific
       dest: /etc/network/interfaces
     notify: Restart
   # repositories
