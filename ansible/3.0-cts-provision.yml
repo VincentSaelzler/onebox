@@ -41,7 +41,7 @@
         swap: 0
         cores: "{{ vcpus }}"
         netif: "{{ netconf }}"
-        nameserver: "{{ netenv.dns }}"
+        nameserver: "{{ dmz_netenv.dns }}"
         hostname: "{{ inventory_hostname }}"
         # options
         pubkey: "{{ pub_key }}"
@@ -67,9 +67,9 @@
       # var: ram
       # var: vcpus
       # var: ansible_host
-      # msg: '{"net0":"name=eth0,gw={{ netenv.gw }},ip={{ ansible_host }}/{{ netenv.mask }},bridge={{ netenv.vbridge }}"}'
+      # msg: '{"net0":"name=eth0,gw={{ dmz_netenv.gw }},ip={{ ansible_host }}/{{ dmz_netenv.mask }},bridge={{ dmz_netenv.vbridge }}"}'
       # var: netconf
-      # var: netenv.dns
+      # var: dmz_netenv.dns
       # var: inventory_hostname
 
 #   - name: Start the new container
