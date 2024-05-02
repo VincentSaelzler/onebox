@@ -7,8 +7,8 @@ usr_email: vincent.saelzler@gmail.com # for certbot
 netenv:
   # this is based on the isp's default router configuration
   mask: 24
-  gw: 192.168.0.1
-  dns: 192.168.0.1
+  gw: 192.168.27.1
+  dns: 192.168.27.1
   vbridge: vmbr0
 
 # copied from files/id_rsa.pub
