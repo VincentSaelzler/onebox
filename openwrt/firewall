@@ -1,9 +1,9 @@
 
 config defaults
-	option syn_flood '1'
 	option input 'REJECT'
 	option output 'ACCEPT'
 	option forward 'REJECT'
+	option synflood_protect '1'
 
 config zone
 	option name 'lan'
@@ -147,4 +147,10 @@ config forwarding
 config forwarding
 	option src 'lan'
 	option dest 'srv'
+
+config rule
+	option name 'DMZ DNS'
+	option src 'dmz'
+	option dest_port '53'
+	option target 'ACCEPT'
 
