@@ -1,23 +1,60 @@
 ---
-- name: set up pleb user
+- name: do stuff as root
   hosts: dns
+  pre_tasks:
+    - apt:
+        pkg: git
   roles:
-  - pleb-user
+    - pleb-user
+    - git-conf
+  tasks:
+    # - apt:
+    #     pkg: python3-pydantic
+    - name: run dynamic dns script every minute
+      lineinfile:
+        path: /etc/crontab
+        line: "* * * * * {{ usr_name }} python3 /home/{{ usr_name }}/ddns.py"
+    - lineinfile:
+        path: /etc/crontab
+        insertbefore: BOF
+        line: A=a
+    - lineinfile:
+        path: /etc/crontab
+        insertbefore: BOF
+        line: B=b
 
-- name: copy python script
+- name: do stuff as pleb
   hosts: dns
   vars:
     ansible_user: "{{ usr_name }}"
   tasks:
-  - name: copy python script
-    template:
-      src: domains.py
-      dest: ~/domains.py
+    - git:
+        # clones if does not exist
+        # does not update/overwrite existing files
+        repo: https://github.com/VincentSaelzler/porkbun-ddns-pydantic
+        dest: ~/porkbun-ddns-pydantic
+    # - copy:
+    #     src: ~/porkbun-ddns-pydantic/main.py
+    #     remote_src: true
+    #     dest: ~/ddns.py
+    - lineinfile:
+        path: ~/.bashrc
+        line: export A=a
+    - lineinfile:
+        path: ~/.bashrc
+        line: export B=b
 
-- name: configure python script to run every minute
-  hosts: dns
-  tasks:
-  - name: add line to system-wide crontab
-    lineinfile:
-      path: /etc/crontab
-      line: "* * * * * {{ usr_name }} python3 /home/{{ usr_name }}/domains.py"
+
+
+#   tasks:
+#   - name: copy python script
+#     template:
+#       src: domains.py
+#       dest: ~/domains.py
+#   - name: configure python script to run every minute
+#     hosts: dns
+#     tasks:
+#     - name: add line to system-wide crontab
+#       lineinfile:
+#         path: /etc/crontab
+#         line: "* * * * * {{ usr_name }} python3 /home/{{ usr_name }}/domains.py"
