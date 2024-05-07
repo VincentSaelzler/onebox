@@ -1,6 +1,6 @@
 ---
 - name: do stuff as root
-  hosts: dns
+  hosts: ddns
   pre_tasks:
     - apt:
         pkg: git, python3.11-venv
@@ -8,14 +8,16 @@
     - pleb-user
     - git-conf
   tasks:
+    - lineinfile:
+        dest: /etc/environment
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - { regexp: "^APIKEY=", line: APIKEY=yay }
+        - { regexp: "^SECRETAPIKEY=", line: SECRETAPIKEY=shh }
     - template:
         src: ddns.service
         dest: /etc/systemd/system/
-    - copy:
-        src: porkbun.env
-        dest: /home/pleb/.porkbun.env
-        owner: pleb
-        group: pleb
     - systemd:
         name: ddns
         enabled: yes
@@ -23,15 +25,14 @@
         daemon_reload: yes
 
 - name: do stuff as pleb
-  hosts: dns
+  hosts: ddns
   vars:
     ansible_user: "{{ usr_name }}"
   tasks:
-#     - git:
-#         repo: https://github.com/VincentSaelzler/porkbun-ddns-pydantic
-#         dest: ~/porkbun-ddns-pydantic # does not update/overwrite existing files
-#     - pip:
-#         requirements: ~/porkbun-ddns-pydantic/requirements.txt
-#         virtualenv: ~/porkbun-ddns-pydantic/.venv
-#         virtualenv_command: "python3 -m venv"
-
+    - git:
+        repo: https://github.com/VincentSaelzler/porkbun-ddns-pydantic
+        dest: ~/porkbun-ddns-pydantic # does not update/overwrite existing files
+    - pip:
+        requirements: ~/porkbun-ddns-pydantic/requirements.txt
+        virtualenv: ~/porkbun-ddns-pydantic/.venv
+        virtualenv_command: "python3 -m venv"

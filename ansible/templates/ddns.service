@@ -9,7 +9,7 @@ ExecStart=/home/pleb/porkbun-ddns-pydantic/.venv/bin/python /home/pleb/porkbun-d
 WorkingDirectory=/home/pleb/porkbun-ddns-pydantic/
 Restart=always
 RestartSec=10
-EnvironmentFile=/home/pleb/.porkbun.env
+EnvironmentFile=/etc/environment
 
 [Install]
 WantedBy=multi-user.target
