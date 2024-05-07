@@ -13,8 +13,8 @@
         regexp: "{{ item.regexp }}"
         line: "{{ item.line }}"
       loop:
-        - { regexp: "^APIKEY=", line: APIKEY=yay }
-        - { regexp: "^SECRETAPIKEY=", line: SECRETAPIKEY=shh }
+        - { regexp: "^APIKEY=", line: "APIKEY={{ porkbun_apikey }}" }
+        - { regexp: "^SECRETAPIKEY=", line: "SECRETAPIKEY={{ porkbun_secretapikey }}" }
     - template:
         src: ddns.service
         dest: /etc/systemd/system/

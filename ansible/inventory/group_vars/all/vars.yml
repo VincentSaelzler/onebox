@@ -46,4 +46,5 @@ root_pw:  "{{ vault_root_pw }}"
 pw_salt: "{{ vault_pw_salt }}"
 usr_pw:  "{{ vault_usr_pw }}"
 
-godaddy_key_and_secret: "{{ vault_godaddy_key_and_secret }}"
+porkbun_apikey: "{{ vault_porkbun_apikey }}"
+porkbun_secretapikey: "{{ vault_porkbun_secretapikey }}"
