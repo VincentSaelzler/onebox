@@ -3,58 +3,35 @@
   hosts: dns
   pre_tasks:
     - apt:
-        pkg: git
+        pkg: git, python3.11-venv
   roles:
     - pleb-user
     - git-conf
   tasks:
-    # - apt:
-    #     pkg: python3-pydantic
-    - name: run dynamic dns script every minute
-      lineinfile:
-        path: /etc/crontab
-        line: "* * * * * {{ usr_name }} python3 /home/{{ usr_name }}/ddns.py"
-    - lineinfile:
-        path: /etc/crontab
-        insertbefore: BOF
-        line: A=a
-    - lineinfile:
-        path: /etc/crontab
-        insertbefore: BOF
-        line: B=b
+    - template:
+        src: ddns.service
+        dest: /etc/systemd/system/
+    - copy:
+        src: porkbun.env
+        dest: /home/pleb/.porkbun.env
+        owner: pleb
+        group: pleb
+    - systemd:
+        name: ddns
+        enabled: yes
+        state: restarted
+        daemon_reload: yes
 
 - name: do stuff as pleb
   hosts: dns
   vars:
     ansible_user: "{{ usr_name }}"
   tasks:
-    - git:
-        # clones if does not exist
-        # does not update/overwrite existing files
-        repo: https://github.com/VincentSaelzler/porkbun-ddns-pydantic
-        dest: ~/porkbun-ddns-pydantic
-    # - copy:
-    #     src: ~/porkbun-ddns-pydantic/main.py
-    #     remote_src: true
-    #     dest: ~/ddns.py
-    - lineinfile:
-        path: ~/.bashrc
-        line: export A=a
-    - lineinfile:
-        path: ~/.bashrc
-        line: export B=b
+#     - git:
+#         repo: https://github.com/VincentSaelzler/porkbun-ddns-pydantic
+#         dest: ~/porkbun-ddns-pydantic # does not update/overwrite existing files
+#     - pip:
+#         requirements: ~/porkbun-ddns-pydantic/requirements.txt
+#         virtualenv: ~/porkbun-ddns-pydantic/.venv
+#         virtualenv_command: "python3 -m venv"
 
-
-
-#   tasks:
-#   - name: copy python script
-#     template:
-#       src: domains.py
-#       dest: ~/domains.py
-#   - name: configure python script to run every minute
-#     hosts: dns
-#     tasks:
-#     - name: add line to system-wide crontab
-#       lineinfile:
-#         path: /etc/crontab
-#         line: "* * * * * {{ usr_name }} python3 /home/{{ usr_name }}/domains.py"

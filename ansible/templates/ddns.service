@@ -1,0 +1,15 @@
+[Unit]
+Description=Dynamically update DNS host records.
+After=network.target
+
+[Service]
+User=pleb
+Group=pleb
+ExecStart=/home/pleb/porkbun-ddns-pydantic/.venv/bin/python /home/pleb/porkbun-ddns-pydantic/main.py
+WorkingDirectory=/home/pleb/porkbun-ddns-pydantic/
+Restart=always
+RestartSec=10
+EnvironmentFile=/home/pleb/.porkbun.env
+
+[Install]
+WantedBy=multi-user.target
