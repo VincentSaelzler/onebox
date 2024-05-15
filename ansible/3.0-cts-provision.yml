@@ -52,7 +52,7 @@
           # required for ssh to function with good performance
           # post is for proxmox 7 but still slow on 8.0.4 / 2023-10-29
           # https://forum.proxmox.com/threads/delay-to-log-in-ssh-session-after-upgrade-from-6-x-to-7-x.92755/
-        - nesting=1 
+          - nesting=1
         # state: started # cannot create and start containers in one step
       delegate_to: localhost
     - name: Start the new container
@@ -76,23 +76,21 @@
 - name: Bootstrap Hosts
   hosts: containers
   handlers:
-  - import_tasks: handlers/main.yml
+    - import_tasks: handlers/main.yml
   roles:
-  - full-upgrade
-  - privileged-user
-  
+    - full-upgrade
+
   # - name: print stuff
   #   debug:
-      # var: api_user
-      # var: root_pw
-      # var: virt_host_ip
-      # var: disk_size
-      # var: tgt_storage
-      # var: ram
-      # var: vcpus
-      # var: ansible_host
-      # msg: '{"net0":"name=eth0,gw={{ dmz_netenv.gw }},ip={{ ansible_host }}/{{ dmz_netenv.mask }},bridge={{ dmz_netenv.vbridge }}"}'
-      # var: netconf
-      # var: dmz_netenv.dns
-      # var: inventory_hostname
-
+  # var: api_user
+  # var: root_pw
+  # var: virt_host_ip
+  # var: disk_size
+  # var: tgt_storage
+  # var: ram
+  # var: vcpus
+  # var: ansible_host
+  # msg: '{"net0":"name=eth0,gw={{ dmz_netenv.gw }},ip={{ ansible_host }}/{{ dmz_netenv.mask }},bridge={{ dmz_netenv.vbridge }}"}'
+  # var: netconf
+  # var: dmz_netenv.dns
+  # var: inventory_hostname
