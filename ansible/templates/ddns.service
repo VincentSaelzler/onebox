@@ -5,11 +5,10 @@ After=network.target
 [Service]
 User={{ usr_name }}
 Group={{ usr_name }}
-ExecStart=/home/{{ usr_name }}/porkbun-ddns-pydantic/.venv/bin/python /home/{{ usr_name }}/porkbun-ddns-pydantic/main.py
-WorkingDirectory=/home/{{ usr_name }}/porkbun-ddns-pydantic/
+ExecStart={{ app_dir }}/.venv/bin/python {{ app_dir }}/main.py
+WorkingDirectory={{ app_dir }}
 Restart=always
 RestartSec=10
-EnvironmentFile=/etc/environment
 
 [Install]
 WantedBy=multi-user.target

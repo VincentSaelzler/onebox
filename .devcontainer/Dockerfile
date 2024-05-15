@@ -7,4 +7,4 @@ RUN apt install -y locales
 RUN locale-gen --purge en_US.UTF-8
 
 # project dependencies
-RUN apt install -y git ansible sshpass python3-proxmoxer
+RUN apt install -y git vim ansible sshpass python3-proxmoxer

@@ -12,8 +12,8 @@ git clone https://github.com/VincentSaelzler/onebox/
 ```
 Dev Containers:
 - Open Folder in Container (builds container)
-- **Close** remote connection
-- **Reopen** in container
+
+**CRITICAL:** Then run the visual studio code command "Developer: Restart Pty Host"
   - apples git settings
   - applies bashrc aliases
 

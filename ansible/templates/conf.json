@@ -1,0 +1,18 @@
+{
+    "apikey": "{{ porkbun_apikey }}",
+    "secretapikey": "{{ vault_porkbun_secretapikey }}",
+    "ipv4_endpoint": "https://api-ipv4.porkbun.com/api/json/v3",
+    "dns_endpoint": "https://porkbun.com/api/json/v3/dns",
+    "dns_records": {
+        "quercusphellos.online": [
+            {
+                "name": "quercusphellos.online",
+                "type": "A"
+            },
+            {
+                "name": "www.quercusphellos.online",
+                "type": "CNAME"
+            }
+        ]
+    }
+}
