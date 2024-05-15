@@ -26,10 +26,17 @@ az login
 # run playbooks
 cd ansible
 ans [playbook.yml]
-
+```
+### Useful Commands
+```sh
 # view git log in graph format
 glog
+
+# wipe out a container
+pct destroy 103 --force true --destroy-unreferenced-disks true --purge true
 ```
+
+
 
 ## On-Premises Configuration
 
