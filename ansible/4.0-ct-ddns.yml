@@ -14,11 +14,15 @@
   tasks:
     - git:
         repo: https://github.com/VincentSaelzler/porkbun-ddns-pydantic
-        dest: "{{ app_dir }}" # does not update/overwrite existing files
+        dest: "{{ app_dir }}"
+        force: true # must force because conf.json will differ from origin
     - pip:
         requirements: "{{ app_dir }}/requirements.txt"
         virtualenv: "{{ app_dir }}/.venv"
         virtualenv_command: "python3 -m venv"
+    - template:
+        src: conf.json
+        dest: "{{ app_dir }}/ddns"
 
 - name: systemd service
   hosts: ddns
@@ -26,9 +30,8 @@
     - template:
         src: ddns.service
         dest: /etc/systemd/system/
-
-  #   - systemd:
-  #       name: ddns
-  #       enabled: yes
-  #       state: restarted
-  #       daemon_reload: yes
+    - systemd:
+        name: ddns
+        enabled: yes
+        state: restarted
+        daemon_reload: yes

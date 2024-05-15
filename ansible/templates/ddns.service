@@ -5,10 +5,9 @@ After=network.target
 [Service]
 User={{ usr_name }}
 Group={{ usr_name }}
-ExecStart={{ app_dir }}/.venv/bin/python {{ app_dir }}/main.py
-WorkingDirectory={{ app_dir }}
+ExecStart={{ app_dir }}/.venv/bin/python {{ app_dir }}/ddns/main.py
 Restart=always
-RestartSec=10
+RestartSec=60
 
 [Install]
 WantedBy=multi-user.target
