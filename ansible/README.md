@@ -1,5 +1,3 @@
-
-
 ## Ansible Vault
 ```sh
 ansible-vault encrypt inventory/group_vars/all/vault.yml --vault-password-file ~/.ansible/vault_pw.txt
@@ -17,6 +15,3 @@ Debug multiple variables at once:
       - hostvars.pve.lan_presence
       - hostvars.pve.lan_iface
 ```
-
-## Dev Environment
-
