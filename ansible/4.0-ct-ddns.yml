@@ -7,22 +7,22 @@
   roles:
     - pleb-user
     - git-conf
-  tasks:
-    - lineinfile:
-        dest: /etc/environment
-        regexp: "{{ item.regexp }}"
-        line: "{{ item.line }}"
-      loop:
-        - { regexp: "^APIKEY=", line: "APIKEY={{ porkbun_apikey }}" }
-        - { regexp: "^SECRETAPIKEY=", line: "SECRETAPIKEY={{ porkbun_secretapikey }}" }
-    - template:
-        src: ddns.service
-        dest: /etc/systemd/system/
-    - systemd:
-        name: ddns
-        enabled: yes
-        state: restarted
-        daemon_reload: yes
+  # tasks:
+  #   - lineinfile:
+  #       dest: /etc/environment
+  #       regexp: "{{ item.regexp }}"
+  #       line: "{{ item.line }}"
+  #     loop:
+  #       - { regexp: "^APIKEY=", line: "APIKEY={{ porkbun_apikey }}" }
+  #       - { regexp: "^SECRETAPIKEY=", line: "SECRETAPIKEY={{ porkbun_secretapikey }}" }
+  #   - template:
+  #       src: ddns.service
+  #       dest: /etc/systemd/system/
+  #   - systemd:
+  #       name: ddns
+  #       enabled: yes
+  #       state: restarted
+  #       daemon_reload: yes
 
 - name: do stuff as pleb
   hosts: ddns

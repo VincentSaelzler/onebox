@@ -1,8 +1,18 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
 {
-	"name": "onebox",
 	"build": {
-		"dockerfile": "./Dockerfile"
-	}
+		"dockerfile": "Dockerfile"
+	},
+	"name": "onebox",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"redhat.vscode-yaml",
+				"oderwat.indent-rainbow",
+				"streetsidesoftware.code-spell-checker"
+			]
+		}
+	},
+	"postCreateCommand": "ansible-playbook ansible/1.0-ansible-host.yml --ask-vault-pass"
 }
