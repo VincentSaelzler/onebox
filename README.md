@@ -4,17 +4,23 @@ Using a Windows environment. Linux requirements should be nearly identical.
 - VSCode
 - Dev Containers Extension
 - Git
+- Azure CLI
 
 ## Quick Start
 ```sh
 git clone https://github.com/VincentSaelzler/onebox/
 ```
-Dev Containers: Open Folder in Container
-```sh
-# open a new shell, or
-source ~/.bashrc
+Dev Containers:
+- Open Folder in Container (builds container)
+- **Close** remote connection
+- **Reopen** in container
+  - apples git settings
+  - applies bashrc aliases
 
+```sh
 # connect to Azure Data Lake Storage
+# should work on noble 2024-05-21
+# https://github.com/Azure/azure-cli/issues/28872
 az login
 
 # run playbooks

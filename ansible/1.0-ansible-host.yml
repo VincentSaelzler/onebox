@@ -5,6 +5,7 @@
     - aliases
     - ssh-conf
     - private-key
+    - vault-pw
 
       # - git-conf
 #   tasks:
