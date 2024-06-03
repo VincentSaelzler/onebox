@@ -1,0 +1,78 @@
+---
+- name: Bootstrap Proxmox Nodes
+  hosts: pvetmp
+  handlers:
+    - import_tasks: handlers/main.yml
+  roles:
+    - privileged-user
+  tasks:
+  # repositories
+  - name: Disable Enterprise Proxmox Repository
+    replace:
+      path: /etc/apt/sources.list.d/pve-enterprise.list
+      regexp: '^deb'
+      replace: '#deb'
+    notify:
+    - Update and Upgrade
+    - Restart
+  - name: Disable Enterprise Ceph Repository
+    replace:
+      path: /etc/apt/sources.list.d/ceph.list
+      regexp: '^deb'
+      replace: '#deb'
+    notify:
+    - Update and Upgrade
+    - Restart
+  - name: Enable No-Subscription Repository
+    lineinfile:
+      path: /etc/apt/sources.list
+      line: "deb http://download.proxmox.com/debian/pve {{ ansible_facts.distribution_release }} pve-no-subscription"
+      state: present
+    notify:
+    - Update and Upgrade
+    - Restart
+
+  # pcie passthrough
+  - name: Configure Kernel Parameters
+    lineinfile:
+      path: /etc/kernel/cmdline
+      # WARN: on my system, this file didn't exist yet
+      # if the file already existed, the text below needs to be added to the
+      # end of the existing first line (all variables of this file are on a single line)
+      line: amd_iommu=on
+      state: present
+      create: true
+    register: kernel_parms
+    notify: Restart
+
+  - name: Apply Kernel Parameters
+    command: proxmox-boot-tool refresh
+    when: kernel_parms.changed
+
+  - name: Load Kernel Modules
+    lineinfile:
+      dest: /etc/modules
+      line: '{{ item }}'
+    with_items:
+      - 'vfio'
+      - 'vfio_iommu_type1'
+      - 'vfio_pci'
+      - 'vfio_virqfd'
+    register: vfio_modules
+    notify: Restart
+
+  - name: Blacklist Drivers
+    lineinfile:
+      dest: /etc/modprobe.d/blacklist.conf
+      line: '{{ item }}'
+      create: true
+    with_items:
+      - 'blacklist amdgpu'
+      - 'blacklist radeon'
+    register: graphics_modules
+    notify: Restart
+
+  - name: Update InitramFS with Modules
+    command: update-initramfs -u -k all
+    when: vfio_modules.changed or graphics_modules.changed
+    notify: Restart

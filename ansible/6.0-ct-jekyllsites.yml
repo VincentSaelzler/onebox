@@ -10,35 +10,35 @@
   # delegate to local ansible host to keep azure
   # permissions and dependencies off public webserver
   # manually run `az login` before running this play
-  - name: download website contents
-    delegate_to: localhost
-    azure_rm_storageblob:
-      resource_group: Websites
-      storage_account_name: saelzlerwebsites
-      container: deployment
-      blob: "{{ remote_blob }}"
-      dest: "{{ local_archive }}"
-      force: true # reports "changed" regardless of whether file is any different
+  # - name: download website contents
+  #   delegate_to: localhost
+  #   azure_rm_storageblob:
+  #     resource_group: Websites
+  #     storage_account_name: saelzlerwebsites
+  #     container: deployment
+  #     blob: "{{ remote_blob }}"
+  #     dest: "{{ local_archive }}"
+  #     force: true # reports "changed" regardless of whether file is any different
 
   - name: install nginx
     apt:
       state: present
       pkg: nginx
 
-  - name: wipe nginx site folder
-    file:
-      state: absent
-      path: /var/www/html/
+  # - name: wipe nginx site folder
+  #   file:
+  #     state: absent
+  #     path: /var/www/html/
 
-  - name: recreate (empty) nginx site folder
-    file:
-      state: directory
-      path: /var/www/html/
+  # - name: recreate (empty) nginx site folder
+  #   file:
+  #     state: directory
+  #     path: /var/www/html/
 
-  - name: ansible host archive to nginx site folder
-    unarchive:
-      src: "{{ local_archive }}"
-      dest: /var/www/html
+  # - name: ansible host archive to nginx site folder
+  #   unarchive:
+  #     src: "{{ local_archive }}"
+  #     dest: /var/www/html
 
   - name: restart nginx
     systemd:
