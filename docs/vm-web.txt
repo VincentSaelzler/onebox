@@ -1,0 +1,21 @@
+root@pve:~# qm config 420
+agent: 1
+bios: ovmf
+boot: order=scsi0;ide2
+cores: 16
+cpu: host
+efidisk0: local-lvm:vm-420-disk-0,efitype=4m,size=4M
+ide0: local-lvm:vm-420-cloudinit,media=cdrom
+ide2: local:iso/archlinux-2024.06.01-x86_64.iso,media=cdrom,size=1140768K
+machine: q35
+memory: 16384
+meta: creation-qemu=8.1.5,ctime=1717699094
+name: workstationcli
+net0: virtio=BC:24:11:1E:1E:E8,bridge=vmbr0
+numa: 0
+ostype: l26
+scsi0: local-lvm:vm-420-disk-1,iothread=1,size=32G
+scsihw: virtio-scsi-single
+smbios1: uuid=70930bf4-7b78-433b-8337-b5465f9acf4d
+sockets: 1
+vmgenid: 085c8090-4696-41df-b041-71266564b6e5

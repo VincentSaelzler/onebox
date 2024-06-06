@@ -26,3 +26,16 @@ done | sort -V
 
 - machine bios matches host type
 - non-balooning
+
+## Proxmox KVM
+[Proxmox Documentation](https://192.168.0.3:8006/pve-docs/pve-admin-guide.html#_emulated_devices_and_paravirtualized_devices)
+A VM’s Machine Type defines the hardware layout of the VM’s virtual motherboard. You can choose between the default Intel 440FX or the Q35 chipset, which also provides a virtual PCIe bus, and thus may be desired if you want to pass through PCIe hardware. Additionally, you can select a vIOMMU implementation.
+
+A SCSI controller of type VirtIO SCSI single and enabling the IO Thread setting for the attached disks is recommended if you aim for performance. This is the default for newly created Linux VMs since Proxmox VE 7.3.
+
+pre-enroll-keys specifies if the efidisk should come pre-loaded with distribution-specific and Microsoft Standard Secure Boot keys. It also enables Secure Boot by default (though it can still be disabled in the OVMF menu within the VM).
+
+
+[Arch SSH Install](https://wiki.archlinux.org/title/Install_Arch_Linux_via_SSH)
+Using an additional FAT formatted drive
+Using an additional ISO
