@@ -147,3 +147,21 @@ Device      Start     End Sectors  Size Type
 /dev/sda1    2048    4095    2048    1M BIOS boot
 /dev/sda2    4096  618495  614400  300M EFI System
 /dev/sda3  618496 4192255 3573760  1.7G Linux root (x86-64)
+
+
+https://wiki.archlinux.org/title/Installation_guide
+
+
+
+ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
+hwclock --systohc
+
+
+
+https://wiki.archlinux.org/title/Pacman
+https://docs.ansible.com/ansible/latest/collections/community/general/pacman_module.html
+
+-sysupgrade
+-refresh
+
+

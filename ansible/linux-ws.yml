@@ -1,0 +1,11 @@
+- name: Bootstrap Proxmox Nodes
+  hosts: workstation
+  become: yes
+  roles:
+    - pleb-user
+  tasks:
+    - pacman:
+        update_cache: true
+        upgrade: true
+    - pacman:
+        name: qemu-guest-agent
