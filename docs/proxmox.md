@@ -129,29 +129,13 @@ qm create 421 \
 --sshkeys ~/.ssh/authorized_keys \
 --sockets 1
 ```
-
-qm disk import 421 ~/Arch-Linux-x86_64-basic.qcow2 local-lvm
+```
 qm disk resize 421 scsi0 60G
+```
 
-
-[arch@cloudws ~]$ sudo fdisk -l
-Disk /dev/sda: 2 GiB, 2147483648 bytes, 4194304 sectors
-Disk model: QEMU HARDDISK   
-Units: sectors of 1 * 512 = 512 bytes
-Sector size (logical/physical): 512 bytes / 512 bytes
-I/O size (minimum/optimal): 512 bytes / 512 bytes
-Disklabel type: gpt
-Disk identifier: CACC5503-DD2D-41E4-B604-F0921D67E80B
-
-Device      Start     End Sectors  Size Type
-/dev/sda1    2048    4095    2048    1M BIOS boot
-/dev/sda2    4096  618495  614400  300M EFI System
-/dev/sda3  618496 4192255 3573760  1.7G Linux root (x86-64)
 
 
 https://wiki.archlinux.org/title/Installation_guide
-
-
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 hwclock --systohc

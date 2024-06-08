@@ -1,11 +1,41 @@
-- name: Bootstrap Proxmox Nodes
-  hosts: workstation
-  become: yes
-  roles:
-    - pleb-user
+- name: download arch linux cloud image to proxmox host
+  hosts: pvetmp
   tasks:
-    - pacman:
-        update_cache: true
-        upgrade: true
-    - pacman:
-        name: qemu-guest-agent
+    - uri:
+        url: https://geo.mirror.pkgbuild.com/images/latest/Arch-Linux-x86_64-cloudimg.qcow2.SHA256
+        return_content: yes
+      register: response
+    - set_fact:
+        dest_checksum: "{{'sha256:' + response.content | regex_search('^[0-9a-f]+') }}"
+    - get_url: 
+        url: https://geo.mirror.pkgbuild.com/images/latest/Arch-Linux-x86_64-cloudimg.qcow2
+        dest: "~/arch.qcow2"
+        checksum: "{{ dest_checksum }}"
+
+# - name: set up linux workstation
+#   hosts: workstation
+#   become: yes
+#   tasks:
+#     - user:
+#         name: axel
+#         comment: "Axel"
+#         password: "{{ 'easypass' | password_hash('sha512', pw_salt) }}"
+#         shell: /bin/bash
+#     - pacman:
+#         update_cache: true
+#         upgrade: true
+#     - pacman:
+#         name:
+#           - qemu-guest-agent
+#           - gnome
+#     - systemd:
+#         name: gdm
+#         enabled: yes
+#         state: started
+
+#     - pacman:
+#         name:
+#           - base-devel
+#           - git
+#           - chromium
+
