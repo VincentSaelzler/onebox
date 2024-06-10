@@ -3,77 +3,112 @@
   hosts: pvetmp
   handlers:
     - import_tasks: handlers/main.yml
-  roles:
-    - privileged-user
+  # roles:
+  #   - privileged-user
   tasks:
-    # repositories
-    - name: Disable Enterprise Proxmox Repository
-      replace:
-        path: /etc/apt/sources.list.d/pve-enterprise.list
-        regexp: "^deb"
-        replace: "#deb"
-      notify:
-        - Update and Upgrade
-        - Restart
-    - name: Disable Enterprise Ceph Repository
-      replace:
-        path: /etc/apt/sources.list.d/ceph.list
-        regexp: "^deb"
-        replace: "#deb"
-      notify:
-        - Update and Upgrade
-        - Restart
-    - name: Enable No-Subscription Repository
+    # # repositories
+    # - name: Disable Enterprise Proxmox Repository
+    #   replace:
+    #     path: /etc/apt/sources.list.d/pve-enterprise.list
+    #     regexp: "^deb"
+    #     replace: "#deb"
+    #   notify:
+    #     - Update and Upgrade
+    #     - Restart
+    # - name: Disable Enterprise Ceph Repository
+    #   replace:
+    #     path: /etc/apt/sources.list.d/ceph.list
+    #     regexp: "^deb"
+    #     replace: "#deb"
+    #   notify:
+    #     - Update and Upgrade
+    #     - Restart
+    # - name: Enable No-Subscription Repository
+    #   lineinfile:
+    #     path: /etc/apt/sources.list
+    #     line: "deb http://download.proxmox.com/debian/pve {{ ansible_facts.distribution_release }} pve-no-subscription"
+    #     state: present
+    #   notify:
+    #     - Update and Upgrade
+    #     - Restart
+
+    - lineinfile:
+        path: /etc/default/grub
+        search_string: "GRUB_CMDLINE_LINUX_DEFAULT="
+        line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet iommu=pt"'
+
+    # update-grub
+    # root@pve:~# cat /proc/cmdline
+    # BOOT_IMAGE=/boot/vmlinuz-6.8.4-2-pve root=/dev/mapper/pve-root ro console=ttyS0,115200 quiet iommu=pt
+
+    - lineinfile:
+        dest: /etc/modules
+        line: "{{ item }}"
+      with_items:
+        - "vfio"
+        - "vfio_iommu_type1"
+        - "vfio_pci"
+      register: vfio_modules
+
+
+    # root@pve:~# dmesg | grep -i vfio
+    # [    3.705200] VFIO - User Level meta-driver version: 0.3
+
+    # root@pve:~# dmesg | grep 'remapping'
+    # [    0.257061] x2apic: IRQ remapping doesn't support X2APIC mode
+    # [    0.544005] AMD-Vi: Interrupt remapping enabled
+
+
+
+
+
+
+# # pcie passthrough
+# - name: Configure Kernel Parameters
+#   lineinfile:
+#     path: /etc/kernel/cmdline
+#     # WARN: on my system, this file didn't exist yet
+#     # if the file already existed, the text below needs to be added to the
+#     # end of the existing first line (all variables of this file are on a single line)
+#     line: amd_iommu=on
+#     state: present
+#     create: true
+#   register: kernel_parms
+#   notify: Restart
+
+# - name: Apply Kernel Parameters
+#   command: proxmox-boot-tool refresh
+#   when: kernel_parms.changed
+
+    - name: Blacklist Drivers
       lineinfile:
-        path: /etc/apt/sources.list
-        line: "deb http://download.proxmox.com/debian/pve {{ ansible_facts.distribution_release }} pve-no-subscription"
-        state: present
-      notify:
-        - Update and Upgrade
-        - Restart
+        dest: /etc/modprobe.d/blacklist.conf
+        create: true
+        line: '{{ item }}'
+      with_items:
+        - 'blacklist amdgpu'
+        - 'blacklist snd_hda_intel'
 
 
-  # # pcie passthrough
-  # - name: Configure Kernel Parameters
-  #   lineinfile:
-  #     path: /etc/kernel/cmdline
-  #     # WARN: on my system, this file didn't exist yet
-  #     # if the file already existed, the text below needs to be added to the
-  #     # end of the existing first line (all variables of this file are on a single line)
-  #     line: amd_iommu=on
-  #     state: present
-  #     create: true
-  #   register: kernel_parms
-  #   notify: Restart
 
-  # - name: Apply Kernel Parameters
-  #   command: proxmox-boot-tool refresh
-  #   when: kernel_parms.changed
+# root@pve:~# lspci -s 09:00 -v
+# 09:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Navi 22 [Radeon RX 6700/6700 XT/6750 XT / 6800M/6850M XT] (rev df) (prog-if 00 [VGA controller])
+#         Kernel driver in use: amdgpu
+#         Kernel modules: amdgpu
 
-  # - name: Load Kernel Modules
-  #   lineinfile:
-  #     dest: /etc/modules
-  #     line: '{{ item }}'
-  #   with_items:
-  #     - 'vfio'
-  #     - 'vfio_iommu_type1'
-  #     - 'vfio_pci'
-  #     - 'vfio_virqfd'
-  #   register: vfio_modules
-  #   notify: Restart
+# 09:00.1 Audio device: Advanced Micro Devices, Inc. [AMD/ATI] Navi 21/23 HDMI/DP Audio Controller
+#         Kernel driver in use: snd_hda_intel
+#         Kernel modules: snd_hda_intel
 
-  # - name: Blacklist Drivers
-  #   lineinfile:
-  #     dest: /etc/modprobe.d/blacklist.conf
-  #     line: '{{ item }}'
-  #     create: true
-  #   with_items:
-  #     - 'blacklist amdgpu'
-  #     - 'blacklist radeon'
-  #   register: graphics_modules
-  #   notify: Restart
+# 09:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Navi 22 [Radeon RX 6700/6700 XT/6750 XT / 6800M/6850M XT] (rev df) (prog-if 00 [VGA controller])
+#         Kernel modules: amdgpu
 
-  # - name: Update InitramFS with Modules
-  #   command: update-initramfs -u -k all
-  #   when: vfio_modules.changed or graphics_modules.changed
-  #   notify: Restart
+# 09:00.1 Audio device: Advanced Micro Devices, Inc. [AMD/ATI] Navi 21/23 HDMI/DP Audio Controller
+#         Kernel modules: snd_hda_intel
+
+
+
+# - name: Update InitramFS with Modules
+#   command: update-initramfs -u -k all
+#   when: vfio_modules.changed or graphics_modules.changed
+#   notify: Restart
