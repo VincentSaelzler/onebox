@@ -13,7 +13,7 @@ Launch CSM = Disable (Advanced > Boot > CSM)|
 ## GRUB
 
 ### /etc/default/grub
-
+    GRUB_CMDLINE_LINUX_DEFAULT="iommu=pt"
     GRUB_CMDLINE_LINUX_DEFAULT="quiet initcall_blacklist=sysfb_init"
     GRUB_TERMINAL=console
 
