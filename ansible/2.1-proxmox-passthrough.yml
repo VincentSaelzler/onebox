@@ -9,6 +9,12 @@
         path: /etc/default/grub
         search_string: "GRUB_CMDLINE_LINUX_DEFAULT="
         line: 'GRUB_CMDLINE_LINUX_DEFAULT="iommu=pt"'
+      register: kernel_parms
+      notify: Restart
+
+    - shell:
+        cmd: update-grub
+      when: kernel_parms.changed
 
     - name: vfio kernel modules
       lineinfile:
@@ -18,7 +24,7 @@
         - "vfio"
         - "vfio_iommu_type1"
         - "vfio_pci"
-      register: vfio_modules
+      notify: Restart
 
     - name: modprobe options
       lineinfile:
@@ -28,29 +34,4 @@
       with_items:
         - blacklist amdgpu
         - options vfio-pci ids=1002:73df
-
-# - name: assign gpu to vfio modules
-#   lineinfile:
-#     dest: /etc/modprobe.d/vfio.conf
-#     create: true
-#     line: options vfio-pci ids=1002:73df
-
-# root@pve:~# lspci -s 09:00 -v
-# 09:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Navi 22 [Radeon RX 6700/6700 XT/6750 XT / 6800M/6850M XT] (rev df) (prog-if 00 [VGA controller])
-#         Kernel driver in use: amdgpu
-#         Kernel modules: amdgpu
-
-# 09:00.1 Audio device: Advanced Micro Devices, Inc. [AMD/ATI] Navi 21/23 HDMI/DP Audio Controller
-#         Kernel driver in use: snd_hda_intel
-#         Kernel modules: snd_hda_intel
-
-# 09:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Navi 22 [Radeon RX 6700/6700 XT/6750 XT / 6800M/6850M XT] (rev df) (prog-if 00 [VGA controller])
-#         Kernel modules: amdgpu
-
-# 09:00.1 Audio device: Advanced Micro Devices, Inc. [AMD/ATI] Navi 21/23 HDMI/DP Audio Controller
-#         Kernel modules: snd_hda_intel
-
-# - name: Update InitramFS with Modules
-#   command: update-initramfs -u -k all
-#   when: vfio_modules.changed or graphics_modules.changed
-#   notify: Restart
+      notify: Restart
