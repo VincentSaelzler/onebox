@@ -5,7 +5,12 @@
     - pleb-user
   tasks:
     - apt:
-        pkg: docker
+        pkg:
+          - docker.io
+    - user:
+        name: pleb
+        groups: docker
+
     # - pacman:
     #     name:
     #       - gnome
@@ -17,7 +22,7 @@
     #       - radeontop
     #   notify: Restart
 
-          # shell: /bin/false
+    # shell: /bin/false
     #     shell: /bin/bash
     #     groups: docker
     # - authorized_key:
