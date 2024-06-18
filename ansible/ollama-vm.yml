@@ -1,0 +1,53 @@
+---
+- name: arch linux cloud image
+  hosts: pve
+  tasks:
+    - uri:
+        url: https://geo.mirror.pkgbuild.com/images/latest/Arch-Linux-x86_64-cloudimg.qcow2.SHA256
+        return_content: yes
+      register: response
+    - set_fact:
+        dest_checksum: "{{'sha256:' + response.content | regex_search('^[0-9a-f]+') }}"
+    - get_url:
+        url: https://geo.mirror.pkgbuild.com/images/latest/Arch-Linux-x86_64-cloudimg.qcow2
+        dest: "~/Arch-Linux-x86_64-cloudimg.qcow2"
+        checksum: "{{ dest_checksum }}"
+
+- name: wipe and re-create workstation vm
+  hosts: pve
+  tasks:
+    - shell:
+        cmd: "qm stop 420 -overrule-shutdown 1 && qm destroy 420 --purge"
+      ignore_errors: true # error expected if vm does not exist yet
+    - shell: |
+        qm create 420 \
+        --agent 1 \
+        --bios ovmf \
+        --boot order=scsi0 \
+        --ciupgrade 0 \
+        --cores 7 \
+        --cpu host \
+        --efidisk0 local-lvm:0,efitype=4m \
+        --ide0 local-lvm:cloudinit,media=cdrom \
+        --ipconfig0 ip=192.168.27.69/24,gw=192.168.27.1 \
+        --machine q35 \
+        --memory 7168 \
+        --name ollama \
+        --net0 virtio,bridge=vmbr0,tag=27 \
+        --numa 0 \
+        --ostype l26 \
+        --scsi0 local-lvm:0,import-from=/root/Arch-Linux-x86_64-cloudimg.qcow2 \
+        --scsihw virtio-scsi-single \
+        --sshkeys ~/.ssh/authorized_keys \
+        --sockets 1 \
+        --vga qxl
+    - shell: qm disk resize 420 scsi0 60G
+    - shell: qm start 420
+
+- name: wait for vm to initialize
+  hosts: ollama
+  gather_facts: no
+  tasks:
+    - name: wait for connectivity
+      wait_for_connection:
+        timeout: 120
