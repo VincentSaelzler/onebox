@@ -1,9 +1,14 @@
 ---
-- name: bootstrap the node
+- name: system level
+  hosts: localhost
+  become: yes
+  roles:
+    - ssh-conf
+
+- name: user level
   hosts: localhost
   roles:
     - aliases
-    - ssh-conf
     - private-key
     - vault-pw
   tasks:

@@ -8,3 +8,6 @@ RUN locale-gen --purge en_US.UTF-8
 
 # project dependencies
 RUN apt install -y git vim ansible sshpass python3-proxmoxer
+
+RUN  echo "ubuntu ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers
+RUN apt install -y sudo
