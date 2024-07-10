@@ -9,6 +9,10 @@ elif [ "$1" == "pull_current" ]; then
     LOCAL_PATH="old"
     REMOTE_HOST="192.168.27.1"
     DIRECTION="pull"
+elif [ "$1" == "push_new" ]; then
+    LOCAL_PATH="new"
+    REMOTE_HOST="192.168.27.1"
+    DIRECTION="push"
 elif [ "$1" == "bootstrap" ]; then
     LOCAL_PATH="new"
     REMOTE_HOST="192.168.1.1"
