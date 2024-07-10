@@ -16,6 +16,7 @@ config device
 	list ports 'lan2'
 	list ports 'lan3'
 	list ports 'lan4'
+	option macaddr 'E4:FA:C4:96:24:7E'
 
 config interface 'lan'
 	option device 'br-lan.27'
@@ -26,11 +27,10 @@ config interface 'lan'
 
 config interface 'wan'
 	option device 'wan'
-	option proto 'dhcp'
-
-config interface 'wan6'
-	option device 'wan'
-	option proto 'dhcpv6'
+	option proto 'pppoe'
+	option username 'seethelight'
+	option password 'seethelight'
+	option ipv6 '0'
 
 config bridge-vlan
 	option device 'br-lan'
@@ -61,4 +61,3 @@ config interface 'dmz'
 	option device 'br-lan.29'
 	option ipaddr '192.168.29.1'
 	option netmask '255.255.255.0'
-
