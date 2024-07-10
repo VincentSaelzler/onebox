@@ -12,11 +12,11 @@
 auto lo
 iface lo inet loopback
 
-iface enp0s31f6 inet manual
+iface enp6s0 inet manual
 
 auto vmbr0
 iface vmbr0 inet manual
-	bridge-ports enp0s31f6
+	bridge-ports enp6s0
 	bridge-stp off
 	bridge-fd 0
 	bridge-vlan-aware yes
