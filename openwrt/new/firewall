@@ -164,6 +164,7 @@ config redirect
 	option dest_ip '192.168.29.2'
 	option dest_port '80'
 	list proto 'tcp'
+	list proto 'udp'
 
 config redirect
 	option dest 'dmz'
@@ -175,4 +176,16 @@ config redirect
 	option dest_port '443'
 	option family 'ipv4'
 	list proto 'tcp'
+	list proto 'udp'
+
+config redirect
+	option dest 'dmz'
+	option target 'DNAT'
+	option name 'NextCloud Talk'
+	option src 'wan'
+	option dest_ip '192.168.29.2'
+	list proto 'tcp'
+	list proto 'udp'
+	option src_dport '3478'
+	option dest_port '3478'
 
