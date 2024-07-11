@@ -168,11 +168,11 @@ config redirect
 config redirect
 	option dest 'dmz'
 	option target 'DNAT'
-	option family 'ipv4'
 	option name 'HTTPS'
 	option src 'wan'
 	option src_dport '443'
 	option dest_ip '192.168.29.2'
 	option dest_port '443'
+	option family 'ipv4'
 	list proto 'tcp'
 

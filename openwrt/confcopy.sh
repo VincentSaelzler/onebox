@@ -35,7 +35,7 @@ REMOTE_USER="root"
 REMOTE_PATH="/etc/config"
 
 # Files to copy
-FILES=("firewall" "network" "wireless")
+FILES=("firewall" "network" "wireless" "dhcp")
 
 # Loop through each file and copy it based on the direction
 for FILE in "${FILES[@]}"; do

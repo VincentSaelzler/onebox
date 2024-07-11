@@ -154,3 +154,25 @@ config rule
 	option dest_port '53'
 	option target 'ACCEPT'
 
+config redirect
+	option dest 'dmz'
+	option target 'DNAT'
+	option name 'HTTP'
+	option family 'ipv4'
+	option src 'wan'
+	option src_dport '80'
+	option dest_ip '192.168.29.2'
+	option dest_port '80'
+	list proto 'tcp'
+
+config redirect
+	option dest 'dmz'
+	option target 'DNAT'
+	option name 'HTTPS'
+	option src 'wan'
+	option src_dport '443'
+	option dest_ip '192.168.29.2'
+	option dest_port '443'
+	option family 'ipv4'
+	list proto 'tcp'
+
