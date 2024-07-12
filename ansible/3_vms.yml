@@ -1,0 +1,3 @@
+---
+# NOT IDEMPOTENT - DELETES VMS IF THEY ALREADY EXIST
+- import_playbook: 3-vm-workstation.yml

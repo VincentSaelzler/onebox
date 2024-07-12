@@ -1,0 +1,8 @@
+---
+- import_playbook: 1_ansible-host.yml
+- import_playbook: 2_proxmox.yml
+# NOT IDEMPOTENT - DELETES VMS IF THEY ALREADY EXIST
+# - import_playbook: 3_vms.yml
+- import_playbook: 4_containers.yml
+- import_playbook: 5_networking.yml
+

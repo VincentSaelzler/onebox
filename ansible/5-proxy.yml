@@ -17,7 +17,7 @@
   hosts: proxy
   vars:
     # running the app
-    certbot_testmode: true
+    certbot_testmode: false
     certbot_install_method: package
     certbot_create_standalone_stop_services:
       - haproxy
