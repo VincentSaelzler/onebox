@@ -58,6 +58,12 @@
         enabled: yes
         state: started
 
+- name: git config
+  hosts: workstation
+  become: yes
+  roles:
+    - git-conf
+
 # - name: create packages from arch user repository
 #   hosts: workstation
 #   tasks:
