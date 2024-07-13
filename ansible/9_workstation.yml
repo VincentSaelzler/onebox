@@ -35,6 +35,8 @@
           - firefox # oauth in vscode
           - docker
           - radeontop
+          - spotify-launcher
+          - konsole
       notify: Restart
     - user:
         name: axel
@@ -56,38 +58,38 @@
         enabled: yes
         state: started
 
-- name: create packages from arch user repository
-  hosts: workstation
-  tasks:
-    - file:
-        state: absent
-        path: "/tmp/visual-studio-code-bin/"
-    - git:
-        repo: https://aur.archlinux.org/visual-studio-code-bin.git
-        dest: /tmp/visual-studio-code-bin
-    # Running makepkg as root is not allowed
-    # as it can cause permanent, catastrophic damage to your system.
-    - shell:
-        chdir: /tmp/visual-studio-code-bin
-        cmd: makepkg --clean --force
-    - shell:
-        cmd: ls /tmp/visual-studio-code-bin/ | grep "^visual-studio-code-bin-[0-9]"
-      register: ls
-    - set_fact:
-        package_file: "{{ '/tmp/visual-studio-code-bin/' + ls.stdout }}"
+# - name: create packages from arch user repository
+#   hosts: workstation
+#   tasks:
+#     - file:
+#         state: absent
+#         path: "/tmp/visual-studio-code-bin/"
+#     - git:
+#         repo: https://aur.archlinux.org/visual-studio-code-bin.git
+#         dest: /tmp/visual-studio-code-bin
+#     # Running makepkg as root is not allowed
+#     # as it can cause permanent, catastrophic damage to your system.
+#     - shell:
+#         chdir: /tmp/visual-studio-code-bin
+#         cmd: makepkg --clean --force
+#     - shell:
+#         cmd: ls /tmp/visual-studio-code-bin/ | grep "^visual-studio-code-bin-[0-9]"
+#       register: ls
+#     - set_fact:
+#         package_file: "{{ '/tmp/visual-studio-code-bin/' + ls.stdout }}"
 
-- name: install aur package
-  hosts: workstation
-  become: yes
-  tasks:
-    - pacman:
-        name: "{{ package_file }}"
+# - name: install aur package
+#   hosts: workstation
+#   become: yes
+#   tasks:
+#     - pacman:
+#         name: "{{ package_file }}"
 
-- name: vscode extensions
-  hosts: workstation
-  vars:
-    - ansible_user: axel
-  tasks:
-    - command:
-        cmd: |
-          code --install-extension ms-vscode-remote.remote-containers
+# - name: vscode extensions
+#   hosts: workstation
+#   vars:
+#     - ansible_user: axel
+#   tasks:
+#     - command:
+#         cmd: |
+#           code --install-extension ms-vscode-remote.remote-containers
