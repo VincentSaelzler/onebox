@@ -176,3 +176,12 @@ config redirect
 	list proto 'tcp'
 	list proto 'udp'
 
+config rule
+	option name 'Open WebUI to Ollama'
+	option src 'dmz'
+	option dest 'lan'
+	option target 'ACCEPT'
+	list dest_ip '192.168.27.4'
+	option dest_port '11434'
+	list src_ip '192.168.29.8'
+
