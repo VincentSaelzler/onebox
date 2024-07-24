@@ -8,7 +8,10 @@ User=ollama
 Group=ollama
 Restart=always
 RestartSec=3
-Environment="OLLAMA_HOST=192.168.27.69"
+Environment="OLLAMA_HOST=192.168.27.4"
+# RX 6700 not supported
+# using RX 6800 / 6800 XT / 6900
+Environment="HSA_OVERRIDE_GFX_VERSION=10.3.0"
 
 [Install]
 WantedBy=default.target

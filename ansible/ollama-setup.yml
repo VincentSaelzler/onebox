@@ -1,27 +1,6 @@
 ---
-- name: core drivers
-  hosts: ollama
-  handlers:
-    - import_tasks: handlers/main.yml
-  become: yes
-  tasks:
-    - pacman:
-        update_cache: true
-        upgrade: true
-      register: syu
-      retries: 10
-      delay: 6
-      until: not syu.failed
-      notify: Restart
-    - pacman:
-        name:
-          - qemu-guest-agent
-      notify: Restart
-
-- name: user, gui, and packages
-  hosts: ollama
-  handlers:
-    - import_tasks: handlers/main.yml
+- name: download ollama binary and run as systemd service
+  hosts: workstation
   become: yes
   tasks:
     - get_url:
@@ -40,24 +19,3 @@
         name: ollama
         enabled: yes
         state: started
-    # - pacman:
-    #     name:
-    #       - gnome
-    #       - git
-    #       - base-devel # aur mkpkg
-    #       - lsof # vscode from aur
-    #       - firefox # oauth in vscode
-    #       - docker
-    #       - radeontop
-    #   notify: Restart
-
-          # shell: /bin/false
-    #     shell: /bin/bash
-    #     groups: docker
-    # - authorized_key:
-    #     user: axel
-    #     state: present
-    #     exclusive: yes
-    #     key: "{{ pub_key }}"
-
-    # checksum: "{{ dest_checksum }}"
