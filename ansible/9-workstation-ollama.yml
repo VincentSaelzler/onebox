@@ -1,0 +1,23 @@
+- name: ollama
+  hosts: workstation
+  # handlers:
+  # - import_tasks: handlers/main.yml
+  become: yes
+  tasks:
+  - get_url:
+      url: https://ollama.com/download/ollama-linux-amd64
+      dest: /usr/bin/ollama
+      mode: +x
+  - user:
+      name: ollama
+      system: true
+      shell: /bin/false
+      home: /usr/share/ollama
+  - copy:
+      src: ollama.service
+      dest: /etc/systemd/system/ollama.service
+  - systemd:
+      name: ollama
+      enabled: yes
+      state: restarted
+      daemon_reload: yes

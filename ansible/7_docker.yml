@@ -1,0 +1,17 @@
+- name: install docker
+  hosts: moby
+  roles:
+    - pleb-user
+    - geerlingguy.docker
+  vars:
+    docker_users: pleb
+  tasks:
+    - name: run openwebui
+      shell: |
+        docker run --detach \
+        --publish 3000:8080 \
+        --env OLLAMA_BASE_URL=http://192.168.27.4:11434 \
+        --volume open-webui:/app/backend/data \
+        --name open-webui \
+        --restart always \
+        ghcr.io/open-webui/open-webui:main

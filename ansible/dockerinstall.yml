@@ -1,9 +1,0 @@
----
-- name: install docker
-  hosts: moby
-
-  roles:
-    - pleb-user
-    - geerlingguy.docker
-  vars:
-    docker_users: pleb
