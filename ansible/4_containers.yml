@@ -1,4 +1,8 @@
 ---
+
+
+
+
 - name: Download Template, Create Container
   hosts: containers
   gather_facts: no # fact gathering will fail if the containers don't exist yet
@@ -7,16 +11,15 @@
     virt_host_ip: "{{ hostvars['pve']['ansible_host'] }}"
   tasks:
     # template
-    - name: Check for Latest Debian OS Template
+    - name: Check for Latest OS Template
       shell:
-        cmd: "pveam available --section system | grep -o debian.* | sort -r | sed 1q"
-      register: latest_debian_template
+        cmd: "pveam available --section system | grep -o {{ os }}.* | sort -r | sed 1q"
+      register: latest_template
       delegate_to: pve
       changed_when: false
-    - name: Get Name of Latest Debian Template
-      set_fact:
-        template_name: "{{ latest_debian_template.stdout }}"
-    - name: Download Latest Debian Template
+    - set_fact:
+        template_name: "{{ latest_template.stdout }}"
+    - name: Download Latest Template
       command:
         cmd: "pveam download local {{ template_name }}"
       register: template_dl

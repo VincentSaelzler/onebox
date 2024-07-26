@@ -1,0 +1,26 @@
+- name: download bitcoin tgz
+  hosts: bitcoin
+  roles:
+    - pleb-user
+  tasks:
+    - apt:
+        name:
+          - rust-all
+    - community.general.cargo:
+        name: rusty-blockparser
+    # https://bitcoin.org/en/full-node#other-linux-daemon
+    # http://karpathy.github.io/2021/06/21/blockchain/
+    # https://github.com/gcarq/rusty-blockparser
+    # - get_url:
+    #     url: https://bitcoin.org/bin/bitcoin-core-27.0/bitcoin-27.0-x86_64-linux-gnu.tar.gz
+    #     dest: /home/pleb/bitcoin.tar.gz
+    # - unarchive:
+    #     src: /home/pleb/bitcoin.tar.gz
+    #     dest: /home/pleb/
+    #     remote_src: yes
+    # - shell:
+    #     cmd: install --target-directory /usr/local/bin /home/pleb/bitcoin-27.0/bin/*
+    # default memory cache is only 450 megabytes
+    # probably a good setting in general, but when doing the initial sync more is better
+    # pleb runs "bitcoind -daemon -dbcache=4096"
+    # pleb run bitcoin-cli ... getblockchaininfo, getnetworkinfo, getnettotals, getwalletinfo, stop, and help.
