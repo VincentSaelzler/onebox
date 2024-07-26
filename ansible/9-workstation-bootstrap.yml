@@ -67,7 +67,7 @@
 - name: copy private ssh keys
   hosts: workstation
   vars:
-    ansible_user: "{{ usr_name }}"
+    ansible_user: axel
   roles:
     - private-key
     
