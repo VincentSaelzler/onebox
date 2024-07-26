@@ -1,0 +1,73 @@
+---
+- name: core drivers
+  hosts: workstation
+  handlers:
+    - import_tasks: handlers/main.yml
+  become: yes
+  tasks:
+    - pacman:
+        update_cache: true
+        upgrade: true
+      register: syu
+      retries: 10
+      delay: 6
+      until: not syu.failed
+      notify: Restart
+    - pacman:
+        name:
+          - qemu-guest-agent
+          - linux-firmware
+      notify: Restart
+
+- name: user, gui, and packages
+  hosts: workstation
+  handlers:
+    - import_tasks: handlers/main.yml
+  become: yes
+  tasks:
+    - pacman:
+        name:
+          - plasma
+          - sddm
+          - git
+          - base-devel # aur mkpkg
+          - lsof # vscode from aur
+          - firefox # oauth in vscode
+          - docker
+          - radeontop
+          - spotify-launcher
+          - konsole
+      notify: Restart
+    - user:
+        name: axel
+        comment: "Axel Rose"
+        password: "{{ 'gunsnroses' | password_hash('sha512', pw_salt) }}"
+        shell: /bin/bash
+        groups: docker
+    - authorized_key:
+        user: axel
+        state: present
+        exclusive: yes
+        key: "{{ pub_key }}"
+    - systemd:
+        name: sddm
+        enabled: yes
+        state: started
+    - systemd:
+        name: docker
+        enabled: yes
+        state: started
+
+- name: git config
+  hosts: workstation
+  become: yes
+  roles:
+    - git-conf
+
+- name: copy private ssh keys
+  hosts: workstation
+  vars:
+    ansible_user: "{{ usr_name }}"
+  roles:
+    - private-key
+    
