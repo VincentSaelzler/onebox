@@ -1,0 +1,31 @@
+- name: configure TURN/STUN server
+  hosts: turn
+  # roles:
+  #   - pleb-user
+  tasks:
+    - apt:
+        name:
+          - coturn
+    - lineinfile:
+        path: /etc/turnserver.conf
+        search_string: "{{ item.setting }}="
+        line: "{{ item.setting }}={{ item.value }}"
+      with_items:
+        - { setting: "realm", value: "ring" }
+      # check_mode: yes
+      # diff: yes
+    - systemd:
+        name: coturn
+        state: restarted
+        enabled: yes
+
+
+
+# https://docs.jami.net/en_US/developer/going-further/setting-up-your-own-turn-server.html
+# listening-ip= default all IPv4 and IPv6 system IPs
+# listening-port=3478
+# tls-listening-port=5349
+# min-port=49152
+# max-port=65535
+# lt-cred-mech # If at least one user is defined, in this file, in command line or in usersdb file, then lt-cred-mech is default.
+# realm=sfl

@@ -185,3 +185,21 @@ config rule
 	option dest_port '11434'
 	list src_ip '192.168.29.8'
 
+config redirect
+	option dest 'dmz'
+	option target 'DNAT'
+	option name 'TURN'
+	option src 'wan'
+	option src_dport '3478'
+	option dest_ip '192.168.29.10'
+	option dest_port '3478'
+
+config redirect
+	option dest 'dmz'
+	option target 'DNAT'
+	option name 'TURN (TLS)'
+	option src 'wan'
+	option src_dport '5349'
+	option dest_ip '192.168.29.10'
+	option dest_port '5349'
+

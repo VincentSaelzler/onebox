@@ -39,5 +39,5 @@ config odhcpd 'odhcpd'
 
 config domain
 	option name 'quercusphellos.online'
-	option ip '192.168.29.2'
+	option ip '192.168.29.10'
 
