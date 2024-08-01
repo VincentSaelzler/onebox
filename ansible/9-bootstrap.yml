@@ -38,6 +38,7 @@
           - spotify-launcher
           - konsole
           - dolphin
+          - flatpak
       notify: Restart
     - user:
         name: axel

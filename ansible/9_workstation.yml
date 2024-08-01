@@ -1,4 +1,4 @@
 ---
-- import_playbook: 9-workstation-bootstrap.yml
-- import_playbook: 9-workstation-ollama.yml
-# - import_playbook: 9-workstation-aur.yml
+- import_playbook: 9-bootstrap.yml
+# - import_playbook: 9-ollama.yml
+# - import_playbook: 9-aur.yml
