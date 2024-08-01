@@ -24,3 +24,14 @@
     # probably a good setting in general, but when doing the initial sync more is better
     # pleb runs "bitcoind -daemon -dbcache=4096"
     # pleb run bitcoin-cli ... getblockchaininfo, getnetworkinfo, getnettotals, getwalletinfo, stop, and help.
+
+- name: dev environment
+  hosts: bitcoin
+  pre_tasks:
+    - apt:
+        state: present
+        pkg:
+          - python3.12-venv
+          - git
+  roles:
+    - git-conf

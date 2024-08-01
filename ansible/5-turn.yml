@@ -1,11 +1,8 @@
 - name: configure TURN/STUN server
   hosts: turn
-  # roles:
-  #   - pleb-user
   tasks:
     - apt:
-        name:
-          - coturn
+        name: coturn
     - lineinfile:
         path: /etc/turnserver.conf
         search_string: "{{ item.setting }}="
@@ -14,12 +11,27 @@
         - { setting: "realm", value: "ring" }
       # check_mode: yes
       # diff: yes
+    - lineinfile:
+        path: /etc/turnserver.conf
+        regex: "^#lt-cred-mech$"
+        line: "lt-cred-mech"
+        # check_mode: yes
+        # diff: yes
+    - shell: |
+        turnadmin -a -u ncode -p c3EPDgWV -r ring && \
+        turnadmin -a -u ring -p ring -r ring && \
+        turnadmin -a -u dcode -p tPT753cN -r ring
+      # creates: /var/lib/turn/turndb
     - systemd:
         name: coturn
         state: restarted
         enabled: yes
+# 0: : WARNING: cannot find certificate file: turn_server_cert.pem (1)
+# 0: : WARNING: cannot start TLS and DTLS listeners because certificate file is not set properly
+# 0: : WARNING: cannot find private key file: turn_server_pkey.pem (1)
+# 0: : WARNING: cannot start TLS and DTLS listeners because private key file is not set properly
 
-
+# SQLite DB connection success: /var/lib/turn/turndb
 
 # https://docs.jami.net/en_US/developer/going-further/setting-up-your-own-turn-server.html
 # listening-ip= default all IPv4 and IPv6 system IPs
