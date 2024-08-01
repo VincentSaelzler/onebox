@@ -37,6 +37,7 @@
           - radeontop
           - spotify-launcher
           - konsole
+          - dolphin
       notify: Restart
     - user:
         name: axel
