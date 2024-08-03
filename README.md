@@ -9,6 +9,7 @@ Using a Windows environment. Linux requirements should be nearly identical.
 ## Quick Start
 ```sh
 git clone https://github.com/VincentSaelzler/onebox/
+ansible-playbook ansible/1_ansible-host.yml --ask-vault-pass --ask-become-pass
 ```
 Dev Containers:
 - Open Folder in Container (builds container)
