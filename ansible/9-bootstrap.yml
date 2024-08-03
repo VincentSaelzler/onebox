@@ -79,3 +79,14 @@
     ansible_user: axel
   roles:
     - private-key
+
+- name: install vscode extensions
+  hosts: workstation
+  vars:
+    ansible_user: axel
+  tasks:
+    - command:
+        cmd: "code --install-extension {{ item }}"
+      with_items:
+        - redhat.vscode-yaml
+        - oderwat.indent-rainbow
