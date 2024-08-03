@@ -1,8 +1,4 @@
 ---
-
-
-
-
 - name: Download Template, Create Container
   hosts: containers
   gather_facts: no # fact gathering will fail if the containers don't exist yet
@@ -38,8 +34,7 @@
         node: pve
         # hardware
         ostemplate: "local:vztmpl/{{ template_name }}"
-        disk: "{{ disk_size }}"
-        storage: "{{ tgt_storage }}"
+        disk: "{{ tgt_storage }}:{{ disk_size }}"
         memory: "{{ ram }}"
         swap: 0
         cores: "{{ vcpus }}"
@@ -82,18 +77,3 @@
     - import_tasks: handlers/main.yml
   roles:
     - full-upgrade
-
-  # - name: print stuff
-  #   debug:
-  # var: api_user
-  # var: root_pw
-  # var: virt_host_ip
-  # var: disk_size
-  # var: tgt_storage
-  # var: ram
-  # var: vcpus
-  # var: ansible_host
-  # msg: '{"net0":"name=eth0,gw={{ dmz_netenv.gw }},ip={{ ansible_host }}/{{ dmz_netenv.mask }},bridge={{ dmz_netenv.vbridge }}"}'
-  # var: netconf
-  # var: dmz_netenv.dns
-  # var: inventory_hostname
