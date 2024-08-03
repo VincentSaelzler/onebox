@@ -5,7 +5,8 @@
     - import_tasks: handlers/main.yml
   become: yes
   tasks:
-    - pacman:
+    - name: update
+      pacman:
         update_cache: true
         upgrade: true
       register: syu
@@ -13,44 +14,32 @@
       delay: 6
       until: not syu.failed
       notify: Restart
-    - pacman:
+    - name: firmware
+      pacman:
         name:
           - qemu-guest-agent
           - linux-firmware
       notify: Restart
 
-- name: user, gui, and packages
+- name: user, gui
   hosts: workstation
   handlers:
     - import_tasks: handlers/main.yml
   become: yes
   tasks:
-    - pacman:
+    - name: plasma desktop
+      pacman:
         name:
-          # gui
           - plasma
           - sddm
-          # utilities
-          - radeontop
-          - konsole
-          - dolphin
-          - vi
-          # applications
-          - git
-          - spotify-launcher
-          - code
-          - firefox # oauth in vscode
-          # ansible
-          - ansible
-          - python-proxmoxer
-          - sshpass
-      # notify: Restart
+      notify: Restart
     - group:
         name: sudo
     - lineinfile:
         path: /etc/sudoers
         line: "%sudo ALL=(ALL:ALL) ALL"
         state: present
+      notify: Restart
     - user:
         name: axel
         comment: "Axel Rose"
@@ -67,26 +56,9 @@
         enabled: yes
         state: started
 
-- name: git config
-  hosts: workstation
-  become: yes
-  roles:
-    - git-conf
-
 - name: copy private ssh keys
   hosts: workstation
   vars:
     ansible_user: axel
   roles:
     - private-key
-
-- name: install vscode extensions
-  hosts: workstation
-  vars:
-    ansible_user: axel
-  tasks:
-    - command:
-        cmd: "code --install-extension {{ item }}"
-      with_items:
-        - redhat.vscode-yaml
-        - oderwat.indent-rainbow
