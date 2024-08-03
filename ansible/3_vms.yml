@@ -1,3 +1,4 @@
 ---
-# NOT IDEMPOTENT - DELETES VMS IF THEY ALREADY EXIST
-- import_playbook: 3-vm-workstation.yml
+# WARNING - DELETES WORKSTATION IF EXISTS
+- import_playbook: 3-workstation-create.yml
+- import_playbook: 3-workstation-bootstrap.yml

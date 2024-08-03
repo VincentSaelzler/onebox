@@ -1,0 +1,34 @@
+---
+- name: user applications
+  hosts: workstation
+  become: yes
+  pre_tasks:
+    - pacman:
+        name:
+          # utilities
+          - radeontop
+          - konsole
+          - dolphin
+          - vi
+          # applications
+          - git
+          - spotify-launcher
+          - code
+          - firefox
+          # ansible
+          - ansible
+          - python-proxmoxer
+          - sshpass
+  roles:
+    - git-conf
+
+- name: vscode extensions
+  hosts: workstation
+  vars:
+    ansible_user: axel
+  tasks:
+    - command:
+        cmd: "code --install-extension {{ item }}"
+      with_items:
+        - redhat.vscode-yaml
+        - oderwat.indent-rainbow
