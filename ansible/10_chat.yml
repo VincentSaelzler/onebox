@@ -1,0 +1,66 @@
+- name: microtalk sfu
+  hosts: microtalk
+  pre_tasks:
+    - apt:
+        update_cache: true
+        cache_valid_time: 3600
+        name:
+          - nodejs
+          - npm
+          - build-essential
+          - tzdata
+          - software-properties-common
+          - ffmpeg
+  tasks:
+    - command:
+        cmd: "add-apt-repository -y ppa:deadsnakes/ppa"
+    - apt:
+        update_cache: true
+        name:
+          - python3.8
+          - python3-pip
+    # - apt:
+    #     update_cache: true
+    #     cache_valid_time: 3600
+    #     name:
+    #       - nodejs
+    #       - npm
+    #       - build-essential
+    # - lineinfile:
+    #     path: /etc/turnserver.conf
+    #     search_string: "{{ item.setting }}="
+    #     line: "{{ item.setting }}={{ item.value }}"
+    #   with_items:
+    #     - { setting: "realm", value: "ring" }
+    #   # check_mode: yes
+    #   # diff: yes
+    # - lineinfile:
+    #     path: /etc/turnserver.conf
+    #     regex: "^#lt-cred-mech$"
+    #     line: "lt-cred-mech"
+    #     # check_mode: yes
+    #     # diff: yes
+    # - shell: |
+    #     turnadmin -a -u ncode -p c3EPDgWV -r ring && \
+    #     turnadmin -a -u ring -p ring -r ring && \
+    #     turnadmin -a -u dcode -p tPT753cN -r ring
+    #   # creates: /var/lib/turn/turndb
+    # - systemd:
+    #     name: coturn
+    #     state: restarted
+    #     enabled: yes
+# 0: : WARNING: cannot find certificate file: turn_server_cert.pem (1)
+# 0: : WARNING: cannot start TLS and DTLS listeners because certificate file is not set properly
+# 0: : WARNING: cannot find private key file: turn_server_pkey.pem (1)
+# 0: : WARNING: cannot start TLS and DTLS listeners because private key file is not set properly
+
+# SQLite DB connection success: /var/lib/turn/turndb
+
+# https://docs.jami.net/en_US/developer/going-further/setting-up-your-own-turn-server.html
+# listening-ip= default all IPv4 and IPv6 system IPs
+# listening-port=3478
+# tls-listening-port=5349
+# min-port=49152
+# max-port=65535
+# lt-cred-mech # If at least one user is defined, in this file, in command line or in usersdb file, then lt-cred-mech is default.
+# realm=sfl
