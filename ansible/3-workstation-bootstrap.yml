@@ -27,6 +27,12 @@
     - import_tasks: handlers/main.yml
   become: yes
   tasks:
+    - timezone:
+        name: Europe/London
+      notify: Restart
+    - command:
+        cmd: localectl set-keymap uk
+      notify: Restart
     - name: plasma desktop
       pacman:
         name:
