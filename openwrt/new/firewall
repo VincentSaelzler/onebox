@@ -164,6 +164,7 @@ config redirect
 	option dest_port '80'
 	list proto 'tcp'
 	list proto 'udp'
+	option enabled '0'
 
 config redirect
 	option dest 'dmz'
@@ -175,6 +176,7 @@ config redirect
 	option dest_port '443'
 	list proto 'tcp'
 	list proto 'udp'
+	option enabled '0'
 
 config rule
 	option name 'Open WebUI to Ollama'
@@ -193,6 +195,7 @@ config redirect
 	option src_dport '3478'
 	option dest_ip '192.168.29.10'
 	option dest_port '3478'
+	option enabled '0'
 
 config redirect
 	option dest 'dmz'
@@ -202,4 +205,27 @@ config redirect
 	option src_dport '5349'
 	option dest_ip '192.168.29.10'
 	option dest_port '5349'
+	option enabled '0'
 
+config redirect
+	option dest 'dmz'
+	option target 'DNAT'
+	option name 'LAN to DMZ HTTP'
+	option src 'wan'
+	option src_ip '192.168.27.0/24'
+	option src_dport '80'
+	option dest_ip '192.168.29.2'
+	option dest_port '80'
+	option enabled '0'
+
+
+config redirect
+	option target 'DNAT'
+	option src 'wan'
+	option proto 'tcp'
+	option src_dport '80'
+	option dest_port '80'
+	option src_ip '192.168.x.0/24' #<---SRC network
+	option name 'REDIRECT_HTTP_LAN'
+	option dest_ip '192.168.30.224"
+	option dest 'xxx' #<---place packet in same network SRC packet HMM??
