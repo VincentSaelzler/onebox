@@ -51,3 +51,7 @@ usr_pw:  "{{ vault_usr_pw }}"
 
 porkbun_apikey: "{{ vault_porkbun_apikey }}"
 porkbun_secretapikey: "{{ vault_porkbun_secretapikey }}"
+
+# different from the usr_pw because the pleb user
+# is intended to run services instead of be an actual logging in user
+vince_pw: "{{ vault_vince_pw }}"
