@@ -16,10 +16,10 @@
       community.general.ansible_galaxy_install:
         type: role
         name: geerlingguy.certbot
-    - name: docker role
-      community.general.ansible_galaxy_install:
-        type: role
-        name: geerlingguy.docker
+    # - name: docker role
+    #   community.general.ansible_galaxy_install:
+    #     type: role
+    #     name: geerlingguy.docker
 #   - name: azure cli
 #     shell:
 #       cmd: "curl -sL https://aka.ms/InstallAzureCLIDeb | bash"
