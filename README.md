@@ -8,6 +8,7 @@ Using a Windows environment. Linux requirements should be nearly identical.
 
 ## Quick Start
 ```sh
+sudo apt install ansible
 git clone https://github.com/VincentSaelzler/onebox/
 ansible-playbook ansible/1_ansible-host.yml --ask-vault-pass --ask-become-pass
 ```
@@ -40,6 +41,21 @@ pct destroy 103 --force true --destroy-unreferenced-disks true --purge true
 
 
 ## On-Premises Configuration
+
+### Raspberry Pi
+
+Configure the base image with the Raspberry Pi Imager program.
+
+1. OTHER Raspberry Pi OS
+1. Lite 64 Bit
+1. hostname: model4b.local
+1. un/pw marcus/easypass
+1. set time zone and keyboard layout
+1. enable ssh with public key (from ansible vault / lastpass)
+
+Quidam Plebeius
+Marcus Aurelius
+
 
 ### Proxmox Virtualization Host
 #### PCIe Passthrough
