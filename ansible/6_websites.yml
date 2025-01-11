@@ -9,12 +9,17 @@
       repo: "https://github.com/VincentSaelzler/websites"
       dest: /tmp/websites
       recursive: yes
-  # manually run `sudo bundle install`
-  # using vscode in website repo
+  # manual pre-requisite
+  # run `sudo bundle install` using vscode in website repo
   # long term need to figure out how to user-level install
-  - command: bundle exec jekyll build
+  - name: build love
+    command: bundle exec jekyll build
     args:
       chdir: /tmp/websites/love
+  - name: build cookbook
+    command: bundle exec jekyll build
+    args:
+      chdir: /tmp/websites/cookbook
 
 - name: configure nginx and copy site contents to /var/www
   hosts: model4b
@@ -31,6 +36,11 @@
   - synchronize:
       src: /tmp/websites/love/_site/
       dest: /var/www/bethanyandvincent.com/
+      delete: yes
+      recursive: yes
+  - synchronize:
+      src: /tmp/websites/cookbook/_site/
+      dest: /var/www/hearty.cooking/
       delete: yes
       recursive: yes
   # restart to capture changes
