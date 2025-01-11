@@ -1,2 +1,0 @@
----
-app_dir: "/home/{{ usr_name }}/ddns_client"

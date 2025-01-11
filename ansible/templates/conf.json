@@ -4,13 +4,13 @@
     "ipv4_endpoint": "https://api-ipv4.porkbun.com/api/json/v3",
     "dns_endpoint": "https://porkbun.com/api/json/v3/dns",
     "dns_records": {
-        "quercusphellos.online": [
+        "hearty.cooking": [
             {
-                "name": "quercusphellos.online",
+                "name": "hearty.cooking",
                 "type": "A"
             },
             {
-                "name": "www.quercusphellos.online",
+                "name": "www.hearty.cooking",
                 "type": "CNAME"
             }
         ]

@@ -1,0 +1,40 @@
+---
+- name: apt packages
+  hosts: model4b
+  become: yes
+  tasks:
+  - apt:
+      pkg: git, python3.11-venv
+
+- name: install the ddns client application
+  hosts: model4b
+  vars:
+    ansible_user: "{{ usr_name }}"
+  tasks:
+  - git:
+      repo: https://github.com/VincentSaelzler/porkbun-ddns-pydantic
+      dest: "{{ ddns_app_dir }}"
+      # conf.json from the repo contains some sample domains
+      # it is overwritten with the file from this repository
+      # force is required to ensure changes from the source repo are pushed
+      force: true
+  - pip:
+      requirements: "{{ ddns_app_dir }}/requirements.txt"
+      virtualenv: "{{ ddns_app_dir }}/.venv"
+      virtualenv_command: "python3 -m venv"
+  - template:
+      src: conf.json
+      dest: "{{ ddns_app_dir }}/ddns"
+
+- name: configure ddns client as systemd service
+  hosts: model4b
+  become: yes
+  tasks:
+  - template:
+      src: ddns.service
+      dest: /etc/systemd/system/
+  - systemd:
+      name: ddns
+      enabled: yes
+      state: restarted
+      daemon_reload: yes

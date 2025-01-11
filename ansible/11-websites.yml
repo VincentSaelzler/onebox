@@ -1,4 +1,20 @@
 ---
+- name: configure nginx and set pleb user as owner of /var/www
+  hosts: model4b
+  become: yes
+  tasks:
+  # server-level nginx configuration
+  - apt:
+      pkg: nginx
+  - copy:
+      src: custom-sites.conf
+      dest: /etc/nginx/sites-enabled/
+  - file:
+      path: /var/www
+      owner: "{{ usr_name }}"
+      group: "{{ usr_name }}"
+      recurse: yes
+
 - name: clone website repositories and build sites
   hosts: localhost
   tasks:
@@ -21,18 +37,11 @@
     args:
       chdir: /tmp/websites/cookbook
 
-- name: configure nginx and copy site contents to /var/www
+- name: copy site contents to /var/www
   hosts: model4b
-  become: yes
+  vars:
+    ansible_user: "{{ usr_name }}"
   tasks:
-  # server-level nginx configuration
-  - apt:
-      state: present
-      pkg: nginx
-  - copy:
-      src: custom-sites.conf
-      dest: /etc/nginx/sites-enabled/
-  # individual site contents
   - synchronize:
       src: /tmp/websites/love/_site/
       dest: /var/www/bethanyandvincent.com/
@@ -43,7 +52,11 @@
       dest: /var/www/hearty.cooking/
       delete: yes
       recursive: yes
-  # restart to capture changes
+
+- name: restart nginx to capture changes
+  hosts: model4b
+  become: yes
+  tasks:
   - systemd:
       name: nginx
       state: restarted
