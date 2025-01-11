@@ -53,8 +53,7 @@ Configure the base image with the Raspberry Pi Imager program.
 1. set time zone and keyboard layout
 1. enable ssh with public key (from ansible vault / lastpass)
 
-Quidam Plebeius
-Marcus Aurelius
+
 
 
 ### Proxmox Virtualization Host
