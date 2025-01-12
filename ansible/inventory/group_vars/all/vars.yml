@@ -36,14 +36,14 @@ domains:
 # TASK [Create symbolic links for intermediate certificate chains]
 # fails
 certs:
-# - domains:
-#   - hearty.cooking
+- domains:
+  - hearty.cooking
 # - domains:
 #   - saelzler.org
 # - domains:
 #   - vincentsaelzler.com
-- domains:
-  - quercusphellos.online
+# - domains:
+#   - quercusphellos.online
 
 # credentials
 # if the PWs here are not stored externally, and the ansible vault PW is lost,

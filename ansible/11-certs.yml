@@ -1,0 +1,19 @@
+---
+- name: Generate Let's Encrypt Certificates
+  hosts: model4b
+  become: yes
+  vars:
+    # running the app
+    certbot_testmode: false
+    certbot_install_method: package
+    # creating certs
+    certbot_create_if_missing: true
+    certbot_create_method: standalone
+    certbot_admin_email: "{{ usr_email }}"
+    certbot_certs: "{{ certs }}"
+    # renewing certs
+    certbot_auto_renew: true
+    certbot_auto_renew_hour: "4"
+    certbot_auto_renew_minute: "20"
+  roles:
+  - geerlingguy.certbot
