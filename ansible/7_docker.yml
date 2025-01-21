@@ -1,3 +1,4 @@
+---
 - name: install docker
   hosts: moby
   roles:
@@ -5,27 +6,21 @@
   - geerlingguy.docker
   vars:
     docker_users: "{{ usr_name }}"
-  # - name: frigate
-  #   hosts: moby
-  #   vars:
-  #     ansible_user: "{{ usr_name }}"
-  #   tasks:
-  #   - copy:
-  #       src: docker-compose.yml
-  #       dest: ~/frigate/
+
+- name: frigate
+  hosts: moby
+  vars:
+    ansible_user: "{{ usr_name }}"
+  tasks:
+  - copy:
+      src: docker-compose.yml
+      dest: ~/frigate/
   # - copy:
   #     src: frigate-config.yaml
   #     dest: ~/frigate/config/config.yaml
-  # - community.docker.docker_compose_v2:
-  #     project_src: ~/frigate/
-  # - name: run openwebui
-  #   shell: |
-  #     docker run --detach \
-  #     --publish 3000:8080 \
-  #     --env OLLAMA_BASE_URL=http://192.168.27.4:11434 \
-  #     --volume open-webui:/app/backend/data \
-  #     --name open-webui \
-  #     --restart always \
-  #     ghcr.io/open-webui/open-webui:main
+  - community.docker.docker_compose_v2:
+      project_src: ~/frigate/
+      # manually run docker logs frigate and look for password
+
 
 

@@ -1,0 +1,62 @@
+mqtt:
+  enabled: false
+
+go2rtc:
+  streams:
+    food_main:
+    - ffmpeg:https://cam1.local/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=admin&password=qS7kef9TzrBoQl4h#video=copy#audio=copy#audio=opus
+    food_ext:
+    - ffmpeg:https://cam1.local/flv?port=1935&app=bcs&stream=channel0_ext.bcs&user=admin&password=qS7kef9TzrBoQl4h#video=copy#audio=copy#audio=opus
+
+detectors:
+  ov:
+    type: openvino
+    device: CPU
+
+model:
+  width: 300
+  height: 300
+  input_tensor: nhwc
+  input_pixel_format: bgr
+  path: /openvino-model/ssdlite_mobilenet_v2.xml
+  labelmap_path: /openvino-model/coco_91cl_bkgr.txt
+
+record:
+  enabled: True
+  events:
+    retain:
+      default: 30
+      mode: active_objects
+
+detect:
+  enabled: true
+
+objects:
+  track:
+  - person
+  - cat
+
+review:
+  detections:
+    labels:
+    - cat
+    - person
+  alerts:
+    labels:
+    - cat
+
+cameras:
+  food:
+    enabled: true
+    ffmpeg:
+      inputs:
+      - path: rtsp://127.0.0.1:8554/food_main
+        input_args: preset-rtsp-restream
+        roles:
+        - record
+      - path: rtsp://127.0.0.1:8554/food_ext
+        input_args: preset-rtsp-restream
+        roles:
+        - detect
+
+version: 0.14
