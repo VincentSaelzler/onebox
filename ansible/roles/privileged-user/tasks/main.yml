@@ -9,4 +9,4 @@
 - name: Set Privileged User PW
   user:
     name: "{{ ansible_user }}"
-    password: "{{ root_pw | password_hash('sha512', pw_salt) }}"
+    password: "{{ root_pw | password_hash('sha512', root_pw_salt) }}"
