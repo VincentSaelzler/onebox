@@ -3,34 +3,18 @@
   hosts: localhost
   become: yes
   roles:
-    - ssh-conf
+  - ssh-conf
+  tasks:
+  - apt:
+      pkg: sshpass, python3-proxmoxer
 
 - name: user level
   hosts: localhost
   roles:
-    - aliases
-    - private-key
-    - vault-pw
+  - aliases
+  - private-key
+  - vault-pw
   tasks:
-    - name: certbot role
-      community.general.ansible_galaxy_install:
-        type: role
-        name: geerlingguy.certbot
-    # - name: docker role
-    #   community.general.ansible_galaxy_install:
-    #     type: role
-    #     name: geerlingguy.docker
-#   - name: azure cli
-#     shell:
-#       cmd: "curl -sL https://aka.ms/InstallAzureCLIDeb | bash"
-#   - name: azcollection from galaxy
-#     community.general.ansible_galaxy_install:
-#       type: collection
-#       name: azure.azcollection
-#   - name: azcollection python dependencies
-#     pip:
-#       # locate requirements file in folder where collection is installed
-#       # ansible-galaxy collection list -vvv | grep azure.azcollection
-#       requirements: /usr/local/lib/python3.10/dist-packages/ansible_collections/azure/azcollection/requirements-azure.txt
-#   - name: proxmoxer python dependencies
-
+  - community.general.ansible_galaxy_install:
+      type: role
+      name: geerlingguy.certbot, geerlingguy.docker

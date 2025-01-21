@@ -49,12 +49,9 @@ certs:
 # if the PWs here are not stored externally, and the ansible vault PW is lost,
 # THERE IS NO WAY TO RECOVER!!
 root_pw: "{{ vault_root_pw }}"
-pw_salt: "{{ vault_pw_salt }}"
+root_pw_salt: "{{ vault_root_pw_salt }}"
 usr_pw: "{{ vault_usr_pw }}"
+usr_pw_salt: "{{ vault_usr_pw_salt }}"
 
 porkbun_apikey: "{{ vault_porkbun_apikey }}"
 porkbun_secretapikey: "{{ vault_porkbun_secretapikey }}"
-
-# different from the usr_pw because the pleb user
-# is intended to run services instead of be an actual logging in user
-vince_pw: "{{ vault_vince_pw }}"

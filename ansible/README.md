@@ -1,12 +1,17 @@
-## Ansible Vault
+# Ansible
+
+## Vault
+
 ```sh
 ansible-vault encrypt inventory/group_vars/all/vault.yml --vault-password-file ~/.ansible/vault_pw.txt
 ansible-vault view inventory/group_vars/all/vault.yml --vault-password-file ~/.ansible/vault_pw.txt
 ansible-vault edit inventory/group_vars/all/vault.yml --vault-password-file ~/.ansible/vault_pw.txt
 ```
 
-## Ansible Debugging
+## Debugging
+
 Debug multiple variables at once:
+
 ```yml
   - debug:
       var: "{{ item }}"

@@ -6,74 +6,78 @@
   vars:
     virt_host_ip: "{{ hostvars['pve']['ansible_host'] }}"
   tasks:
-    # template
-    - name: Check for Latest OS Template
-      shell:
-        cmd: "pveam available --section system | grep -o {{ os }}.* | sort -r | sed 1q"
-      register: latest_template
-      delegate_to: pve
-      changed_when: false
-    - set_fact:
-        template_name: "{{ latest_template.stdout }}"
-    - name: Download Latest Template
-      command:
-        cmd: "pveam download local {{ template_name }}"
-      register: template_dl
-      delegate_to: pve
-      changed_when: template_dl.stdout_lines | last() != 'calculating checksum of existing file...OK, got correct file already, no need to download'
-    - name: confirm correct template
-      debug:
-        var: template_name
-    # container
-    - name: Create New Container
-      proxmox:
-        # api connectivity
-        api_user: "{{ api_user }}"
-        api_password: "{{ root_pw }}"
-        api_host: "{{ virt_host_ip }}"
-        node: pve
-        # hardware
-        ostemplate: "local:vztmpl/{{ template_name }}"
-        disk: "{{ tgt_storage }}:{{ disk_size }}"
-        memory: "{{ ram }}"
-        swap: 0
-        cores: "{{ vcpus }}"
-        netif: "{{ netconf }}"
-        nameserver: "{{ dmz_netenv.dns }}"
-        hostname: "{{ inventory_hostname }}"
-        # options
-        pubkey: "{{ pub_key }}"
-        unprivileged: yes
-        onboot: yes
-        features:
-          # really don't want to enable, however
-          # required for ssh to function with good performance
-          # post is for proxmox 7 but still slow on 8.0.4 / 2023-10-29
-          # https://forum.proxmox.com/threads/delay-to-log-in-ssh-session-after-upgrade-from-6-x-to-7-x.92755/
-          - nesting=1
-        # state: started # cannot create and start containers in one step
-      delegate_to: localhost
-    - name: Start the new container
-      proxmox:
-        # api connectivity
-        api_user: "{{ api_user }}"
-        api_password: "{{ root_pw }}"
-        api_host: "{{ virt_host_ip }}"
-        # start container
-        hostname: "{{ inventory_hostname }}"
-        state: started
-      delegate_to: localhost
-      register: proxmoxer
-      retries: 10
-      delay: 1
-      until: not proxmoxer.failed # sometimes it takes a few seconds to recognize container by name
-    - name: wait for connectivity
-      wait_for_connection:
-        timeout: 60
+  # template
+  - name: Check for Latest OS Template
+    shell:
+      cmd: "pveam available --section system | grep -o {{ os }}.* | sort -r | sed 1q"
+    register: latest_template
+    delegate_to: pve
+    changed_when: false
+  - set_fact:
+      template_name: "{{ latest_template.stdout }}"
+  - name: Download Latest Template
+    command:
+      cmd: "pveam download local {{ template_name }}"
+    register: template_dl
+    delegate_to: pve
+    changed_when: template_dl.stdout_lines | last() != 'calculating checksum of existing file...OK, got correct file already, no need to download'
+  - name: confirm correct template
+    debug:
+      var: template_name
+  - debug:
+      msg: "{{ template_name }}"
+  # container
+  - name: Create New Container
+    proxmox:
+      # api connectivity
+      api_user: "{{ api_user }}"
+      api_password: "{{ root_pw }}"
+      api_host: "{{ virt_host_ip }}"
+      node: pve
+      # hardware
+      ostemplate: "local:vztmpl/{{ template_name }}"
+      disk: "{{ tgt_storage }}:{{ disk_size }}"
+      memory: "{{ ram }}"
+      swap: 0
+      cores: "{{ vcpus }}"
+      # netif: "{{ netconf }}"
+      # netif: '{"net0":"name=eth0,gw={{ dmz_netenv.gw }},ip={{ ansible_host }}/{{ dmz_netenv.mask }},bridge=vmbr0,tag={{ dmz_netenv.vlan }}"}'
+      netif: '{"net0":"name=eth0,ip=dhcp,bridge=vmbr0,tag=27,hwaddr={{ mac_addr }}"}'
+      # nameserver: "{{ dmz_netenv.dns }}"
+      hostname: "{{ inventory_hostname }}"
+      # options
+      pubkey: "{{ pub_key }}"
+      unprivileged: yes
+      onboot: yes
+      features:
+      # really don't want to enable, however
+      # required for ssh to function with good performance
+      # post is for proxmox 7 but still slow on 8.0.4 / 2023-10-29
+      # https://forum.proxmox.com/threads/delay-to-log-in-ssh-session-after-upgrade-from-6-x-to-7-x.92755/
+      # for the moby container, this is definitely required so that's fine
+      - nesting=1
+      # state: started # cannot create and start containers in one step
+    delegate_to: localhost
+  - name: Start the new container
+    proxmox:
+      # api connectivity
+      api_user: "{{ api_user }}"
+      api_password: "{{ root_pw }}"
+      api_host: "{{ virt_host_ip }}"
+      # start container
+      hostname: "{{ inventory_hostname }}"
+      state: started
+    delegate_to: localhost
+    register: proxmoxer
+    retries: 10
+    delay: 1
+    until: not proxmoxer.failed # sometimes it takes a few seconds to recognize container by name
+  - wait_for_connection:
+      timeout: 60
 
 - name: Bootstrap Hosts
   hosts: containers
   handlers:
-    - import_tasks: handlers/main.yml
+  - import_tasks: handlers/main.yml
   roles:
-    - full-upgrade
+  - full-upgrade
