@@ -1,6 +1,6 @@
 ---
 - name: install docker
-  hosts: moby
+  hosts: frigate
   roles:
   - pleb-user
   - geerlingguy.docker
@@ -8,19 +8,16 @@
     docker_users: "{{ usr_name }}"
 
 - name: frigate
-  hosts: moby
+  hosts: frigate
   vars:
     ansible_user: "{{ usr_name }}"
   tasks:
   - copy:
       src: docker-compose.yml
       dest: ~/frigate/
-  # - copy:
-  #     src: frigate-config.yaml
-  #     dest: ~/frigate/config/config.yaml
+  - copy:
+      src: frigate-config.ymel
+      dest: ~/frigate/config.yaml
   - community.docker.docker_compose_v2:
       project_src: ~/frigate/
-      # manually run docker logs frigate and look for password
-
-
-
+    # manually run docker logs frigate and look for password

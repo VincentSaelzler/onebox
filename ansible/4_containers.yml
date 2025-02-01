@@ -40,9 +40,9 @@
       memory: "{{ ram }}"
       swap: 0
       cores: "{{ vcpus }}"
-      # netif: "{{ netconf }}"
+      # vlan is 27 for now. move to 28.
+      netif: "{{ netconf }}"
       # netif: '{"net0":"name=eth0,gw={{ dmz_netenv.gw }},ip={{ ansible_host }}/{{ dmz_netenv.mask }},bridge=vmbr0,tag={{ dmz_netenv.vlan }}"}'
-      netif: '{"net0":"name=eth0,ip=dhcp,bridge=vmbr0,tag=27,hwaddr={{ mac_addr }}"}'
       # nameserver: "{{ dmz_netenv.dns }}"
       hostname: "{{ inventory_hostname }}"
       # options

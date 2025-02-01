@@ -93,6 +93,96 @@ Manually create the vlan bridge, or copy the interfaces file.
 scp ./ansible/files/interfaces root@pve.local:/etc/network/interfaces
 ```
 
+### Reolink Camera
+
+#### Initialization via Reolink App (NOT Web UI)
+
+* Set PW
+* Camera Name: Food
+
+Display
+
+* OSD > Hide Everything
+
+Stream
+
+* Clear
+  + Max Bitrate (kbps): 8192 (max allowed option)
+  + I-frame Interval: 1x
+* Bitrate Mode: Constant Bitrate
+
+Sounds
+
+* Record Audio: On
+
+Network
+
+* Advanced > Server Settings
+  + RTSP: On / 554
+
+## Sound Not Working
+
+Try changing back to RTSP
+
+```sh
+v3.0.0.2033_23041302 # works
+v3.0.0.3215_2401262240 # bad
+v3.0.0.3215_2401272069 # mine
+v3.0.0.3215_2401272069 # latest
+v3.0.0.4110_2410111120 # works poe
+DB_566128M5MP_W_W
+DB_566128M5MP_W_W
+DB_566128M5MP_W_W
+
+```
+
+
+
+
+```yml
+detect:
+  width: 640
+  height: 480
+  fps: 5
+
+ffmpeg:
+  hwaccel_args: -hwaccel_output_format qsv -c:v h264_qsv
+  output_args: # record audio
+    record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c copy # -an
+
+cameras:
+  Balcony:
+    ffmpeg:
+      inputs:
+        - path: rtsp://{FRIGATE_USER}:{FRIGATE_PASSWORD}@192.168.1.76:554//h264Preview_01_sub
+          roles:
+            - detect
+        - path: rtsp://{FRIGATE_USER}:{FRIGATE_PASSWORD}@192.168.1.76:554
+          roles:
+            - record
+```
+
+```sh
+ffprobe rtsp://admin:qS7kef9TzrBoQl4h@foodcam.local
+ffprobe version n5.1-2-g915ef932a3-20220731 Copyright (c) 2007-2022 the FFmpeg developers
+  built with gcc 12.1.0 (crosstool-NG 1.25.0.55_3defb7b)
+  configuration: --prefix=/ffbuild/prefix --pkg-config-flags=--static --pkg-config=pkg-config --cross-prefix=x86_64-ffbuild-linux-gnu- --arch=x86_64 --target-os=linux --enable-gpl --enable-version3 --disable-debug --enable-iconv --enable-libxml2 --enable-zlib --enable-libfreetype --enable-libfribidi --enable-gmp --enable-lzma --enable-fontconfig --enable-libvorbis --enable-opencl --enable-libpulse --enable-libvmaf --enable-libxcb --enable-xlib --enable-amf --enable-libaom --enable-libaribb24 --enable-avisynth --enable-libdav1d --enable-libdavs2 --disable-libfdk-aac --enable-ffnvcodec --enable-cuda-llvm --enable-frei0r --enable-libgme --enable-libass --enable-libbluray --enable-libjxl --enable-libmp3lame --enable-libopus --enable-mbedtls --enable-librist --enable-libtheora --enable-libvpx --enable-libwebp --enable-lv2 --enable-libmfx --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-librav1e --enable-librubberband --disable-schannel --enable-sdl2 --enable-libsoxr --enable-libsrt --enable-libsvtav1 --enable-libtwolame --enable-libuavs3d --enable-libdrm --enable-vaapi --enable-libvidstab --enable-vulkan --enable-libshaderc --enable-libplacebo --enable-libx264 --enable-libx265 --enable-libxavs2 --enable-libxvid --enable-libzimg --enable-libzvbi --extra-cflags=-DLIBTWOLAME_STATIC --extra-cxxflags= --extra-ldflags=-pthread --extra-ldexeflags=-pie --extra-libs='-ldl -lgomp' --extra-version=20220731
+  libavutil      57. 28.100 / 57. 28.100
+  libavcodec     59. 37.100 / 59. 37.100
+  libavformat    59. 27.100 / 59. 27.100
+  libavdevice    59.  7.100 / 59.  7.100
+  libavfilter     8. 44.100 /  8. 44.100
+  libswscale      6.  7.100 /  6.  7.100
+  libswresample   4.  7.100 /  4.  7.100
+  libpostproc    56.  6.100 / 56.  6.100
+Input #0, rtsp, from 'rtsp://admin:qS7kef9TzrBoQl4h@foodcam.local':
+  Metadata:
+    title           : Session streamed by "preview"
+  Duration: N/A, start: 0.000063, bitrate: N/A
+  Stream #0:0: Video: h264 (High), yuv420p(progressive), 2560x1920, 30 fps, 30 tbr, 90k tbn
+  Stream #0:1: Audio: aac (LC), 16000 Hz, mono, fltp
+```
+
 #### PCIe Passthrough
 
 https://raw.githubusercontent.com/VincentSaelzler/hyper-homelab/main/docs/pcie-passthrough.md

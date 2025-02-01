@@ -25,10 +25,13 @@ full_name: Quidam Plebeius
 
 # web applications
 domains:
+- saelzler.org
 # - hearty.cooking
-# - saelzler.org
 # - vincentsaelzler.com
-- quercusphellos.online
+# - quercusphellos.online
+
+
+
 
 # the certbot role expects a list of ~certificates~
 # each certificate could have one or more domains
@@ -38,8 +41,8 @@ domains:
 certs:
 - domains:
   - hearty.cooking
-# - domains:
-#   - saelzler.org
+- domains:
+  - saelzler.org
 # - domains:
 #   - vincentsaelzler.com
 # - domains:

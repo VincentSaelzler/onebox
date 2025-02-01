@@ -1,10 +1,10 @@
 ---
 - name: Generate Let's Encrypt Certificates
-  hosts: model4b
-  become: yes
+  hosts: revproxy
+  # become: yes
   vars:
     # running the app
-    certbot_testmode: false
+    certbot_testmode: true
     certbot_install_method: package
     # creating certs
     certbot_create_if_missing: true

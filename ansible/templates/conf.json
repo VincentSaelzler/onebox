@@ -2,7 +2,7 @@
     "apikey": "{{ porkbun_apikey }}",
     "secretapikey": "{{ vault_porkbun_secretapikey }}",
     "ipv4_endpoint": "https://api-ipv4.porkbun.com/api/json/v3",
-    "dns_endpoint": "https://porkbun.com/api/json/v3/dns",
+    "dns_endpoint": "https://api.porkbun.com/api/json/v3/dns",
     "dns_records": {
         "hearty.cooking": [
             {
@@ -12,6 +12,12 @@
             {
                 "name": "www.hearty.cooking",
                 "type": "CNAME"
+            }
+        ],
+        "saelzler.org": [
+            {
+                "name": "saelzler.org",
+                "type": "A"
             }
         ]
     }

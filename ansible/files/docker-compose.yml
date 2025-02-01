@@ -3,7 +3,9 @@ services:
     container_name: frigate
     restart: unless-stopped
     image: ghcr.io/blakeblackshear/frigate:stable
-    # volumes:
-    # - ./config:/config
-    ports:
-    - "8971:8971"
+    network_mode: host
+    volumes:
+    - "./config.yaml:/config/config.yaml"
+    # because i am running a full resolution stream for detection
+    # calculator says i need around 90mb so leaving lots of headroom
+    shm_size: 256m
