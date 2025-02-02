@@ -30,3 +30,13 @@ davidanson.vscode-markdownlint (too opinionated)
 ```
 
 <https://192.168.27.215:8971>
+
+## GROUND-UP REBUILD
+
+```sh
+# delete frigate and revproxy containers
+ans 4_containers.yml
+ans 7_frigate.yml
+# docker logs frigate | grep "***    Password:"
+ans 11_proxy.yml
+```
