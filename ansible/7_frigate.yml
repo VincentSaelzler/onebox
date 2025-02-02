@@ -16,8 +16,9 @@
       src: docker-compose.yml
       dest: ~/frigate/
   - copy:
-      src: frigate-config.ymel
+      src: frigate-config.yml
       dest: ~/frigate/config.yaml
   - community.docker.docker_compose_v2:
       project_src: ~/frigate/
     # manually run docker logs frigate and look for password
+    # docker logs -f frigate

@@ -23,3 +23,10 @@ bc:24:11:59:e0:02
 ansible-vault decrypt files/vault/id_rsa --vault-password-file ~/.ansible/vault_pw.txt
 
 ## Ansible
+
+```txt
+kennylong.kubernetes-yaml-formatter
+davidanson.vscode-markdownlint (too opinionated)
+```
+
+<https://192.168.27.215:8971>

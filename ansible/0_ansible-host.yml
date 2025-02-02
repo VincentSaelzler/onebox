@@ -4,6 +4,7 @@
   become: yes
   roles:
   - ssh-conf
+  - git-conf
   tasks:
   - apt:
       pkg: sshpass, python3-proxmoxer
@@ -17,4 +18,7 @@
   tasks:
   - community.general.ansible_galaxy_install:
       type: role
-      name: geerlingguy.certbot, geerlingguy.docker
+      name: geerlingguy.docker
+  - community.general.ansible_galaxy_install:
+      type: role
+      name: geerlingguy.certbot

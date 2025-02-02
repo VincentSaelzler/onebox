@@ -9,49 +9,6 @@
   - copy:
       src: custom-sites.conf
       dest: /etc/nginx/sites-enabled/
-  - file:
-      path: /var/www
-      owner: "{{ usr_name }}"
-      group: "{{ usr_name }}"
-      recurse: yes
-
-- name: clone website repositories and build sites
-  hosts: localhost
-  tasks:
-  - file:
-      path: /tmp/websites
-      state: absent
-  - git:
-      repo: "https://github.com/VincentSaelzler/websites"
-      dest: /tmp/websites
-      recursive: yes
-  # manual pre-requisite
-  # run `sudo bundle install` using vscode in website repo
-  # long term need to figure out how to user-level install
-  - name: build love
-    command: bundle exec jekyll build
-    args:
-      chdir: /tmp/websites/love
-  - name: build cookbook
-    command: bundle exec jekyll build
-    args:
-      chdir: /tmp/websites/cookbook
-
-- name: copy site contents to /var/www
-  hosts: revproxy
-  # vars:
-  #   ansible_user: "{{ usr_name }}"
-  tasks:
-  - synchronize:
-      src: /tmp/websites/love/_site/
-      dest: /var/www/bethanyandvincent.com/
-      delete: yes
-      recursive: yes
-  - synchronize:
-      src: /tmp/websites/cookbook/_site/
-      dest: /var/www/hearty.cooking/
-      delete: yes
-      recursive: yes
 
 - name: restart nginx to capture changes
   hosts: revproxy
