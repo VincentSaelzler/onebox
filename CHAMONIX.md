@@ -23,3 +23,20 @@ bc:24:11:59:e0:02
 ansible-vault decrypt files/vault/id_rsa --vault-password-file ~/.ansible/vault_pw.txt
 
 ## Ansible
+
+```txt
+kennylong.kubernetes-yaml-formatter
+davidanson.vscode-markdownlint (too opinionated)
+```
+
+<https://192.168.27.215:8971>
+
+## GROUND-UP REBUILD
+
+```sh
+# delete frigate and revproxy containers
+ans 4_containers.yml
+ans 7_frigate.yml
+# docker logs frigate | grep "***    Password:"
+ans 11_proxy.yml
+```

@@ -4,7 +4,7 @@
   # become: yes
   vars:
     # running the app
-    certbot_testmode: true
+    certbot_testmode: false
     certbot_install_method: package
     # creating certs
     certbot_create_if_missing: true
