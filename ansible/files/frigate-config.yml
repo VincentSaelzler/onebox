@@ -84,6 +84,7 @@ version: 0.14
 mqtt:
   enabled: false
 
+# save audio on the recordings
 ffmpeg:
   output_args:
     record: preset-record-generic-audio-copy
