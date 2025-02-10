@@ -35,7 +35,7 @@ review:
 # recording
 
 record:
-  enabled: True
+  enabled: true
   # save the most recent 24 hours of footage
   retain:
     days: 1
@@ -53,11 +53,9 @@ go2rtc:
     # set the stream name to match the camera name
     # https://docs.frigate.video/guides/configuring_go2rtc/
     food:
-    - ffmpeg:https://foodcam.local/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=admin&password=qS7kef9TzrBoQl4h#video=copy#audio=copy#audio=opus
-    - "ffmpeg:food#audio=aac"
+    - ffmpeg:https://foodcam.local/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=admin&password=qS7kef9TzrBoQl4h
     counter:
-    - ffmpeg:https://countercam.local/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=admin&password=qS7kef9TzrBoQl4h#video=copy#audio=copy#audio=opus
-    - "ffmpeg:counter#audio=aac"
+    - ffmpeg:https://countercam.local/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=admin&password=qS7kef9TzrBoQl4h
 
 # cameras pick up re-streams
 cameras:
@@ -69,6 +67,8 @@ cameras:
         roles:
         - detect
         - record
+    motion:
+      mask: 0.296,0,0.293,0.034,0.002,0.034,0.002,0.002
   counter:
     enabled: true
     ffmpeg:
@@ -77,7 +77,13 @@ cameras:
         roles:
         - detect
         - record
+    motion:
+      mask: 0.296,0,0.692,0.002,0.691,0.027,0.297,0.025
 version: 0.14
 
 mqtt:
   enabled: false
+
+ffmpeg:
+  output_args:
+    record: preset-record-generic-audio-copy

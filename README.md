@@ -1,6 +1,7 @@
 ## Development Environment
 
 Using a Windows environment. Linux requirements should be nearly identical.
+
 * Docker (for Windows)
 * VSCode
 * Dev Containers Extension
@@ -10,8 +11,9 @@ Using a Windows environment. Linux requirements should be nearly identical.
 ## Quick Start
 
 ```sh
-sudo apt install ansible
+sudo apt install ansible git
 git clone https://github.com/VincentSaelzler/onebox/
+cd onebox/ansible
 ansible-playbook ansible/1_ansible-host.yml --ask-vault-pass --ask-become-pass
 ```
 
@@ -107,8 +109,8 @@ Display
 Stream
 
 * Clear
-  + Max Bitrate (kbps): 8192 (max allowed option)
-  + I-frame Interval: 1x
+  * Max Bitrate (kbps): 8192 (max allowed option)
+  * I-frame Interval: 1x
 * Bitrate Mode: Constant Bitrate
 
 Sounds
@@ -118,7 +120,7 @@ Sounds
 Network
 
 * Advanced > Server Settings
-  + RTSP: On / 554
+  * RTSP: On / 554
 
 ## Sound Not Working
 
@@ -135,9 +137,6 @@ DB_566128M5MP_W_W
 DB_566128M5MP_W_W
 
 ```
-
-
-
 
 ```yml
 detect:
@@ -183,9 +182,37 @@ Input #0, rtsp, from 'rtsp://admin:qS7kef9TzrBoQl4h@foodcam.local':
   Stream #0:1: Audio: aac (LC), 16000 Hz, mono, fltp
 ```
 
+```sh
+# A
+      - ffmpeg:https://foodcam.local/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=admin&password=qS7kef9TzrBoQl4h#video=copy#audio=copy#audio=opus
+      - ffmpeg:food#audio=aac
+# B
+# sound still works lin live web preview
+      - ffmpeg:https://foodcam.local/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=admin&password=qS7kef9TzrBoQl4h#video=copy#audio=copy
+# C
+# sound still works in live web preview
+# stream properties are basically identical to B
+# sound not in recorded clips (not sure if it was there before or not)
+      - ffmpeg:https://foodcam.local/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=admin&password=qS7kef9TzrBoQl4h
+# D
+# same still no sound in the recordings
+      - ffmpeg:https://foodcam.local/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=admin&password=qS7kef9TzrBoQl4h#video=copy#audio=aac
+# E
+# recorded clips freeze
+      - ffmpeg:https://foodcam.local/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=admin&password=qS7kef9TzrBoQl4h
+ffmpeg:
+  output_args:
+    record: preset-record-generic-audio-copy
+# F
+      - ffmpeg:https://foodcam.local/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=admin&password=qS7kef9TzrBoQl4h
+ffmpeg:
+  output_args:
+    record: preset-record-generic-audio-aac
+```
+
 #### PCIe Passthrough
 
-https://raw.githubusercontent.com/VincentSaelzler/hyper-homelab/main/docs/pcie-passthrough.md
+<https://raw.githubusercontent.com/VincentSaelzler/hyper-homelab/main/docs/pcie-passthrough.md>
 
 #### BIOS Configuration
 
