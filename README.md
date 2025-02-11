@@ -17,24 +17,11 @@ cd onebox/ansible
 ansible-playbook ansible/1_ansible-host.yml --ask-vault-pass --ask-become-pass
 ```
 
-Dev Containers:
-
-* Open Folder in Container (builds container)
-
-**CRITICAL:** Then run the visual studio code command "Developer: Restart Pty Host"
-
-* apples git settings
-* applies bashrc aliases
-
-```sh
-# connect to Azure Data Lake Storage
-# should work on noble 2024-05-21
-# https://github.com/Azure/azure-cli/issues/28872
-az login
-
 # run playbooks
+
 cd ansible
 ans [playbook.yml]
+
 ```
 
 ### Useful Commands
