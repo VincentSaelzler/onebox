@@ -18,7 +18,7 @@ sudo apt autoremove
 sudo apt install ansible git
 git clone https://github.com/VincentSaelzler/onebox/
 cd onebox/ansible
-ansible-playbook ansible/1_ansible-host.yml --ask-vault-pass --ask-become-pass
+ansible-playbook ansible-playbook 0_ansible-host.yml --ask-vault-pass --ask-become-pass
 ```
 
 # run playbooks
