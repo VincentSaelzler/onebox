@@ -1,16 +1,20 @@
-## Development Environment
+## Raspberry Pi
 
-Using a Windows environment. Linux requirements should be nearly identical.
+Configure the base image with the Raspberry Pi Imager program.
 
-* Docker (for Windows)
-* VSCode
-* Dev Containers Extension
-* Git
-* Azure CLI
+1. OTHER Raspberry Pi OS
+1. Lite 64 Bit
+1. hostname: backdoor.local
+1. un/pw vince/[from lastpass]
+1. set time zone and keyboard layout
+1. enable ssh with public key only [key from lastpass]
 
-## Quick Start
+Use ansible to set up the development environment
 
 ```sh
+sudo apt update
+sudo apt full-upgrade
+sudo apt autoremove
 sudo apt install ansible git
 git clone https://github.com/VincentSaelzler/onebox/
 cd onebox/ansible
@@ -33,19 +37,6 @@ glog
 # wipe out a container
 pct destroy 103 --force true --destroy-unreferenced-disks true --purge true
 ```
-
-## On-Premises Configuration
-
-### Raspberry Pi
-
-Configure the base image with the Raspberry Pi Imager program.
-
-1. OTHER Raspberry Pi OS
-1. Lite 64 Bit
-1. hostname: model4b.local
-1. un/pw marcus/easypass
-1. set time zone and keyboard layout
-1. enable ssh with public key (from ansible vault / lastpass)
 
 ### Proxmox Virtualization Host
 
@@ -96,8 +87,8 @@ Display
 Stream
 
 * Clear
-  * Max Bitrate (kbps): 8192 (max allowed option)
-  * I-frame Interval: 1x
+  + Max Bitrate (kbps): 8192 (max allowed option)
+  + I-frame Interval: 1x
 * Bitrate Mode: Constant Bitrate
 
 Sounds
@@ -107,7 +98,7 @@ Sounds
 Network
 
 * Advanced > Server Settings
-  * RTSP: On / 554
+  + RTSP: On / 554
 
 ## Sound Not Working
 
