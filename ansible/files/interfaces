@@ -12,4 +12,6 @@ iface vmbr0 inet manual
         bridge-vids 2-4094
 
 auto vmbr0.27
-iface vmbr0.27 inet dhcp
+iface vmbr0.27 inet static
+        address 192.168.27.159/24
+        gateway 192.168.27.1
