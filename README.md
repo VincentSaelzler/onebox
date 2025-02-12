@@ -67,7 +67,7 @@ The keyboard can be unplugged from the proxmox computer and back to raspberry pi
 
 ```txt
 Target harddisk: /dev/nvme1n1 (CT1000P3PSSD8) (931.51 GiB)
-root pw: [from lastpass or ansible vault]
+root pw: easypass (only temporary - ansible will change it)
 email: admin@pve.local
 networking: defaults should be correct, assuming static DHCP reservation is configured
 
