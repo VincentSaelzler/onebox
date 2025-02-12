@@ -1,0 +1,6 @@
+---
+- name: user level
+  hosts: localhost
+  roles:
+  - aliases
+  - vault-pw

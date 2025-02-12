@@ -11,10 +11,6 @@
 
 - name: user level
   hosts: localhost
-  roles:
-  - aliases
-  # - private-key
-  # - vault-pw
   tasks:
   - community.general.ansible_galaxy_install:
       type: role

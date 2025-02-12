@@ -9,7 +9,7 @@ Configure the base image with the Raspberry Pi Imager program.
 1. set time zone and keyboard layout
 1. enable ssh with public key only [key from lastpass]
 
-Use ansible to set up the development environment
+Inject secret vault password and set up aliases to use that plus the inventory file.
 
 ```sh
 sudo apt update
@@ -18,7 +18,8 @@ sudo apt autoremove
 sudo apt install ansible git
 git clone https://github.com/VincentSaelzler/onebox/
 cd onebox/ansible
-ansible-playbook ansible-playbook 0_ansible-host.yml --ask-vault-pass --ask-become-pass
+ansible-playbook 0-ansible-bootstrap.yml --ask-vault-pass
+source ~/.bashrc
 ```
 
 # run playbooks
