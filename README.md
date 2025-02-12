@@ -12,14 +12,24 @@ Configure the base image with the Raspberry Pi Imager program.
 Inject secret vault password and set up aliases to use that plus the inventory file.
 
 ```sh
+ssh vince@backdoor
 sudo apt update
 sudo apt full-upgrade
 sudo apt autoremove
+sudo reboot
+ssh vince@backdoor
 sudo apt install ansible git
 git clone https://github.com/VincentSaelzler/onebox/
 cd onebox/ansible
 ansible-playbook 0-ansible-bootstrap.yml --ask-vault-pass
 source ~/.bashrc
+```
+
+Complete the ansible controller setup now that we have full access to inventory variables and vault secrets.
+
+```sh
+glog # git log
+ans 0-ansible-host.yml
 ```
 
 # run playbooks
