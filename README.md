@@ -29,7 +29,7 @@ Complete the ansible controller setup now that we have full access to inventory 
 
 ```sh
 glog # git log
-ans 0-ansible-host.yml
+ans 0-ansible-controller.yml
 ```
 
 
