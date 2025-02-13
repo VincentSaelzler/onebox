@@ -2,4 +2,4 @@
 - import_playbook: 2_proxmox.yml
 - import_playbook: 4_containers.yml
 - import_playbook: 7_frigate.yml
-- import_playbook: 11_raspberry-pi.yml
+- import_playbook: 11_nginx.yml

@@ -1,12 +1,11 @@
 ---
 - name: add the unprivileged user and update the system
-  hosts: revproxy
-  # become: yes
+  hosts: nginx
   handlers:
-  - import_tasks: handlers/main.yml
+    - import_tasks: handlers/main.yml
   roles:
-  - pleb-user
-  - full-upgrade
+    - pleb-user
+    - full-upgrade
 
 - import_playbook: 11-ddns.yml
 - import_playbook: 11-certs.yml # dependent on ddns
