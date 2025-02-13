@@ -2,8 +2,8 @@
 - name: install docker
   hosts: frigate
   roles:
-  - pleb-user
-  - geerlingguy.docker
+    - pleb-user
+    - geerlingguy.docker
   vars:
     docker_users: "{{ usr_name }}"
 
@@ -12,13 +12,15 @@
   vars:
     ansible_user: "{{ usr_name }}"
   tasks:
-  - copy:
-      src: docker-compose.yml
-      dest: ~/frigate/
-  - copy:
-      src: frigate-config.yml
-      dest: ~/frigate/config.yaml
-  - community.docker.docker_compose_v2:
-      project_src: ~/frigate/
-    # manually run docker logs frigate find password with grep
-    # docker logs frigate | grep 'Password: '
+    - copy:
+        src: docker-compose.yml
+        dest: ~/frigate/
+    - copy:
+        src: frigate-config.yml
+        dest: ~/frigate/config.yaml
+    - community.docker.docker_compose_v2:
+        project_src: ~/frigate/
+# manually run docker logs frigate find password with grep
+# ssh pleb@frigate
+# docker logs frigate | grep 'Password: '
+# https://frigate.local:8971/
