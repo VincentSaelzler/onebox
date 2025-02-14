@@ -5,7 +5,15 @@ services:
     image: ghcr.io/blakeblackshear/frigate:stable
     network_mode: host
     volumes:
-    - "./config.yaml:/config/config.yaml"
-    # because i am running a full resolution stream for detection
-    # calculator says i need around 90mb so leaving lots of headroom
-    shm_size: 256m
+      - /etc/localtime:/etc/localtime:ro
+      - ~/config:/config
+      - ~/media:/media/frigate
+      - type: tmpfs
+        target: /tmp/cache
+        tmpfs:
+          size: 1g
+    # because i am running two full resolution streams
+    # with one of of them at 30fps
+    # error logs suggest a size of "at least 342MB"
+    # actual usage is around 437 MiB
+    shm_size: 512m

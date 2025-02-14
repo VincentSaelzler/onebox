@@ -14,12 +14,18 @@
   tasks:
     - copy:
         src: docker-compose.yml
-        dest: ~/frigate/
+        dest: ~/
+    - file:
+        path: ~/config
+        state: directory
     - copy:
         src: frigate-config.yml
-        dest: ~/frigate/config.yaml
+        dest: ~/config/config.yaml
+    - file:
+        path: ~/media
+        state: directory
     - community.docker.docker_compose_v2:
-        project_src: ~/frigate/
+        project_src: ~/
 # manually run docker logs frigate find password with grep
 # ssh pleb@frigate
 # docker logs frigate | grep 'Password: '
