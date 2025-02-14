@@ -1,10 +1,8 @@
 # object detection hardware and models
-
 detectors:
   ov:
     type: openvino
     device: CPU
-
 model:
   width: 300
   height: 300
@@ -14,48 +12,43 @@ model:
   labelmap_path: /openvino-model/coco_91cl_bkgr.txt
 
 # object types and alerts
-
 detect:
   enabled: true
-
 objects:
   track:
-  - person
-  - cat
-
-review:
-  detections:
-    labels:
     - cat
-    - person
+review:
   alerts:
     labels:
-    - cat
+      - cat
 
 # recording
-
 record:
   enabled: true
-  # save the most recent 24 hours of footage
   retain:
-    days: 1
+    days: 3
     mode: all
-  # save for 30 days when there is an object detected
-  # even if it remains stationary
-  events:
+  detections:
     retain:
-      default: 30
+      days: 9
       mode: all
+  alerts:
+    retain:
+      days: 27
+      mode: all
+
+# save audio on the recordings
+ffmpeg:
+  output_args:
+    record: preset-record-generic-audio-copy
 
 # feeds directly from camera
 go2rtc:
   streams:
-    # set the stream name to match the camera name
-    # https://docs.frigate.video/guides/configuring_go2rtc/
     food:
-    - ffmpeg:https://foodcam.local/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=admin&password=qS7kef9TzrBoQl4h
+      - ffmpeg:https://foodcam.local/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=admin&password=qS7kef9TzrBoQl4h
     counter:
-    - ffmpeg:https://countercam.local/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=admin&password=qS7kef9TzrBoQl4h
+      - ffmpeg:https://countercam.local/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=admin&password=qS7kef9TzrBoQl4h
 
 # cameras pick up re-streams
 cameras:
@@ -63,28 +56,23 @@ cameras:
     enabled: true
     ffmpeg:
       inputs:
-      - path: rtsp://127.0.0.1:8554/food
-        roles:
-        - detect
-        - record
+        - path: rtsp://127.0.0.1:8554/food
+          roles:
+            - detect
+            - record
     motion:
       mask: 0.296,0,0.293,0.034,0.002,0.034,0.002,0.002
   counter:
     enabled: true
     ffmpeg:
       inputs:
-      - path: rtsp://127.0.0.1:8554/counter
-        roles:
-        - detect
-        - record
+        - path: rtsp://127.0.0.1:8554/counter
+          roles:
+            - detect
+            - record
     motion:
       mask: 0.296,0,0.692,0.002,0.691,0.027,0.297,0.025
-version: 0.14
 
+# mqtt
 mqtt:
   enabled: false
-
-# save audio on the recordings
-ffmpeg:
-  output_args:
-    record: preset-record-generic-audio-copy

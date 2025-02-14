@@ -6,6 +6,9 @@
     - geerlingguy.docker
   vars:
     docker_users: "{{ usr_name }}"
+  tasks:
+    - apt:
+        pkg: htop
 
 - name: install frigate
   hosts: frigate
