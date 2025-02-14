@@ -27,7 +27,7 @@
     - file:
         path: ~/config
         state: directory
-    - copy:
+    - template:
         src: frigate-config.yml
         dest: ~/config/config.yaml
     - file:

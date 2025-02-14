@@ -46,9 +46,9 @@ ffmpeg:
 go2rtc:
   streams:
     food:
-      - ffmpeg:https://foodcam.local/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=admin&password=qS7kef9TzrBoQl4h
+      - ffmpeg:https://foodcam.local/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=admin&password={{ vault_camera_pw }}
     counter:
-      - ffmpeg:https://countercam.local/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=admin&password=qS7kef9TzrBoQl4h
+      - ffmpeg:https://countercam.local/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=admin&password={{ vault_camera_pw }}
 
 # cameras pick up re-streams
 cameras:
@@ -64,8 +64,7 @@ cameras:
       mask: 0.296,0,0.293,0.034,0.002,0.034,0.002,0.002
     zones:
       Countertop:
-        coordinates: 
-          0.499,0.184,0.635,0.178,0.637,0.102,0.775,0.108,0.804,0.058,0.87,0.068,0.995,0.233,0.992,0.431,0.907,0.293,0.847,0.366,0.717,0.371,0.694,0.301,0.518,0.29
+        coordinates: 0.499,0.184,0.635,0.178,0.637,0.102,0.775,0.108,0.804,0.058,0.87,0.068,0.995,0.233,0.992,0.431,0.907,0.293,0.847,0.366,0.717,0.371,0.694,0.301,0.518,0.29
     review:
       alerts:
         required_zones: Countertop
@@ -85,7 +84,10 @@ cameras:
     review:
       alerts:
         required_zones: Whole_Palace
+
 # mqtt
 mqtt:
   enabled: false
+
+# software version (auto added/updated by frigate)
 version: 0.15-1
