@@ -85,9 +85,12 @@ cameras:
       alerts:
         required_zones: Whole_Palace
 
-# mqtt
+# notifications
 mqtt:
   enabled: false
+notifications:
+  enabled: true
+  email: "{{ usr_email }}"
 
 # software version (auto added/updated by frigate)
 version: 0.15-1
