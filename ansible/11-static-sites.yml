@@ -1,13 +1,14 @@
 ---
 - name: configure nginx and set pleb user as owner of /var/www
-  hosts: revproxy
-  become: yes
+  hosts: nginx
   tasks:
   # server-level nginx configuration
   - apt:
-      pkg: nginx
+      pkg:
+        - nginx
+        - rsync
   - copy:
-      src: custom-sites.conf
+      src: nginx/static-sites.conf
       dest: /etc/nginx/sites-enabled/
   - file:
       path: /var/www
@@ -38,9 +39,9 @@
       chdir: /tmp/websites/cookbook
 
 - name: copy site contents to /var/www
-  hosts: revproxy
-  # vars:
-  #   ansible_user: "{{ usr_name }}"
+  hosts: nginx
+  vars:
+    ansible_user: "{{ usr_name }}"
   tasks:
   - synchronize:
       src: /tmp/websites/love/_site/
@@ -54,8 +55,7 @@
       recursive: yes
 
 - name: restart nginx to capture changes
-  hosts: revproxy
-  become: yes
+  hosts: nginx
   tasks:
   - systemd:
       name: nginx

@@ -5,7 +5,7 @@
     - apt:
         pkg: nginx
     - copy:
-        src: custom-sites.conf
+        src: nginx/frigate-proxy.conf
         dest: /etc/nginx/sites-enabled/
 
 - name: restart nginx to capture changes

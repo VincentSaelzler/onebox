@@ -9,4 +9,6 @@
 
 - import_playbook: 11-ddns.yml
 - import_playbook: 11-certs.yml # dependent on ddns
-- import_playbook: 11-websites.yml # dependent on certs
+
+- import_playbook: 11-frigate-proxy.yml # dependent on certs
+- import_playbook: 11-static-sites.yml # dependent on certs
