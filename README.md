@@ -2,12 +2,17 @@
 
 Configure the base image with the Raspberry Pi Imager program.
 
-1. OTHER Raspberry Pi OS
-1. Lite 64 Bit
+📒 Choose the one with a GUI to connect via Raspberry Pi Connect
+
+1. Default / Recommended OS
 1. hostname: backdoor.local
 1. un/pw vince/[from lastpass]
 1. set time zone and keyboard layout
 1. enable ssh with public key only [key from lastpass]
+
+Configure Raspberry Pi Connect. It will not be installed by default on the lite OS image.
+
+Run all commands in the [documentation](https://www.raspberrypi.com/documentation/services/connect.html)
 
 Inject secret vault password and set up aliases to use that plus the inventory file.
 
@@ -32,9 +37,7 @@ glog # git log
 ans 0-ansible-controller.yml
 ```
 
-
-
-
+Check the websites repo and set up ruby gems.
 
 ## Proxmox Virtualization Host
 
@@ -132,7 +135,6 @@ Network
 * Advanced > Server Settings
   + RTSP: On / 554
 
-
 #### PCIe Passthrough
 
 <https://raw.githubusercontent.com/VincentSaelzler/hyper-homelab/main/docs/pcie-passthrough.md>
@@ -147,7 +149,6 @@ Network
 ## DNS API Credentials
 
 Use porkbun.
-
 
 ## Containers
 
