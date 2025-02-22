@@ -10,9 +10,7 @@ Configure the base image with the Raspberry Pi Imager program.
 1. set time zone and keyboard layout
 1. enable ssh with public key only [key from lastpass]
 
-Configure Raspberry Pi Connect. It will not be installed by default on the lite OS image.
-
-Run all commands in the [documentation](https://www.raspberrypi.com/documentation/services/connect.html)
+Configure Raspberry Pi Connect: Run all commands in the [documentation](https://www.raspberrypi.com/documentation/services/connect.html)
 
 Inject secret vault password and set up aliases to use that plus the inventory file.
 
