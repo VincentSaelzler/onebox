@@ -18,11 +18,20 @@ Inject secret vault password and set up aliases to use that plus the inventory f
 
 ```sh
 ssh vince@backdoor
+```
+
+```sh
 sudo apt update
 sudo apt full-upgrade
 sudo apt autoremove
 sudo reboot
+```
+
+```sh
 ssh vince@backdoor
+```
+
+```sh
 sudo apt install ansible git
 git clone https://github.com/VincentSaelzler/onebox/
 cd onebox/ansible
