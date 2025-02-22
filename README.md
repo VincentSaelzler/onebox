@@ -37,12 +37,13 @@ git clone https://github.com/VincentSaelzler/onebox/
 cd onebox/ansible
 ansible-playbook 0-ansible-bootstrap.yml --ask-vault-pass
 source ~/.bashrc
+glog # ...to confirm the aliases are applied
 ```
 
 Complete the ansible controller setup now that we have full access to inventory variables and vault secrets.
 
 ```sh
-glog # git log
+cd ~/onebox/ansible
 ans 0-ansible-controller.yml
 ```
 
