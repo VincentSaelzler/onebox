@@ -118,30 +118,54 @@ Reboot or "apply configuration"
 
 ### Reolink Camera
 
-#### Initialization via Reolink App (NOT Web UI)
+Initializate via Reolink App (NOT Web UI)
 
-* Set PW
-* Camera Name: Food
+#### Palace
 
-Display
+⚠️ Plug both power and ethernet into doorbell  
+⚠️ Hold physical reset button around 7 seconds (loud noise will happen)
 
-* OSD > Hide Everything
+Setting|Value
+-|-
+Add Device > IP/Domain | palacecam-wired.local
+Camera Name | Palace
+Wi-Fi | Enter SSID and PW
+Display > OSD | Hide Name + Watermark
+Light > Status LED | Stay Off
+Network Advanced > Server Settings > HTTPS | On
+Stream > Clear > Resolution | 1920x2560 (default)
+Stream > Clear > FPS | 15
+Stream > Clear > Max Bitrate | 6144 (max allowed option)
+Stream > Clear > I-frame Interval | 1x
+Stream > Frame Rate Mode | Constant
 
-Stream
+#### Living Room
 
-* Clear
-  + Max Bitrate (kbps): 8192 (max allowed option)
-  + I-frame Interval: 1x
-* Bitrate Mode: Constant Bitrate
+⚠️ Hold physical reset button around 15 seconds.  
+⚠️ No indication of reset happening, but was available within 60 sec
 
-Sounds
+Setting|Value
+-|-
+Add Device > IP/Domain | livingroomcam.local
+Camera Name | Living Room
+Display > OSD | Date/Time in Top Left
+Stream > Clear > Resolution | 2560x1920 (default)
+Stream > Clear > FPS | 15
+Stream > Clear > Max Bitrate | 8192 (max allowed option)
+Stream > Clear > I-frame Interval | 1x
+Stream > Frame Rate Mode | Constant
+Stream > Bitrate Mode | Constant Bitrate
 
-* Record Audio: On
+#### Both
 
-Network
-
-* Advanced > Server Settings
-  + RTSP: On / 554
+Setting|Value
+-|-
+Network > Advanced > NTP Settings > NTP Server | openwrt.local
+System > Date & Time > Set Up > Time Zone | Dublin, Edinburgh, London
+System > Date & Time > Set Up > DST | On
+System > Date & Time > Set Up > DST > Start | Mar - Last - Sun - 01:00
+System > Date & Time > Set Up > DST > End   | Oct - Last - Sun - 02:00
+System > Date & Time > Date Format | YYYY/MM/DD
 
 #### PCIe Passthrough
 
@@ -153,10 +177,6 @@ Network
 * Reset All to Defaults
 * Q-Fan Auto-Optimize
 * Use 3200 MHz RAM Profile
-
-## DNS API Credentials
-
-Use porkbun.
 
 ## Containers
 
