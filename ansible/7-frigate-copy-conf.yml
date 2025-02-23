@@ -1,0 +1,13 @@
+- name: copy frigate config file
+  hosts: frigate
+  vars:
+    ansible_user: "{{ usr_name }}"
+  tasks:
+    - template:
+        src: frigate-config.yml
+        dest: ~/config/config.yaml
+
+- name: apply changes
+  hosts: frigate
+  tasks:
+    - reboot:
