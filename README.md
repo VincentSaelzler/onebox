@@ -49,6 +49,18 @@ Check the websites repo and set up ruby gems.
 
 ## Proxmox Virtualization Host
 
+```sh
+ssh vince@backdoor
+minicom --device /dev/ttyUSB0
+```
+
+⚠️ power off proxmox box  
+⚠️ ethernet to lan port on router  
+⚠️ display cable to monitor  
+⚠️ insert installer flash drive  
+⚠️ keyboard to proxmox box  
+⚠️ power on proxmox box  
+
 Boot inturrupts:
 
 * F2 = BIOS
@@ -63,22 +75,17 @@ Notes:
 * Crucial drive seems to work perfectly, and gives option between 4K and 512 block sizes.
 * ADATA drive technically does seem to erase. However, it is confisuing because it loads the drive with random data which changes from read-to-read until someting is written. so it is hard to tell whether stuff is actually erased.
 
-### Install Proxmox via Serial
+⚠️ keyboard to windows as proxmox box reboots  
 
-Start a serial terminal on the raspberry pi **before** turning on the computer.
-
-```sh
-sudo apt install minicom
-minicom --device /dev/ttyUSB0
+```
+Install Proxmox VE (Terminal UI, Serial Console)
 ```
 
-Plug the computer into a port on VLAN 27 **before** turning on the computer.
-
-The keyboard can be unplugged from the proxmox computer and back to raspberry pi serial while it is booting. Proxmox sends a serial version of the boot menu. Run serial installer
+    
 
 ```txt
-Target harddisk: /dev/nvme1n1 (CT1000P3PSSD8) (931.51 GiB)
-root pw: easypass (only temporary - ansible will change it)
+Target harddisk: /dev/[CAN VARY] (CT1000P3PSSD8) (931.51 GiB)
+root pw:  (only temporary - ansible will change it)
 email: admin@pve.local
 networking: defaults should be correct, assuming static DHCP reservation is configured
 
@@ -104,23 +111,26 @@ networking: defaults should be correct, assuming static DHCP reservation is conf
  └────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### Networking
-
-Manually create the vlan bridge, or copy the interfaces file.
-
 ```sh
-scp ./ansible/files/interfaces root@pve.local:/etc/network/interfaces
+scp ~/onebox/ansible/files/interfaces root@pve:/etc/network/interfaces
 ```
 
-Reboot or "apply configuration"
+⚠️ power off proxmox box  
+⚠️ ethernet to tagged port on router  
+⚠️ power on proxmox box  
 
-**Move to the tagged port**
+```sh
+cd ~/onebox/ansible
+ans 1_full-setup.yml
+```
 
-### Reolink Camera
+see `7_frigate.yml` on how to change frigate web ui password
+
+## Reolink Cameras
 
 Initializate via Reolink App (NOT Web UI)
 
-#### Palace
+### Palace
 
 ⚠️ Plug both power and ethernet into doorbell  
 ⚠️ Hold physical reset button around 7 seconds (loud noise will happen)
@@ -139,7 +149,7 @@ Stream > Clear > Max Bitrate | 6144 (max allowed option)
 Stream > Clear > I-frame Interval | 1x
 Stream > Frame Rate Mode | Constant
 
-#### Living Room
+### Living Room
 
 ⚠️ Hold physical reset button around 15 seconds.  
 ⚠️ No indication of reset happening, but was available within 60 sec
@@ -156,7 +166,7 @@ Stream > Clear > I-frame Interval | 1x
 Stream > Frame Rate Mode | Constant
 Stream > Bitrate Mode | Constant Bitrate
 
-#### Both
+### Both
 
 Setting|Value
 -|-
@@ -167,11 +177,11 @@ System > Date & Time > Set Up > DST > Start | Mar - Last - Sun - 01:00
 System > Date & Time > Set Up > DST > End   | Oct - Last - Sun - 02:00
 System > Date & Time > Date Format | YYYY/MM/DD
 
-#### PCIe Passthrough
+## PCIe Passthrough
 
 <https://raw.githubusercontent.com/VincentSaelzler/hyper-homelab/main/docs/pcie-passthrough.md>
 
-#### BIOS Configuration
+## BIOS Configuration
 
 * Update BIOS (from v1804 to v3205 to v3607)
 * Reset All to Defaults

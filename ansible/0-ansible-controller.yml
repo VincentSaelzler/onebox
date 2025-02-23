@@ -7,7 +7,7 @@
     - git-conf
   tasks:
     - apt:
-        pkg: sshpass, python3-proxmoxer
+        pkg: sshpass, python3-proxmoxer, minicom
 
 - name: user level
   hosts: localhost
