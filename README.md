@@ -81,8 +81,6 @@ Notes:
 Install Proxmox VE (Terminal UI, Serial Console)
 ```
 
-    
-
 ```txt
 Target harddisk: /dev/[CAN VARY] (CT1000P3PSSD8) (931.51 GiB)
 root pw:  (only temporary - ansible will change it)
@@ -100,9 +98,9 @@ networking: defaults should be correct, assuming static DHCP reservation is conf
  │   Administrator email               ┆ admin@pve.local                      │
  │   Management interface              ┆ enp7s0                               │
  │   Hostname                          ┆ pve.local                            │
- │   Host IP (CIDR)                    ┆ 192.168.29.159/24                    │
- │   Gateway                           ┆ 192.168.29.1                         │
- │   DNS                               ┆ 192.168.29.1                         │
+ │   Host IP (CIDR)                    ┆ 192.168.27.159/24                    │
+ │   Gateway                           ┆ 192.168.27.1                         │
+ │   DNS                               ┆ 192.168.27.1                         │
  │                                                                            │
  │                                                                            │
  │           [X] Automatically reboot after successful installation           │

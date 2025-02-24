@@ -2,7 +2,14 @@ services:
   frigate:
     container_name: frigate
     restart: unless-stopped
-    image: ghcr.io/blakeblackshear/frigate:stable
+    # for object detection via Radeon Open CoMpute.
+    image: ghcr.io/blakeblackshear/frigate:stable-rocm
+    environment:
+      # for video encoding/decoding based on INTEL's Video Acceleration API (VA-API) specification
+      # The radeonsi driver, part of the Mesa project, is specifically used for OpenGL support on AMD GPUs
+      - LIBVA_DRIVER_NAME=radeonsi
+    devices:
+      - /dev/dri
     network_mode: host
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -12,8 +19,7 @@ services:
         target: /tmp/cache
         tmpfs:
           size: 1g
-    # because i am running two full resolution streams
-    # with one of of them at 30fps
+    # because i am running two high resolution (5MP) streams
     # error logs suggest a size of "at least 342MB"
     # actual usage is around 437 MiB
     shm_size: 512m
