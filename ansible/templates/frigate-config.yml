@@ -1,15 +1,15 @@
 # object detection hardware and models
 detectors:
-  ov:
-    type: openvino
-    device: CPU
+  onnx:
+    type: onnx
 model:
-  width: 300
-  height: 300
-  input_tensor: nhwc
+  model_type: yolonas
+  width: 320
+  height: 320
   input_pixel_format: bgr
-  path: /openvino-model/ssdlite_mobilenet_v2.xml
-  labelmap_path: /openvino-model/coco_91cl_bkgr.txt
+  input_tensor: nchw
+  path: /config/yolo_nas_s.onnx
+  labelmap_path: /labelmap/coco-80.txt
 
 # object types and alerts
 detect:

@@ -1,0 +1,26 @@
+lspci -v -s 0a:00.0
+Sapphire Technology Limited Sapphire Radeon RX 6700
+Navi 2x "Big Navi"
+Video Core Next (VCN) 3.0
+RDNA 2
+Added Resizable BAR functionality
+21Q2
+VRAM 10 GiB
+
+https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html
+
+These have a "LLVM target name" of gfx1031
+Radeon RX 6700
+Radeon RX 6700 XT
+Radeon RX 6750 XT
+
+These have a "LLVM target name" of gfx1030
+Radeon RX 6800
+Radeon RX 6800 XT
+Radeon RX 6900 XT
+Radeon RX 6950 XT
+
+
+
+dev0: /dev/dri/renderD128
+dev1: /dev/kfd
