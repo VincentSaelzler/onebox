@@ -2,9 +2,8 @@
 - name: Download Template, Create Container
   hosts: containers
   gather_facts: no # fact gathering will fail if the containers don't exist yet
-  serial: 1
   tasks:
-    # template
+    # download the latest template based on the `os` of the container
     - name: Check for Latest OS Template
       shell:
         cmd: "pveam available --section system | grep -o {{ os }}.* | sort -r | sed 1q"
@@ -19,15 +18,12 @@
       register: template_dl
       delegate_to: pve
       changed_when: template_dl.stdout_lines | last() != 'calculating checksum of existing file...OK, got correct file already, no need to download'
-    - name: confirm correct template
-      debug:
-        var: template_name
-    - debug:
-        msg: "{{ template_name }}"
-    # container
+
+    # create container
     - name: Create New Container
       proxmox:
         # api connectivity
+        vmid: "{{ container_id }}"
         api_user: "{{ api_user }}"
         api_password: "{{ root_pw }}"
         api_host: pve
@@ -45,32 +41,32 @@
         unprivileged: yes
         onboot: yes
         features:
-          # really don't want to enable, however
-          # required for ssh to function with good performance
-          # post is for proxmox 7 but still slow on 8.0.4 / 2023-10-29
-          # https://forum.proxmox.com/threads/delay-to-log-in-ssh-session-after-upgrade-from-6-x-to-7-x.92755/
-          # for the containers running doocker, this is definitely required so that's fine
           - nesting=1
-        # state: started # cannot create and start containers in one step
       delegate_to: localhost
+
+    # add (optional) passthrough devices to configuration file
+    - lineinfile:
+        path: "/etc/pve/lxc/{{ container_id }}.conf"
+        line: "{{ item }}"
+      with_items: "{{ passthrough_devices }}"
+      delegate_to: pve
+      when: passthrough_devices is defined
+
+    # start container
     - name: Start the new container
       proxmox:
         # api connectivity
+        vmid: "{{ container_id }}"
         api_user: "{{ api_user }}"
         api_password: "{{ root_pw }}"
         api_host: pve
         # start container
-        hostname: "{{ inventory_hostname }}"
         state: started
       delegate_to: localhost
-      register: proxmoxer
-      retries: 10
-      delay: 1
-      until: not proxmoxer.failed # sometimes it takes a few seconds to recognize container by name
     - wait_for_connection:
         timeout: 60
 
-- name: Bootstrap Hosts
+- name: Run system updates
   hosts: containers
   handlers:
     - import_tasks: handlers/main.yml
