@@ -1,15 +1,15 @@
 # object detection hardware and models
 detectors:
-  onnx:
-    type: onnx
+  ov:
+    type: openvino
+    device: CPU
 model:
-  model_type: yolonas
-  width: 320
-  height: 320
+  width: 300
+  height: 300
+  input_tensor: nhwc
   input_pixel_format: bgr
-  input_tensor: nchw
-  path: /config/yolo_nas_s.onnx
-  labelmap_path: /labelmap/coco-80.txt
+  path: /openvino-model/ssdlite_mobilenet_v2.xml
+  labelmap_path: /openvino-model/coco_91cl_bkgr.txt
 
 # object types and alerts
 detect:
@@ -37,10 +37,11 @@ record:
       days: 27
       mode: all
 
-# save audio on the recordings
+# save audio on the recordings and use hardware accelerated encoding/decoding
 ffmpeg:
   output_args:
     record: preset-record-generic-audio-copy
+  hwaccel_args: preset-vaapi
 
 # feeds directly from camera
 go2rtc:

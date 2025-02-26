@@ -25,9 +25,6 @@
     - file:
         path: ~/config
         state: directory
-    - copy:
-        src: yolo_nas_s.onnx
-        dest: ~/config/
     - template:
         src: frigate-config.yml
         dest: ~/config/config.yaml
