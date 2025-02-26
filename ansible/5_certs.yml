@@ -1,0 +1,14 @@
+---
+- name: create root private key
+  hosts: authority
+  tasks:
+    # - name: generate unencrypted private root key
+    #   command: openssl genrsa -out ~/ca-root.key
+    - name: copy root ca configuration file
+      copy:
+        src: authority-ca-root.conf
+        dest: ~/ca-root.conf
+    # - name: create a root certificate
+    #   command: openssl req #-config ~/ca-root.conf
+
+
