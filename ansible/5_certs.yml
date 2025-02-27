@@ -1,14 +1,36 @@
 ---
-- name: create root private key
+- name: generate certificate authority certificate
   hosts: authority
   tasks:
-    # - name: generate unencrypted private root key
-    #   command: openssl genrsa -out ~/ca-root.key
-    - name: copy root ca configuration file
+    - name: generate private key
+      command: openssl genrsa -out ~/ca.key
+    - name: copy certificate configuration file
       copy:
-        src: authority-ca-root.conf
-        dest: ~/ca-root.conf
-    # - name: create a root certificate
-    #   command: openssl req #-config ~/ca-root.conf
+        src: authority-ca.conf
+        dest: ~/ca.conf
+    - name: sign and generate certificate
+      command: openssl req -x509 -days 729 -config ~/ca.conf -key ~/ca.key -out ~/ca.cert
 
+- name: generate server certificate
+  hosts: authority
+  tasks:
+    - name: generate private key
+      command: openssl genrsa -out ~/server.key
+    - name: copy certificate configuration file
+      copy:
+        src: authority-server.conf
+        dest: ~/server.conf
+    - name: sign and generate certificate
+      command: openssl req -CA ~/ca.cert -CAkey ~/ca.key -days 729 -config ~/server.conf -key ~/server.key -out ~/server.cert
 
+- name: generate client certificate
+  hosts: authority
+  tasks:
+    - name: generate private key
+      command: openssl genrsa -out ~/client.key
+    - name: copy certificate configuration file
+      copy:
+        src: authority-client.conf
+        dest: ~/client.conf
+    - name: sign and generate certificate
+      command: openssl req -CA ~/ca.cert -CAkey ~/ca.key -days 729 -config ~/client.conf -key ~/client.key -out ~/client.cert
