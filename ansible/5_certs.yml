@@ -1,36 +1,101 @@
 ---
-- name: generate certificate authority certificate
-  hosts: authority
-  tasks:
-    - name: generate private key
-      command: openssl genrsa -out ~/ca.key
-    - name: copy certificate configuration file
-      copy:
-        src: authority-ca.conf
-        dest: ~/ca.conf
-    - name: sign and generate certificate
-      command: openssl req -x509 -days 729 -config ~/ca.conf -key ~/ca.key -out ~/ca.cert
+# - name: generate certificate authority certificate
+#   hosts: authority
+#   tasks:
+#     - name: generate private key
+#       command: openssl genrsa -out ~/ca.key
+#     - name: copy certificate configuration file
+#       copy:
+#         src: authority-ca.conf
+#         dest: ~/ca.conf
+#     - name: sign and generate certificate
+#       command: openssl req -x509 -days 729 -config ~/ca.conf -key ~/ca.key -out ~/ca.crt
 
-- name: generate server certificate
-  hosts: authority
-  tasks:
-    - name: generate private key
-      command: openssl genrsa -out ~/server.key
-    - name: copy certificate configuration file
-      copy:
-        src: authority-server.conf
-        dest: ~/server.conf
-    - name: sign and generate certificate
-      command: openssl req -CA ~/ca.cert -CAkey ~/ca.key -days 729 -config ~/server.conf -key ~/server.key -out ~/server.cert
+# - name: generate server certificate
+#   hosts: authority
+#   tasks:
+#     - name: generate private key
+#       command: openssl genrsa -out ~/server.key
+#     - name: copy certificate configuration file
+#       copy:
+#         src: authority-server.conf
+#         dest: ~/server.conf
+#     - name: sign and generate certificate
+#       command: openssl req -CA ~/ca.crt -CAkey ~/ca.key -days 729 -config ~/server.conf -key ~/server.key -out ~/server.crt
 
-- name: generate client certificate
-  hosts: authority
+# - name: generate client certificate
+#   hosts: authority
+#   tasks:
+#     - name: generate private key
+#       command: openssl genrsa -out ~/client.key
+#     - name: copy certificate configuration file
+#       copy:
+#         src: authority-client.conf
+#         dest: ~/client.conf
+#     - name: sign and generate certificate
+#       command: openssl req -CA ~/ca.crt -CAkey ~/ca.key -days 729 -config ~/client.conf -key ~/client.key -out ~/client.crt
+
+# - name: fetch files from authority
+#   hosts: authority
+#   tasks:
+#     - fetch:
+#         src: "~/{{ item }}"
+#         dest: "/tmp/certs/{{ item }}"
+#         flat: true
+#       with_items:
+#         - ca.crt
+#         - client.crt
+#         - client.key
+#         - server.crt
+#         - server.key
+
+- name: trust certificate authority
+  hosts: server, client
   tasks:
-    - name: generate private key
-      command: openssl genrsa -out ~/client.key
-    - name: copy certificate configuration file
+    - copy:
+        src: /tmp/certs/ca.crt
+        dest: /usr/local/share/ca-certificates/local.crt
+    - command: update-ca-certificates
+
+- name: trust certificate authority
+  hosts: localhost
+  become: yes
+  tasks:
+    - copy:
+        src: /tmp/certs/ca.crt
+        dest: /usr/local/share/ca-certificates/local.crt
+    - command: update-ca-certificates
+
+- name: configure nginx server
+  hosts: server
+  tasks:
+    - apt:
+        pkg: nginx
+    - copy:
+        src: /tmp/certs/ca.crt
+        dest: /usr/local/share/ca-certificates/local.crt
+    - command: update-ca-certificates
+    - copy:
+        src: /tmp/certs/server.crt
+        dest: /etc/ssl/certs/server.crt
+        mode: "0644"
+    - copy:
+        src: /tmp/certs/server.key
+        dest: /etc/ssl/private/server.key
+        mode: "0640"
+    - name: Create directory if it does not exist
+      file:
+        path: /var/www/mtls
+        state: directory
+
+    - name: Copy file to directory
       copy:
-        src: authority-client.conf
-        dest: ~/client.conf
-    - name: sign and generate certificate
-      command: openssl req -CA ~/ca.cert -CAkey ~/ca.key -days 729 -config ~/client.conf -key ~/client.key -out ~/client.cert
+        src: nginx/secure-index.html
+        dest: /var/www/mtls/index.html
+
+    - copy:
+        src: nginx/mtls.conf
+        dest: /etc/nginx/nginx.conf
+    - systemd:
+        name: nginx
+        state: restarted
