@@ -23,31 +23,34 @@
 #     - name: sign and generate certificate
 #       command: openssl req -CA ~/ca.crt -CAkey ~/ca.key -days 729 -config ~/server.conf -key ~/server.key -out ~/server.crt
 
-# - name: generate client certificate
-#   hosts: authority
-#   tasks:
-#     - name: generate private key
-#       command: openssl genrsa -out ~/client.key
-#     - name: copy certificate configuration file
-#       copy:
-#         src: authority-client.conf
-#         dest: ~/client.conf
-#     - name: sign and generate certificate
-#       command: openssl req -CA ~/ca.crt -CAkey ~/ca.key -days 729 -config ~/client.conf -key ~/client.key -out ~/client.crt
+- name: generate client certificate and p12 archive
+  hosts: authority
+  tasks:
+    - name: generate private key
+      command: openssl genrsa -out ~/client.key
+    - name: copy certificate configuration file
+      copy:
+        src: authority-client.conf
+        dest: ~/client.conf
+    - name: sign and generate certificate
+      command: openssl req -CA ~/ca.crt -CAkey ~/ca.key -days 729 -config ~/client.conf -key ~/client.key -out ~/client.crt
+    - name: archive as p12 file
+      command: openssl pkcs12 -export -out ~/client.p12 -in ~/client.crt -inkey ~/client.key -passout pass:hard2guess
 
-# - name: fetch files from authority
-#   hosts: authority
-#   tasks:
-#     - fetch:
-#         src: "~/{{ item }}"
-#         dest: "/tmp/certs/{{ item }}"
-#         flat: true
-#       with_items:
-#         - ca.crt
-#         - client.crt
-#         - client.key
-#         - server.crt
-#         - server.key
+- name: fetch files from authority
+  hosts: authority
+  tasks:
+    - fetch:
+        src: "~/{{ item }}"
+        dest: "/tmp/certs/{{ item }}"
+        flat: true
+      with_items:
+        - ca.crt
+        - client.crt
+        - client.key
+        - client.p12
+        - server.crt
+        - server.key
 
 - name: trust certificate authority
   hosts: server, client
