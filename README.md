@@ -8,7 +8,7 @@ Configure the base image with the Raspberry Pi Imager program.
 1. hostname: backdoor.local
 1. un/pw vince/[from lastpass]
 1. set time zone and keyboard layout
-1. enable ssh with public key only [key from lastpass]
+1. generate a new public/private public key. it will ONLY only be saved on the surface.
 
 Configure Raspberry Pi Connect: Run all commands in the [documentation](https://www.raspberrypi.com/documentation/services/connect.html)
 
@@ -95,9 +95,9 @@ networking: defaults should be correct, assuming static DHCP reservation is conf
  │   Bootdisk(s)                       ┆ /dev/nvme1n1                         │
  │   Timezone                          ┆ Europe/London                        │
  │   Keyboard layout                   ┆ United Kingdom                       │
- │   Administrator email               ┆ admin@pve.local                      │
+ │   Administrator email               ┆ admin@pve.home.arpa                  │
  │   Management interface              ┆ enp7s0                               │
- │   Hostname                          ┆ pve.local                            │
+ │   Hostname                          ┆ pve.home.arpa                        │
  │   Host IP (CIDR)                    ┆ 192.168.27.159/24                    │
  │   Gateway                           ┆ 192.168.27.1                         │
  │   DNS                               ┆ 192.168.27.1                         │
@@ -110,7 +110,7 @@ networking: defaults should be correct, assuming static DHCP reservation is conf
 ```
 
 ```sh
-scp ~/onebox/ansible/files/interfaces root@pve:/etc/network/interfaces
+scp ~/onebox/ansible/files/interfaces root@pve.home.arpa:/etc/network/interfaces
 ```
 
 ⚠️ power off proxmox box  
