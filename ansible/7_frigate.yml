@@ -1,6 +1,6 @@
 # AFTER COMPLETION OF PLAYBOOK
 # MANUALLY FIND AND CHANGE PASSWORD
-# ssh pleb@frigate
+# ssh root@frigate
 # docker logs frigate | grep 'Password: '
 # https://saelzler.org
 # https://frigate.local:8971

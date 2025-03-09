@@ -33,6 +33,7 @@ ssh admin@backdoor.home.arpa
 ```sh
 sudo apt install git pipx
 pipx install ansible-core
+pipx inject ansible-core passlib proxmoxer requests
 pipx ensurepath
 ansible-galaxy collection install community.general
 echo thevaultpassword > ~/.ansible/vault_pw.txt

@@ -47,9 +47,9 @@ ffmpeg:
 go2rtc:
   streams:
     living_room:
-      - ffmpeg:https://livingroomcam.local/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=admin&password={{ vault_camera_pw }}
+      - ffmpeg:https://livingroomcam.home.arpa/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=admin&password={{ vault_camera_pw }}
     palace:
-      - ffmpeg:https://palacecam.local/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=admin&password={{ vault_camera_pw }}
+      - ffmpeg:https://palacecam.home.arpa/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=admin&password={{ vault_camera_pw }}
 
 # cameras pick up re-streams
 cameras:

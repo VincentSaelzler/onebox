@@ -15,18 +15,18 @@
   roles:
     - private-key
   tasks:
-    # - community.general.ansible_galaxy_install:
-    #     type: role
-    #     name: geerlingguy.docker
-    # - community.general.ansible_galaxy_install:
-    #     type: role
-    #     name: geerlingguy.certbot
-    # - community.general.ansible_galaxy_install:
-    #     type: collection
-    #     name: community.docker
-        # force: true
-        # state: latest # added in community.general 9.1.0
-        # community.docker.docker_compose_v2 # New in community.docker 3.6.0
+    - community.general.ansible_galaxy_install:
+        type: collection
+        name: ansible.posix
+    - community.general.ansible_galaxy_install:
+        type: role
+        name: geerlingguy.docker
+    - community.general.ansible_galaxy_install:
+        type: role
+        name: geerlingguy.certbot
+    - community.general.ansible_galaxy_install:
+        type: collection
+        name: community.docker
     - command:
         cmd: "code --install-extension {{ item }}"
       with_items:
