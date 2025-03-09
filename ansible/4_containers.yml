@@ -60,8 +60,7 @@
         api_user: "{{ api_user }}"
         api_password: "{{ root_pw }}"
         api_host: pve
-        # start container
-        state: started
+        state: restarted # HACK: state = started seems broken
       delegate_to: localhost
     - wait_for_connection:
         timeout: 60

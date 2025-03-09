@@ -7,8 +7,7 @@
     - git-conf
   tasks:
     - apt:
-        # pkg: sshpass, python3-proxmoxer, minicom # install this with pipx / sshpass reqd?
-        pkg: minicom
+        pkg: minicom # sshpass?
 
 - name: user level
   hosts: localhost
