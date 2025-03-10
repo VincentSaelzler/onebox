@@ -2,16 +2,16 @@
 - name: ansible dependencies
   hosts: localhost
   tasks:
-    - ansible_galaxy_install:
+    - community.general.ansible_galaxy_install:
         type: collection
         name: ansible.posix
-    - ansible_galaxy_install:
+    - community.general.ansible_galaxy_install:
         type: role
         name: geerlingguy.docker
-    - ansible_galaxy_install:
+    - community.general.ansible_galaxy_install:
         type: role
         name: geerlingguy.certbot
-    - ansible_galaxy_install:
+    - community.general.ansible_galaxy_install:
         type: collection
         name: community.docker
 
