@@ -27,7 +27,8 @@ echo "samplepass" > ~/.ansible/vault_password
 chmod 600 ~/.ansible/vault_password
 ###################################
 git clone https://github.com/VincentSaelzler/onebox/
-
+cp ~/onebox/ansible/files/controller/ansible.cfg ~/.ansible.cfg
+source ~/.bashrc
 cd onebox/ansible
 ansible-playbook 0-ansible-bootstrap.yml --ask-vault-pass
 source ~/.bashrc
