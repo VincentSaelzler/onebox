@@ -1,3 +1,5 @@
+# Bootstrapping
+
 ## Raspberry Pi
 
 Configure the base image with the Raspberry Pi Imager program.
@@ -13,7 +15,6 @@ start raspberry pi connect from GUI
 🚨🚨🚨 sign in with Raspberry Pi ID (Google Account 2 Factor?)
 
 ```sh
-
 ###################################
 sudo apt update
 sudo apt full-upgrade -y
@@ -23,24 +24,13 @@ pipx install ansible-core
 pipx ensurepath
 sudo reboot
 ###################################
-echo "samplepass" > ~/.ansible/vault_password
-chmod 600 ~/.ansible/vault_password
 ansible-galaxy collection install community.general
-###################################
+echo "samplepass" > ~/.ansible/vault_password # 🚨🚨🚨
+chmod 600 ~/.ansible/vault_password
 git clone https://github.com/VincentSaelzler/onebox/
 cp ~/onebox/ansible/files/controller/ansible.cfg ~/.ansible.cfg
+ansible-playbook ~/onebox/ansible/0-ansible-bootstrap.yml
 source ~/.bashrc
-cd onebox/ansible
-ansible-playbook 0-ansible-bootstrap.yml
-source ~/.bashrc
-glog # ...to confirm the aliases are applied
+apb ~/onebox/ansible/0-ansible-controller.yml
+# TODO: Check the websites repo and set up ruby gems.
 ```
-
-Complete the ansible controller setup now that we have full access to inventory variables and vault secrets.
-
-```sh
-cd ~/onebox/ansible
-ans 0-ansible-controller.yml
-```
-
-Check the websites repo and set up ruby gems.

@@ -17,20 +17,17 @@
         type: collection
         name: community.docker
 
-
-
-
-# - name: system level
-#   hosts: localhost
-#   become: yes
-#   roles:
-#     - ssh-conf
-#     - git-conf
-#   tasks:
-#     - apt:
-#         pkg: minicom, code
-#   - command:
-#       cmd: "code --install-extension {{ item }}"
-#     with_items:
-#       - mervin.markdown-formatter
-#       - redhat.vscode-yaml
+- name: system level
+  hosts: localhost
+  become: yes
+  roles:
+    - ssh-conf
+    - git-conf
+  tasks:
+    - apt:
+        pkg: minicom, code
+    - command:
+      cmd: "code --install-extension {{ item }}"
+      with_items:
+        - mervin.markdown-formatter
+        - redhat.vscode-yaml
