@@ -1,19 +1,17 @@
 ---
-- name: user level
+- name: ansible dependencies
   hosts: localhost
-  roles:
-    - private-key
   tasks:
-    - community.general.ansible_galaxy_install:
+    - ansible_galaxy_install:
         type: collection
         name: ansible.posix
-    - community.general.ansible_galaxy_install:
+    - ansible_galaxy_install:
         type: role
         name: geerlingguy.docker
-    - community.general.ansible_galaxy_install:
+    - ansible_galaxy_install:
         type: role
         name: geerlingguy.certbot
-    - community.general.ansible_galaxy_install:
+    - ansible_galaxy_install:
         type: collection
         name: community.docker
 
@@ -26,6 +24,12 @@
   tasks:
     - apt:
         pkg: minicom, code
+
+- name: user level
+  hosts: localhost
+  roles:
+    - private-key
+  tasks:
     - command:
         cmd: "code --install-extension {{ item }}"
       with_items:
