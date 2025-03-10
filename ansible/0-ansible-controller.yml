@@ -27,7 +27,7 @@
     - apt:
         pkg: minicom, code
     - command:
-      cmd: "code --install-extension {{ item }}"
+        cmd: "code --install-extension {{ item }}"
       with_items:
         - mervin.markdown-formatter
         - redhat.vscode-yaml
