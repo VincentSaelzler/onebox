@@ -26,8 +26,8 @@
     - community.general.ansible_galaxy_install:
         type: collection
         name: community.docker
-    - command:
-        cmd: "code --install-extension {{ item }}"
-      with_items:
-        - mervin.markdown-formatter
-        - redhat.vscode-yaml
+    # - command:
+    #     cmd: "code --install-extension {{ item }}"
+    #   with_items:
+    #     - mervin.markdown-formatter
+    #     - redhat.vscode-yaml
