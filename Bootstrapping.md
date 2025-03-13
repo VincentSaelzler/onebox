@@ -14,6 +14,7 @@ Get-Service ssh-agent
 ssh-keygen -t ed25519
 
 ssh-add $env:USERPROFILE\.ssh\id_ed25519
+ssh-add -l
 rm $env:USERPROFILE\.ssh\id_ed25519
 cat $env:USERPROFILE\.ssh\id_ed25519.pub
 ```
