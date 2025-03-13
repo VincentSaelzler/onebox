@@ -57,7 +57,7 @@ sudo reboot
 ```
 
 ```sh
-ssh palatine.saelzler.org
+ssh marcus@palatine
 
 rpi-connect on
 rpi-connect signin # 🚨🚨🚨 Raspberry Pi ID (backed by google account)
