@@ -1,48 +1,12 @@
-## Raspberry Pi
+## Bootstrapping
 
-Configure the base image with the Raspberry Pi Imager program.
+See `Bootstrapping.md`
 
-📒 Choose the one with a GUI to connect via Raspberry Pi Connect
-
-1. Default / Recommended OS
-1. hostname: backdoor.local
-1. un/pw vince/[from lastpass]
-1. set time zone and keyboard layout
-1. generate a new public/private public key. it will ONLY only be saved on the surface.
-
-Configure Raspberry Pi Connect: Run all commands in the [documentation](https://www.raspberrypi.com/documentation/services/connect.html)
-
-Inject secret vault password and set up aliases to use that plus the inventory file.
+## Ansible Playbooks (apb)
 
 ```sh
-ssh vince@backdoor
-```
-
-```sh
-sudo apt update
-sudo apt full-upgrade
-sudo apt autoremove
-sudo reboot
-```
-
-```sh
-# actually need to open via vscode for the git credentials
-ssh admin@backdoor.home.arpa
-```
-
-```sh
-sudo apt install git pipx
-pipx install ansible-core
-pipx inject ansible-core passlib proxmoxer requests
-pipx ensurepath
-ansible-galaxy collection install community.general
-echo thevaultpassword > ~/.ansible/vault_pw.txt
-chmod 600 ~/.ansible/vault_pw.txt
-git clone https://github.com/VincentSaelzler/onebox/
-cd onebox/ansible
-ansible-playbook 0-ansible-bootstrap.yml
-source ~/.bashrc
-glog # ...to confirm the aliases are applied
+apb ~/onebox/ansible/0-ansible-controller.yml
+# TODO: Check the websites repo and set up ruby gems.
 ```
 
 Complete the ansible controller setup now that we have full access to inventory variables and vault secrets.
@@ -57,67 +21,7 @@ Check the websites repo and set up ruby gems.
 ## Proxmox Virtualization Host
 
 ```sh
-ssh admin@backdoor.home.arpa
-minicom --device /dev/ttyUSB0
-```
-
-⚠️ power off proxmox box  
-⚠️ ethernet to lan port on router  
-⚠️ display cable to monitor  
-⚠️ insert installer flash drive  
-⚠️ keyboard to proxmox box  
-⚠️ power on proxmox box  
-
-Boot inturrupts:
-
-* F2 = BIOS
-* F8 = Boot Options
-
-### Wipe SSDs
-
-Used BIOS secure erase on Crucial NVMe. **Choose 4K block size.**
-
-Notes:
-
-* Crucial drive seems to work perfectly, and gives option between 4K and 512 block sizes.
-* ADATA drive technically does seem to erase. However, it is confisuing because it loads the drive with random data which changes from read-to-read until someting is written. so it is hard to tell whether stuff is actually erased.
-
-⚠️ keyboard to windows as proxmox box reboots  
-
-```
-Install Proxmox VE (Terminal UI, Serial Console)
-```
-
-```txt
-Target harddisk: /dev/[CAN VARY] (CT1000P3PSSD8) (931.51 GiB)
-root pw:  (only temporary - ansible will change it)
-email: admin@pve.local
-networking: defaults should be correct, assuming static DHCP reservation is configured
-
- ┌──────────────────────┤ Proxmox VE (8.3-1) Installer ├──────────────────────┐
- │                                                                            │
- │   Option                            ┆ Selected value                       │
- │ ├────────────────────────────────────────────────────────────────────────┤ │
- │   Bootdisk filesystem               ┆ ext4                                 │
- │   Bootdisk(s)                       ┆ /dev/nvme1n1                         │
- │   Timezone                          ┆ Europe/London                        │
- │   Keyboard layout                   ┆ United Kingdom                       │
- │   Administrator email               ┆ admin@pve.home.arpa                  │
- │   Management interface              ┆ enp7s0                               │
- │   Hostname                          ┆ pve.home.arpa                        │
- │   Host IP (CIDR)                    ┆ 192.168.27.159/24                    │
- │   Gateway                           ┆ 192.168.27.1                         │
- │   DNS                               ┆ 192.168.27.1                         │
- │                                                                            │
- │                                                                            │
- │           [X] Automatically reboot after successful installation           │
- │                                                                            │
- │  <Abort>                                             <Previous> <Install>  │
- └────────────────────────────────────────────────────────────────────────────┘
-```
-
-```sh
-scp ~/onebox/ansible/files/interfaces root@pve.home.arpa:/etc/network/interfaces
+scp ~/onebox/ansible/files/interfaces root@pve.saelzler.org:/etc/network/interfaces
 ```
 
 ⚠️ power off proxmox box  
@@ -198,4 +102,26 @@ System > Date & Time > Date Format | YYYY/MM/DD
 ```sh
 # wipe out a container
 pct destroy 103 --force true --destroy-unreferenced-disks true --purge true
+```
+
+## SSH Certificate Based
+
+```sh
+mkdir ~/ca
+ssh-keygen -t ed25519 -f ~/ca/host -C host_ca
+ssh-keygen -t ed25519 -f ~/ca/client -C client_ca
+sudo ssh-keygen -h -s ~/ca/host -I palatine.saelzler.org -n palatine.saelzler.org /etc/ssh/ssh_host_ed25519_key.pub
+# sudo nano /etc/ssh/sshd_config
+HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub
+TrustedUserCAKeys /etc/ssh/client_ca.pub
+Subsystem sftp /usr/lib/openssh/sftp-server
+######################################################
+sudo systemctl restart sshd
+
+echo -n '@cert-authority *.saelzler.org ' > ~/ca/known_host && cat ~/ca/host.pub >> ~/ca/known_host
+# copy/paste over content in C:\Users\vince\.ssh\known_hosts
+scp C:\Users\vince\.ssh\id_ed25519.pub palatine.saelzler.org:~/ca/blue.pub # from blue
+
+ssh-keygen -s ~/ca/client -I vince@blue.saelzler.org -n vince ~/ca/blue.pub
+sudo cp ~/ca/client.pub /etc/ssh/client_ca.pub
 ```

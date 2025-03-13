@@ -1,7 +1,16 @@
 ---
+- name: system level
+  hosts: localhost
+  become: yes
+  tasks:
+    - apt:
+        pkg: minicom, code
+
 - name: ansible dependencies
   hosts: localhost
   tasks:
+    - command:
+        cmd: ansible-galaxy collection install community.general
     - community.general.ansible_galaxy_install:
         type: collection
         name: ansible.posix
@@ -15,20 +24,11 @@
         type: collection
         name: community.docker
 
-- name: system level
-  hosts: localhost
-  become: yes
-  roles:
-    - ssh-conf
-    - git-conf
-  tasks:
-    - apt:
-        pkg: minicom, code
-
 - name: user level
   hosts: localhost
   roles:
-    - private-key
+    - aliases
+    - git-conf
   tasks:
     - command:
         cmd: "code --install-extension {{ item }}"

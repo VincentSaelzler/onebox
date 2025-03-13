@@ -1,8 +1,0 @@
----
-- name: user level
-  hosts: localhost
-  roles:
-    - aliases
-  tasks:
-    - command:
-        cmd: ansible-galaxy collection install community.general
