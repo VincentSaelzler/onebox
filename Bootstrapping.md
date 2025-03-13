@@ -10,12 +10,13 @@ Run powershell as **administrator**
 Get-Service ssh-agent | Set-Service -StartupType Automatic
 Start-Service ssh-agent
 Get-Service ssh-agent
+ssh-add -D
+ssh-add -l
 
 ssh-keygen -t ed25519
-
 ssh-add $env:USERPROFILE\.ssh\id_ed25519
-ssh-add -l
 rm $env:USERPROFILE\.ssh\id_ed25519
+ssh-add -l
 cat $env:USERPROFILE\.ssh\id_ed25519.pub
 ```
 
