@@ -31,7 +31,7 @@ vince
 🚨🚨🚨 [from lastpass]
 Europe/London
 gb
-Enable SSH > Paste public key
+Enable SSH > Allow public-key authentication only > Paste public key
 ```
 
 start raspberry pi plugged into monitor and mouse/keyboard
