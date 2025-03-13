@@ -24,9 +24,6 @@
     - community.general.ansible_galaxy_install:
         type: collection
         name: community.docker
-    - copy:
-        src: controller/ansible.cfg
-        dest: ~/.ansible.cfg
     - command:
         cmd: "code --install-extension {{ item }}"
       with_items:
