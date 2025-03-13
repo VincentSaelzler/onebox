@@ -11,7 +11,7 @@ Get-Service ssh-agent | Set-Service -StartupType Automatic
 Start-Service ssh-agent
 Get-Service ssh-agent
 
-ssh-keygen
+ssh-keygen -t ed25519
 
 ssh-add $env:USERPROFILE\.ssh\id_ed25519
 rm $env:USERPROFILE\.ssh\id_ed25519
@@ -72,6 +72,12 @@ echo "samplepass" > ~/.ansible/vault_password # 🚨🚨🚨
 chmod 600 ~/.ansible/vault_password
 ansible-playbook ~/onebox/ansible/0-ansible-controller.yml
 source ~/.bashrc
+
+# possibly automate - create ssh key and save in agent
+eval `ssh-agent`
+ssh-keygen -t ed25519
+ssh-add ~/.ssh/id_ed25519
+# rm ~/.ssh/id_ed25519 DO NOT DO THIS - WILL BE LOST AFTER REBOOT
 ```
 
 ## Ryzen

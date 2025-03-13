@@ -2,19 +2,6 @@
 
 See `Bootstrapping.md`
 
-## Ansible Playbooks (apb)
-
-```sh
-apb ~/onebox/ansible/0-ansible-controller.yml
-# TODO: Check the websites repo and set up ruby gems.
-```
-
-Complete the ansible controller setup now that we have full access to inventory variables and vault secrets.
-
-```sh
-cd ~/onebox/ansible
-ans 0-ansible-controller.yml
-```
 
 Check the websites repo and set up ruby gems.
 
