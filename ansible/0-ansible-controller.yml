@@ -24,7 +24,7 @@
     - community.general.ansible_galaxy_install:
         type: collection
         name: community.docker
-      copy:
+    - copy:
         src: controller/ansible.cfg
         dest: ~/.ansible.cfg
     - command:
