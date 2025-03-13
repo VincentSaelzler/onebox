@@ -77,7 +77,7 @@ source ~/.bashrc
 ## Ryzen
 
 ```sh
-ssh palatine.saelzler.org
+ssh marcus@palatine.saelzler.org
 minicom --device /dev/ttyUSB0
 ```
 
@@ -134,5 +134,5 @@ root pw:  🚨🚨🚨 from lastpass
 ```
 
 ```sh
-ssh-keygen -lvf /etc/ssh/ssh_host_ed25519_key.pub | cut --delimiter=' ' --fields=2
+ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub | cut --delimiter=' ' --fields=2
 ```
