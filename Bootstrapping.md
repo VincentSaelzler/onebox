@@ -43,7 +43,7 @@ ssh-keygen -lvf /etc/ssh/ssh_host_ed25519_key.pub
 ssh from surface
 
 ```sh
-ssh palatine.saelzler.org
+ssh marcus@palatine
 # 🚨🚨🚨 compare the fingerprints
 ```
 
