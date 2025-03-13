@@ -7,10 +7,12 @@
 Run powershell as **administrator**
 
 ```powershell
-ssh-keygen
 Get-Service ssh-agent | Set-Service -StartupType Automatic
 Start-Service ssh-agent
 Get-Service ssh-agent
+
+ssh-keygen
+
 ssh-add $env:USERPROFILE\.ssh\id_ed25519
 rm $env:USERPROFILE\.ssh\id_ed25519
 cat $env:USERPROFILE\.ssh\id_ed25519.pub
@@ -33,7 +35,7 @@ Enable SSH > Paste public key
 start raspberry pi plugged into monitor and mouse/keyboard
 
 ```sh
-ssh-keygen -lvf /etc/ssh/ssh_host_ed25519_key.pub | cut --delimiter=' ' --fields=2
+ssh-keygen -lvf /etc/ssh/ssh_host_ed25519_key.pub
 ```
 
 ssh from surface
@@ -41,23 +43,28 @@ ssh from surface
 ```sh
 ssh palatine.saelzler.org
 # 🚨🚨🚨 compare the fingerprints
-sudo apt update
-sudo apt full-upgrade -y
-sudo apt autoremove -y
 ```
 
 unplug pi from mouse/keyboard
 
 ```sh
+sudo apt update
+sudo apt full-upgrade -y
+sudo apt autoremove -y
 sudo reboot
+```
 
+```sh
 ssh palatine.saelzler.org
+
 rpi-connect on
 rpi-connect signin # 🚨🚨🚨 Raspberry Pi ID (backed by google account)
+
 sudo apt install pipx -y
 pipx install ansible-core
 pipx ensurepath
 source ~/.bashrc
+
 ansible-galaxy collection install community.general
 git clone https://github.com/VincentSaelzler/onebox/
 cp ~/onebox/ansible/files/controller/ansible.cfg ~/.ansible.cfg
