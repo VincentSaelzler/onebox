@@ -6,11 +6,12 @@
     - apt:
         pkg: minicom, code
 
-- name: ansible dependencies
+- name: user level
   hosts: localhost
+  roles:
+    - aliases
+    - git-conf
   tasks:
-    - command:
-        cmd: ansible-galaxy collection install community.general
     - community.general.ansible_galaxy_install:
         type: collection
         name: ansible.posix
@@ -23,13 +24,9 @@
     - community.general.ansible_galaxy_install:
         type: collection
         name: community.docker
-
-- name: user level
-  hosts: localhost
-  roles:
-    - aliases
-    - git-conf
-  tasks:
+      copy:
+        src: controller/ansible.cfg
+        dest: ~/.ansible.cfg
     - command:
         cmd: "code --install-extension {{ item }}"
       with_items:
