@@ -62,6 +62,7 @@ ssh marcus@palatine
 rpi-connect on
 
 rpi-connect signin # 🚨🚨🚨 Raspberry Pi ID (backed by google account)
+echo "samplepass" > ~/.ansible/vault_password # 🚨🚨🚨
 
 sudo apt install pipx -y
 pipx install ansible-core
@@ -71,7 +72,6 @@ source ~/.bashrc
 ansible-galaxy collection install community.general
 git clone https://github.com/VincentSaelzler/onebox/
 cp ~/onebox/ansible/files/controller/ansible.cfg ~/.ansible.cfg
-echo "samplepass" > ~/.ansible/vault_password # 🚨🚨🚨
 chmod 600 ~/.ansible/vault_password
 ansible-playbook ~/onebox/ansible/0-ansible-controller.yml
 source ~/.bashrc
