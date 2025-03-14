@@ -13,7 +13,7 @@ Get-Service ssh-agent
 ssh-add -D
 ssh-add -l
 
-ssh-keygen -t ed25519
+ssh-keygen -t ed25519 # 🚨🚨🚨 [passphrase from lastpass]
 ssh-add $env:USERPROFILE\.ssh\id_ed25519
 rm $env:USERPROFILE\.ssh\id_ed25519
 ssh-add -l
@@ -78,7 +78,7 @@ source ~/.bashrc
 
 # possibly automate - create ssh key and save in agent
 eval `ssh-agent`
-ssh-keygen -t ed25519
+ssh-keygen -t ed25519 # 🚨🚨🚨 [passphrase from lastpass]
 ssh-add ~/.ssh/id_ed25519
 # rm ~/.ssh/id_ed25519 DO NOT DO THIS - WILL BE LOST AFTER REBOOT
 ```
