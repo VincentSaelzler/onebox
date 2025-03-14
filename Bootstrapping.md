@@ -60,6 +60,7 @@ sudo reboot
 ssh marcus@palatine
 
 rpi-connect on
+
 rpi-connect signin # 🚨🚨🚨 Raspberry Pi ID (backed by google account)
 
 sudo apt install pipx -y
