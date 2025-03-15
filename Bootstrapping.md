@@ -62,7 +62,9 @@ sudo reboot
 
 ```sh
 ssh marcus@palatine
+```
 
+```sh
 rpi-connect on
 
 rpi-connect signin # 🚨🚨🚨 Raspberry Pi ID (backed by google account)
