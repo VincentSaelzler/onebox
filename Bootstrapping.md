@@ -31,7 +31,7 @@ Configure the base image with the Raspberry Pi Imager program.
 ```
 Raspberry Pi OS (64-bit)
 palatine
-vince
+marcus
 🚨🚨🚨 [from lastpass]
 Europe/London
 gb
