@@ -13,9 +13,13 @@ Get-Service ssh-agent
 ssh-add -D
 ssh-add -l
 
-ssh-keygen -t ed25519 # 🚨🚨🚨 [passphrase from lastpass]
+ssh-keygen -t ed25519 
+# use throw-away PW. it is saved "securely" by Windows so won't be needed again. 🚨🚨🚨 MS account
 ssh-add $env:USERPROFILE\.ssh\id_ed25519
 rm $env:USERPROFILE\.ssh\id_ed25519
+rm $env:USERPROFILE\.ssh\known_hosts
+rm $env:USERPROFILE\.ssh\known_hosts.old
+dir $env:USERPROFILE\.ssh
 ssh-add -l
 cat $env:USERPROFILE\.ssh\id_ed25519.pub
 ```
