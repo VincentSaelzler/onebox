@@ -40,8 +40,12 @@ Enable SSH > Allow public-key authentication only > Paste public key
 
 start raspberry pi plugged into monitor and mouse/keyboard
 
+turn on serial port and then enable login console over serial port (gui radio buttons)
+
+connect to serial via "Serial Monitor" vscode extension. All defaults except us terminal mode
+
 ```sh
-ssh-keygen -lvf /etc/ssh/ssh_host_ed25519_key.pub
+ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub | cut --delimiter=' ' --fields=2
 ```
 
 ssh from surface
