@@ -90,7 +90,7 @@ ssh-add ~/.ssh/id_ed25519
 ## Ryzen
 
 ```sh
-ssh marcus@palatine.saelzler.org
+ssh marcus@palatine
 minicom --device /dev/ttyUSB0
 ```
 
