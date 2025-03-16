@@ -69,28 +69,22 @@ ssh marcus@palatine
 ```
 
 ```sh
+echo "samplepass" > ~/.ansible_vault_password # 🚨🚨🚨
+chmod 600 ~/.ansible_vault_password
 rpi-connect on
-
 rpi-connect signin # 🚨🚨🚨 Raspberry Pi ID (backed by google account)
-echo "samplepass" > ~/.ansible/vault_password # 🚨🚨🚨
-
 sudo apt install pipx -y
 pipx install ansible-core
 pipx ensurepath
 source ~/.bashrc
-
 ansible-galaxy collection install community.general
 git clone https://github.com/VincentSaelzler/onebox/
 cp ~/onebox/ansible/files/controller/ansible.cfg ~/.ansible.cfg
-chmod 600 ~/.ansible/vault_password
 ansible-playbook ~/onebox/ansible/0-ansible-controller.yml
 source ~/.bashrc
-
-# possibly automate - create ssh key and save in agent
-eval `ssh-agent`
 ssh-keygen -t ed25519 # 🚨🚨🚨 [passphrase from lastpass]
+eval `ssh-agent`
 ssh-add ~/.ssh/id_ed25519
-# rm ~/.ssh/id_ed25519 DO NOT DO THIS - WILL BE LOST AFTER REBOOT
 ```
 
 ## Ryzen
