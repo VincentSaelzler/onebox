@@ -8,7 +8,7 @@ Check the websites repo and set up ruby gems.
 ## Proxmox Virtualization Host
 
 ```sh
-scp ~/onebox/ansible/files/interfaces root@pve.saelzler.org:/etc/network/interfaces
+scp ~/onebox/ansible/files/interfaces root@pve:/etc/network/interfaces
 ```
 
 ⚠️ power off proxmox box  
