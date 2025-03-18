@@ -42,6 +42,11 @@ start raspberry pi plugged into monitor and mouse/keyboard
 
 turn on serial port and then enable login console over serial port (gui radio buttons)
 
+```sh
+sudo raspi-config nonint do_serial_hw 0
+sudo raspi-config nonint do_serial_cons 0
+```
+
 connect to serial via "Serial Monitor" vscode extension. All defaults except us terminal mode
 
 ```sh
