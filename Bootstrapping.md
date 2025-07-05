@@ -1,110 +1,19 @@
 # Bootstrapping
 
-*Install software on physical devices. Once this is all done, we are ready to use Ansible to automate the rest of the setup.*
+## Modem / Router (Quantum Fiber C5500XK)
 
-## Microsoft Surface
+https://192.168.0.1
 
-Run powershell as **administrator**
+Utilities > Restore Defaults > Restore Modem to Factory Default State
 
-```powershell
-Get-Service ssh-agent | Set-Service -StartupType Automatic
-Start-Service ssh-agent
-Get-Service ssh-agent
-ssh-add -D
-ssh-add -l
-
-ssh-keygen -t ed25519 
-# use throw-away PW. it is saved "securely" by Windows so won't be needed again. 🚨🚨🚨 MS account
-ssh-add $env:USERPROFILE\.ssh\id_ed25519
-rm $env:USERPROFILE\.ssh\id_ed25519
-rm $env:USERPROFILE\.ssh\known_hosts
-rm $env:USERPROFILE\.ssh\known_hosts.old
-dir $env:USERPROFILE\.ssh
-ssh-add -l
-cat $env:USERPROFILE\.ssh\id_ed25519.pub
-```
-
-## Raspberry Pi
-
-Configure the base image with the Raspberry Pi Imager program.
-
-```
-Raspberry Pi OS (64-bit)
-palatine
-marcus
-🚨🚨🚨 [from lastpass]
-Europe/London
-gb
-Enable SSH > Allow public-key authentication only > Paste public key
-```
-
-start raspberry pi plugged into monitor and mouse/keyboard
-
-turn on serial port and then enable login console over serial port (gui radio buttons)
+## Ryzen (Proxmox)
 
 ```sh
-sudo raspi-config nonint do_serial_hw 0
-sudo raspi-config nonint do_serial_cons 0
-```
-
-connect to serial via "Serial Monitor" vscode extension. All defaults except us terminal mode
-
-```sh
-ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub | cut --delimiter=' ' --fields=2
-```
-
-ssh from surface
-
-```sh
-ssh marcus@palatine
-# 🚨🚨🚨 compare the fingerprints
-```
-
-unplug pi from mouse/keyboard
-
-```sh
-sudo apt update
-sudo apt full-upgrade -y
-sudo apt autoremove -y
-sudo reboot
-```
-
-```sh
-ssh marcus@palatine
-```
-
-```sh
-echo "samplepass" > ~/.ansible_vault_password # 🚨🚨🚨
-chmod 600 ~/.ansible_vault_password
-rpi-connect on
-rpi-connect signin # 🚨🚨🚨 Raspberry Pi ID (backed by google account)
-sudo apt install pipx -y
-pipx install ansible-core
-pipx ensurepath
-source ~/.bashrc
-ansible-galaxy collection install community.general
-git clone https://github.com/VincentSaelzler/onebox/
-cp ~/onebox/ansible/files/controller/ansible.cfg ~/.ansible.cfg
-ansible-playbook ~/onebox/ansible/0-ansible-controller.yml
-source ~/.bashrc
-ssh-keygen -t ed25519 # 🚨🚨🚨 [passphrase from lastpass]
-eval `ssh-agent`
-ssh-add ~/.ssh/id_ed25519
-```
-
-## Ryzen
-
-```sh
-ssh marcus@palatine
 minicom --device /dev/ttyUSB0
 ```
 
 ⚠️ power off proxmox box  
-⚠️ ethernet to lan port on router  
-⚠️ display cable to monitor  
-⚠️ monitor input to display port  
 ⚠️ insert installer flash drive  
-⚠️ keyboard to proxmox box  
 ⚠️ power on proxmox box  
 
 Boot inturrupts:
@@ -120,8 +29,6 @@ Notes:
 
 * Crucial drive seems to work perfectly, and gives option between 4K and 512 block sizes.
 * ADATA drive technically does seem to erase. However, it is confisuing because it loads the drive with random data which changes from read-to-read until someting is written. so it is hard to tell whether stuff is actually erased.
-
-⚠️ keyboard to windows as proxmox box reboots  
 
 ```txt
 Install Proxmox VE (Terminal UI, Serial Console)
@@ -153,4 +60,28 @@ root pw:  🚨🚨🚨 from lastpass
 
 ```sh
 ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub | cut --delimiter=' ' --fields=2
+```
+
+## Ansible Controller (Surface and/or Desktop VM)
+
+```sh
+echo "samplepass" > ~/.ansible_vault_password # 🚨🚨🚨
+chmod 600 ~/.ansible_vault_password
+sudo pacman -S python-pipx
+pipx install ansible-core
+pipx ensurepath
+source ~/.bashrc
+ansible-galaxy collection install community.general
+git clone https://github.com/VincentSaelzler/onebox/
+cp ~/onebox/ansible/files/controller/ansible.cfg ~/.ansible.cfg
+ansible-playbook ~/onebox/ansible/0-ansible-controller.yml
+source ~/.bashrc
+ssh-keygen -t ed25519 # 🚨🚨🚨 [passphrase from lastpass]
+eval `ssh-agent`
+ssh-add ~/.ssh/id_ed25519
+```
+
+```sh
+ssh-copy-id root@192.168.0.27
+
 ```

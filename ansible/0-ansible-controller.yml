@@ -1,11 +1,4 @@
 ---
-- name: system level
-  hosts: localhost
-  become: yes
-  tasks:
-    - apt:
-        pkg: minicom, code
-
 - name: user level
   hosts: localhost
   roles:
@@ -27,5 +20,4 @@
     - command:
         cmd: "code --install-extension {{ item }}"
       with_items:
-        - mervin.markdown-formatter
         - redhat.vscode-yaml

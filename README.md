@@ -2,22 +2,13 @@
 
 See `Bootstrapping.md`
 
-
 Check the websites repo and set up ruby gems.
 
 ## Proxmox Virtualization Host
 
 ```sh
-scp ~/onebox/ansible/files/interfaces root@pve:/etc/network/interfaces
-```
-
-⚠️ power off proxmox box  
-⚠️ ethernet to tagged port on router  
-⚠️ power on proxmox box  
-
-```sh
 cd ~/onebox/ansible
-ans 1_full-setup.yml
+apb 1_full-setup.yml
 ```
 
 see `7_frigate.yml` on how to change frigate web ui password
