@@ -6,9 +6,27 @@ https://192.168.0.1
 
 Utilities > Restore Defaults > Restore Modem to Factory Default State
 
-## Ryzen (Proxmox)
+## Ansible Controller (Surface)
 
 ```sh
+git clone https://github.com/VincentSaelzler/onebox/
+cp ~/onebox/ansible/files/controller/ansible.cfg ~/.ansible.cfg
+ansible-playbook ~/onebox/ansible/0-ansible-controller.yml
+source ~/.bashrc
+ssh-keygen -t ed25519 # 🚨🚨🚨 [passphrase from lastpass]
+eval `ssh-agent`
+ssh-add ~/.ssh/id_ed25519
+```
+
+
+
+
+## Ryzen (Proxmox)
+
+⚠️ connect usb serial adapter between surface and ryzen
+
+```sh
+# from surface
 minicom --device /dev/ttyUSB0
 ```
 
@@ -42,14 +60,14 @@ root pw:  🚨🚨🚨 from lastpass
  │ ├────────────────────────────────────────────────────────────────────────┤ │
  │   Bootdisk filesystem               ┆ ext4                                 │
  │   Bootdisk(s)                       ┆ /dev/nvme1n1                         │
- │   Timezone                          ┆ Europe/London                        │
- │   Keyboard layout                   ┆ United Kingdom                       │
- │   Administrator email               ┆ root@pve.saelzler.org                │
+ │   Timezone                          ┆ America/Denver                       │
+ │   Keyboard layout                   ┆ U.S. English                         │
+ │   Administrator email               ┆ vincent@saelzler.com                 │
  │   Management interface              ┆ enp7s0                               │
- │   Hostname                          ┆ pve.saelzler.org                     │
- │   Host IP (CIDR)                    ┆ 192.168.27.159/24                    │
- │   Gateway                           ┆ 192.168.27.1                         │
- │   DNS                               ┆ 192.168.27.1                         │
+ │   Hostname                          ┆ pve.home.arpa                        │
+ │   Host IP (CIDR)                    ┆ 192.168.0.27/24                      │
+ │   Gateway                           ┆ 192.168.0.1                          │
+ │   DNS                               ┆ 192.168.0.1                          │
  │                                                                            │
  │                                                                            │
  │           [X] Automatically reboot after successful installation           │
@@ -62,9 +80,7 @@ root pw:  🚨🚨🚨 from lastpass
 ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub | cut --delimiter=' ' --fields=2
 ```
 
-## Ansible Controller (Surface and/or Desktop VM)
 
-```sh
 echo "samplepass" > ~/.ansible_vault_password # 🚨🚨🚨
 chmod 600 ~/.ansible_vault_password
 sudo pacman -S python-pipx
@@ -72,14 +88,7 @@ pipx install ansible-core
 pipx ensurepath
 source ~/.bashrc
 ansible-galaxy collection install community.general
-git clone https://github.com/VincentSaelzler/onebox/
-cp ~/onebox/ansible/files/controller/ansible.cfg ~/.ansible.cfg
-ansible-playbook ~/onebox/ansible/0-ansible-controller.yml
-source ~/.bashrc
-ssh-keygen -t ed25519 # 🚨🚨🚨 [passphrase from lastpass]
-eval `ssh-agent`
-ssh-add ~/.ssh/id_ed25519
-```
+
 
 ```sh
 ssh-copy-id root@192.168.0.27
