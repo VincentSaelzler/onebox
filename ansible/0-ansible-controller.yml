@@ -1,31 +1,72 @@
 ---
-- name: system level
+- name: system level configuration
   hosts: localhost
-  become: yes
-  tasks:
-    - apt:
-        pkg: minicom, code
+  gather_facts: false
+  become: true
 
-- name: user level
-  hosts: localhost
-  roles:
-    - aliases
-    - git-conf
   tasks:
-    - community.general.ansible_galaxy_install:
+    - name: install system packages
+      community.general.pacman:
+        name:
+          # core utilities and ide
+          - less
+          - nano
+          - code
+          - which
+          # web dev
+          - ruby
+          - base-devel
+
+- name: user level configuration
+  hosts: localhost
+  gather_facts: false
+  become: false
+
+  tasks:
+    - name: install additional ansible collections
+      community.general.ansible_galaxy_install:
         type: collection
-        name: ansible.posix
-    - community.general.ansible_galaxy_install:
-        type: role
-        name: geerlingguy.docker
-    - community.general.ansible_galaxy_install:
-        type: role
-        name: geerlingguy.certbot
-    - community.general.ansible_galaxy_install:
-        type: collection
-        name: community.docker
-    - command:
-        cmd: "code --install-extension {{ item }}"
-      with_items:
-        - mervin.markdown-formatter
+        name: linode.cloud
+
+    - name: set git global user.name
+      ansible.builtin.git_config:
+        name: user.name
+        scope: global
+        value: "Vincent Saelzler"
+
+    - name: set git global user.email
+      ansible.builtin.git_config:
+        name: user.email
+        scope: global
+        value: "vincent.saelzler@gmail.com"
+
+    - name: set git global initial branch name
+      ansible.builtin.git_config:
+        name: init.defaultBranch
+        scope: global
+        value: "main"
+
+    - name: enable commit signing globally
+      community.general.git_config:
+        name: commit.gpgsign
+        value: true
+        scope: global
+
+    - name: install extensions via vs code cli
+      shell: "code --install-extension {{ item }}"
+      loop:
+        # general ide utilities
+        - davidanson.vscode-markdownlint
+        - bierner.markdown-preview-github-styles
+        # ansible projects
         - redhat.vscode-yaml
+        # python projects
+        - ms-python.python
+        - ms-python.black-formatter
+        - ms-python.isort
+        - ms-pyright.pyright
+
+    - name: set personalized vs code configurations
+      copy:
+        src: vscode-user-settings.json
+        dest: "~/.config/Code - OSS/User/settings.json"
